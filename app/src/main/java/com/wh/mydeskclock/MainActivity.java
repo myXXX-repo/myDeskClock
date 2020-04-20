@@ -9,25 +9,47 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import com.wh.mydeskclock.Widget.MyDialog;
 
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "WH_MainActivity";
     private FrameLayout frameLayout_con;
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+//        if(hasFocus){
+//            Utils.setWindowSystemUiVisibility(this);
+//        }
+        Utils.setWindowSystemUiVisibility(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        frameLayout_con = findViewById(R.id.frameLatout_con);
-        frameLayout_con.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        if (!Utils.Check(this, Utils.NONE_TEST)) {
+            Toast.makeText(MainActivity.this, "证书已过期，请到酷安更新", Toast.LENGTH_LONG).show();
+            new Thread("quit") {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        sleep(3000);
+                        finish();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
+
+//        frameLayout_con = findViewById(R.id.frameLatout_con);
+//        frameLayout_con.setSystemUiVisibility(Utils.getHideSystemUIFlags());
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -36,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
 
 //    @Override
 //    protected void onStart() {

@@ -2,6 +2,7 @@ package com.wh.mydeskclock;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.StatusBarManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wh.mydeskclock.Widget.MyDialog;
 
 import java.util.Calendar;
 
@@ -212,7 +216,7 @@ public class ClockFragment extends Fragment {
         setTime();
         setBattery();
 
-        changeOR(mParent);
+//        changeOR(mParent);
     }
 
     // 刷新屏幕
@@ -275,15 +279,15 @@ public class ClockFragment extends Fragment {
         tv_hour.setText(Utils.ensure2Numbers(hour));
         tv_min.setText(Utils.ensure2Numbers(min));
 
-        if(SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH){
-            autoTask(hour,min);
+        if (SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH) {
+            autoTask(hour, min);
         }
 
 //        autoFlashScreen();
     }
 
     // 定时自动任务
-    private void autoTask(int hour,int min){
+    private void autoTask(int hour, int min) {
         // 自动切换 dark mode
         if (hour > TIME_DAY_HOUR && hour < TIME_NIGHT_HOUR) { // day
 
@@ -311,8 +315,8 @@ public class ClockFragment extends Fragment {
     }
 
     // 自动刷新屏幕
-    private void autoFlashScreen(){
-        if(COAST_MINUTE>100 && COAST_MINUTE % 101 == 0){
+    private void autoFlashScreen() {
+        if (COAST_MINUTE > 100 && COAST_MINUTE % 101 == 0) {
             flashEInkScreen();
         }
     }
@@ -330,6 +334,7 @@ public class ClockFragment extends Fragment {
             pb_battery.setProgress(batteryLevel);
         }
     }
+
     @SuppressLint("SetTextI18n")
     private void setBattery(int level) {
         tv_battery.setText(level + "%");
@@ -342,7 +347,7 @@ public class ClockFragment extends Fragment {
 
     // 切换屏幕方向
     @SuppressLint("SourceLockedOrientationActivity")
-    private void changeOR(Activity activity){
+    private void changeOR(Activity activity) {
         if (CurrentScreenOR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -365,12 +370,6 @@ public class ClockFragment extends Fragment {
         };
 
         AlertDialog.Builder listDialog = new AlertDialog.Builder(context);
-        listDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                Utils.setWindowSystemUiVisibility(mParent);
-            }
-        });
         listDialog.setItems(items, new DialogInterface.OnClickListener() {
             @SuppressLint("SourceLockedOrientationActivity")
             @Override
@@ -404,10 +403,14 @@ public class ClockFragment extends Fragment {
                         break;
                     }
                 }
-                Utils.setWindowSystemUiVisibility(mParent);
             }
         });
-        listDialog.show();
+        MyDialog myDialog = new MyDialog(listDialog);
+        myDialog.setFullScreen();
+//        myDialog.setGRAVITY(Gravity.BOTTOM);
+        myDialog.show(mParent.getSupportFragmentManager(), "opt");
+
+
     }
 
     private SharedPreference initPreference(Context context) {
@@ -430,10 +433,11 @@ public class ClockFragment extends Fragment {
         private int COAST_SWITCH_THEME = 0;
         private int COAST_SWITCH_LIGHT = 0;
 
-        private int TIME_DAY_HOUR = 6;
-        private int TIME_NIGHT_HOUR = 22;
+        private int TIME_DAY_HOUR = 8;
+        private int TIME_NIGHT_HOUR = 20;
 
         private static final int DEFAULT_VALUE_INT = 0;
+        private static final boolean DEFAULT_VALUE_BOOLEAN = false;
 
         SharedPreference(Context context) {
             sharedPreferences = context.getSharedPreferences(SharedPreferenceFile, Context.MODE_PRIVATE);

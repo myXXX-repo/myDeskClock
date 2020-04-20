@@ -8,7 +8,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -26,6 +25,7 @@ import com.wh.mydeskclock.DataBase.Sticky;
 import com.wh.mydeskclock.MainActivity;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.Utils;
+import com.wh.mydeskclock.Widget.MyDialog;
 
 
 public class PanelAFragment extends Fragment {
@@ -61,8 +61,17 @@ public class PanelAFragment extends Fragment {
                     @Override
                     public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
                         Log.d(TAG, String.valueOf(menuItem.getTitle()));
-                        if(menuItem.getTitle().equals("Sticky")){
-                            showStickyDialog(mParent);
+                        switch (menuItem.getTitle().toString()) {
+                            case "Calendar": {
+                                MyDialog myDialog = new MyDialog();
+                                myDialog.setFullScreen();
+                                myDialog.show(mParent.getSupportFragmentManager(), "test");
+                                break;
+                            }
+                            case "Sticky": {
+                                showStickyDialog(mParent);
+                                break;
+                            }
                         }
                     }
                 });
@@ -74,7 +83,7 @@ public class PanelAFragment extends Fragment {
 
     private void showStickyDialog(Context context) {
         final String dialog_title = "Sticky";
-        final String[] menuItems = {"add new Sticky","delete all","more..."};
+        final String[] menuItems = {"add new Sticky", "delete all", "more..."};
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -87,16 +96,16 @@ public class PanelAFragment extends Fragment {
                 .setItems(menuItems, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case 0:{
+                        switch (which) {
+                            case 0: {
                                 addNewStickyDialog(mParent);
                                 break;
                             }
-                            case 1:{
+                            case 1: {
                                 stickyViewModel.deleteAllStickies();
                                 break;
                             }
-                            case 2:{
+                            case 2: {
                                 break;
                             }
                         }
@@ -104,7 +113,8 @@ public class PanelAFragment extends Fragment {
                 });
         dialog.show();
     }
-    private void addNewStickyDialog(Context context){
+
+    private void addNewStickyDialog(Context context) {
         Sticky sticky = new Sticky();
         sticky.setStickyCreateTime("time");
         sticky.setStickyTitle("title");

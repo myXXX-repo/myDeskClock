@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="check_box_preference_1"
+        android:title="Check box preference" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="check_box_preference_2"
+        android:title="Check box preference" />
+    <PreferenceCategory android:title="Settings">
+        <CheckBoxPreference
+            android:key="more_setting_auto_switch_dark_mode"
+            android:title="Auto Switch Dark Mode" />
+<!--        <SwitchPreferenceCompat-->
+<!--            android:key="more_setting_auto_switch_dark_mode"-->
+<!--            android:title="Auto Switch Dark Mode" />-->
+        <EditTextPreference
+            android:key="more_setting_day_night_time"
+            android:title="Dark Mode Auto Switch Time" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="About">
+        <Preference
+            android:key="more_about_coolapk"
+            android:title="myDeskClock in CoolApk" />
+        <Preference
+            android:key="more_about_cooapk_author"
+            android:title="Author in CoolApk" />
+        <Preference
+            android:key="more_about_github"
+            android:summary="https://github.com/alone-wolf"
+            android:title="Author's GitHub" />
+        <Preference
+            android:key="more_about_blog"
+            android:summary="https://alone-wolf.github.io"
+            android:title="Author's Blog" />
+        <Preference />
+
+    </PreferenceCategory>
+</PreferenceScreen>

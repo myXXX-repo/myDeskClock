@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-<!--    <item-->
-<!--        android:id="@+id/panelDashBoardFragment"-->
-<!--        android:icon="@drawable/ic_dashboard"-->
-<!--        android:title="DashBoard" />-->
-<!--    <item-->
-<!--        android:id="@+id/panelStickyFragment"-->
-<!--        android:icon="@drawable/ic_bubble_chart"-->
-<!--        android:title="Sticky" />-->
+    <item
+        android:id="@+id/panelDashBoardFragment"
+        android:icon="@drawable/ic_dashboard"
+        android:title="DashBoard" />
+    <item
+        android:id="@+id/panelStickyFragment"
+        android:icon="@drawable/ic_bubble_chart"
+        android:title="Sticky" />
     <item
         android:id="@+id/panelCalendarFragment"
         android:icon="@drawable/ic_calendae"
         android:title="Calendar" />
-<!--    <item-->
-<!--        android:id="@+id/panelMoreFragment"-->
-<!--        android:icon="@drawable/ic_more"-->
-<!--        android:title="More" />-->
+    <item
+        android:id="@+id/panelMoreFragment"
+        android:icon="@drawable/ic_more"
+        android:title="More" />
 </menu>

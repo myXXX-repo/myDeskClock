@@ -1,6 +1,7 @@
 package com.wh.mydeskclock;
 
 import android.app.Activity;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
@@ -103,6 +104,35 @@ public class Utils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static String getCurrentTimeDate() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
+
+    public static void pausePlay() {
+        sendKeyCode(85);
+    }
+
+    public static void nextPlay() {
+        sendKeyCode(87);
+    }
+
+    public static void previousPlay() {
+        sendKeyCode(88);
+    }
+
+    // 发送键码
+    public static void sendKeyCode(final int KeyCode) {
+        new Thread() {
+            @Override
+            public void run() {
+                Instrumentation instrumentation = new Instrumentation();
+                instrumentation.sendKeyDownUpSync(KeyCode);
+            }
+        }.start();
     }
 
 }

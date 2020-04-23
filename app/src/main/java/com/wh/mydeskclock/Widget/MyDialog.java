@@ -71,7 +71,7 @@ public class MyDialog extends DialogFragment {
             window.getDecorView().setSystemUiVisibility(Utils.getHideSystemUIFlags());
         }
         WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = DIALOG_GRAVITY;
         window.setAttributes(layoutParams);
     }

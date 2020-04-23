@@ -1,6 +1,5 @@
 package com.wh.mydeskclock.Panel;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -19,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wh.mydeskclock.DataBase.Sticky;
 import com.wh.mydeskclock.MainActivity;
+import com.wh.mydeskclock.Panel.Sticky.StickyViewModel;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.Utils;
 import com.wh.mydeskclock.Widget.MyDialog;
@@ -62,12 +64,6 @@ public class PanelAFragment extends Fragment {
                     public void onNavigationItemReselected(@NonNull MenuItem menuItem) {
                         Log.d(TAG, String.valueOf(menuItem.getTitle()));
                         switch (menuItem.getTitle().toString()) {
-                            case "Calendar": {
-                                MyDialog myDialog = new MyDialog();
-                                myDialog.setFullScreen();
-                                myDialog.show(mParent.getSupportFragmentManager(), "test");
-                                break;
-                            }
                             case "Sticky": {
                                 showStickyDialog(mParent);
                                 break;
@@ -83,9 +79,9 @@ public class PanelAFragment extends Fragment {
 
     private void showStickyDialog(Context context) {
         final String dialog_title = "Sticky";
-        final String[] menuItems = {"add new Sticky", "delete all", "more..."};
+        final String[] menuItems = {"add new Sticky", "delete all", "sync data"};
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        androidx.appcompat.app.AlertDialog.Builder dialog = new androidx.appcompat.app.AlertDialog.Builder(context);
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -106,19 +102,47 @@ public class PanelAFragment extends Fragment {
                                 break;
                             }
                             case 2: {
+                                Toast.makeText(mParent, "sync data", Toast.LENGTH_SHORT).show();
                                 break;
                             }
                         }
                     }
                 });
-        dialog.show();
+        MyDialog myDialog = new MyDialog(dialog);
+        myDialog.setFullScreen();
+        myDialog.show(mParent.getSupportFragmentManager(), "stickyDialog");
+
     }
 
     private void addNewStickyDialog(Context context) {
-        Sticky sticky = new Sticky();
-        sticky.setStickyCreateTime("time");
-        sticky.setStickyTitle("title");
-        sticky.setStickyCon("con");
-        stickyViewModel.insertStickies(sticky);
+
+        View dialogLayout = LayoutInflater.from(context).inflate(R.layout.dialog_add_sticky, null);
+        final EditText title = dialogLayout.findViewById(R.id.et_sticky_title);
+        final EditText con = dialogLayout.findViewById(R.id.et_sticky_con);
+
+
+        androidx.appcompat.app.AlertDialog.Builder addStickyDialog = new androidx.appcompat.app.AlertDialog.Builder(mParent);
+        addStickyDialog.setTitle("title");
+        addStickyDialog.setView(dialogLayout);
+        addStickyDialog.setPositiveButton("add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Sticky sticky = new Sticky();
+                sticky.setStickyCreateTime(Utils.getCurrentTimeDate());
+                sticky.setStickyTitle(title.getText().toString());
+                sticky.setStickyCon(con.getText().toString());
+                stickyViewModel.insertStickies(sticky);
+            }
+        });
+        addStickyDialog.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        MyDialog myDialog = new MyDialog(addStickyDialog);
+        myDialog.setFullScreen();
+        myDialog.show(mParent.getSupportFragmentManager(), "addSticky");
     }
 }

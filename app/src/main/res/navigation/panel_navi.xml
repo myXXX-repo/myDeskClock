@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/panel_navi"
-    app:startDestination="@id/panelCalendarFragment">
+    app:startDestination="@id/panelStickyFragment">
 
     <fragment
         android:id="@+id/panelCalendarFragment"
@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_panel_calendar" />
     <fragment
         android:id="@+id/panelStickyFragment"
-        android:name="com.wh.mydeskclock.Panel.PanelStickyFragment"
+        android:name="com.wh.mydeskclock.Panel.Sticky.PanelStickyFragment"
         android:label="fragment_panel_sticky"
         tools:layout="@layout/fragment_panel_sticky" />
     <fragment

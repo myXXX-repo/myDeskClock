@@ -37,9 +37,9 @@
         android:id="@+id/sticky_list_item_con"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="6dp"
         android:singleLine="true"
         android:text='这是一条示例sticky，点击"+"按钮可以创建新的sticky'
         android:textSize="18sp"
@@ -51,7 +51,7 @@
     <View
         android:id="@+id/view2"
         android:layout_width="wrap_content"
-        android:layout_height="2sp"
+        android:layout_height="1sp"
         android:background="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

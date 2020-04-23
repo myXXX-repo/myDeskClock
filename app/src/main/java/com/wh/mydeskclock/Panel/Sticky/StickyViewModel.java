@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Panel;
+package com.wh.mydeskclock.Panel.Sticky;
 
 import android.app.Application;
 
@@ -18,11 +18,11 @@ public class StickyViewModel extends AndroidViewModel {
         stickyRepository = new StickyRepository(application);
     }
 
-    LiveData<List<Sticky>> getAllStickiesLive(){
+    public LiveData<List<Sticky>> getAllStickiesLive() {
         return stickyRepository.getAllStickiesLive();
     }
 
-    void insertStickies(Sticky... stickies){
+    public void insertStickies(Sticky... stickies) {
         stickyRepository.insertStickies(stickies);
     }
 
@@ -34,7 +34,7 @@ public class StickyViewModel extends AndroidViewModel {
         stickyRepository.deleteStickies(stickies);
     }
 
-    void deleteAllStickies(){
+    public void deleteAllStickies() {
         stickyRepository.deleteAllStickies();
     }
 }

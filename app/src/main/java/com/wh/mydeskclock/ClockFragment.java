@@ -2,7 +2,6 @@ package com.wh.mydeskclock;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.StatusBarManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,8 +25,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,12 +53,13 @@ public class ClockFragment extends Fragment {
     private ConstraintLayout constraintLayout = null;
     private ProgressBar pb_battery;
 
-    private int BackGroundColor = Color.WHITE;
 
-    private int screenBrightness = 0;
     private int lastBatteryLevel = -1;
 
-    private int CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    private int STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    private int STATUS_SCREEN_BRIGHTNESS = 0;
+    private int STATUS_BACKGROUND_COLOR = Color.WHITE;
+
 
     private int COAST_BATTERY = 0;
     private int COAST_MINUTE = 0;
@@ -69,7 +67,9 @@ public class ClockFragment extends Fragment {
     private int COAST_SWITCH_THEME = 0;
     private int COAST_SWITCH_LIGHT = 0;
 
+
     private boolean SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH = false;
+
 
     private static final int TIME_DAY_HOUR = 6;
     private static final int TIME_NIGHT_HOUR = 22;
@@ -192,10 +192,10 @@ public class ClockFragment extends Fragment {
         });
 
         Utils.toggleDarkMode_tv(
-                tv_hour, tv_min, tv_week, tv_battery, Utils.b2w2b(BackGroundColor));
+                tv_hour, tv_min, tv_week, tv_battery, Utils.b2w2b(STATUS_BACKGROUND_COLOR));
 
         constraintLayout = view.findViewById(R.id.constraintLayout);
-        constraintLayout.setBackgroundColor(BackGroundColor);
+        constraintLayout.setBackgroundColor(STATUS_BACKGROUND_COLOR);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -213,10 +213,16 @@ public class ClockFragment extends Fragment {
         pb_battery = view.findViewById(R.id.progressBar);
         pb_battery.setVisibility(View.GONE);
 
+
+        initScreen();
+    }
+
+    private void initScreen() {
         setTime();
         setBattery();
+        setOR(mParent, STATUS_SCREEN_OR);
+        Utils.setWindowBrightness(mParent, STATUS_SCREEN_BRIGHTNESS);
 
-//        changeOR(mParent);
     }
 
     // 刷新屏幕
@@ -241,25 +247,26 @@ public class ClockFragment extends Fragment {
     // 开关背光灯
     private void toggleLight() {
         String msg;
-        if (screenBrightness == 1) {
-            screenBrightness = 0;
+        if (STATUS_SCREEN_BRIGHTNESS == 1) {
+            STATUS_SCREEN_BRIGHTNESS = 0;
             msg = "light off";
         } else {
-            screenBrightness = 1;
+            STATUS_SCREEN_BRIGHTNESS = 1;
             msg = "light on";
         }
-        Utils.setWindowBrightness(mParent, screenBrightness);
+        Utils.setWindowBrightness(mParent, STATUS_SCREEN_BRIGHTNESS);
         Toast.makeText(mParent, msg, Toast.LENGTH_SHORT).show();
         // 计数
         COAST_SWITCH_LIGHT += 1;
         sharedPreference.setCOAST_SWITCH_LIGHT(COAST_SWITCH_LIGHT);
+        sharedPreference.setSTATUS_SCREEN_BRIGHTNESS(STATUS_SCREEN_BRIGHTNESS);
     }
 
     // 开关黑色背景
     private void toggleDarkMode(boolean Count) {
-        int TextColor = BackGroundColor;
-        BackGroundColor = Utils.b2w2b(BackGroundColor);
-        constraintLayout.setBackgroundColor(BackGroundColor);
+        int TextColor = STATUS_BACKGROUND_COLOR;
+        STATUS_BACKGROUND_COLOR = Utils.b2w2b(STATUS_BACKGROUND_COLOR);
+        constraintLayout.setBackgroundColor(STATUS_BACKGROUND_COLOR);
         Utils.toggleDarkMode_tv(tv_hour, tv_min, tv_week, tv_battery, TextColor);
         // 计数
         if (Count) {
@@ -292,23 +299,23 @@ public class ClockFragment extends Fragment {
         if (hour > TIME_DAY_HOUR && hour < TIME_NIGHT_HOUR) { // day
 
             // 自动关闭 Dark Mode
-            if (BackGroundColor != Color.WHITE) {
+            if (STATUS_BACKGROUND_COLOR != Color.WHITE) {
                 toggleDarkMode(true);
             }
 
             // 自动关闭 背光灯
-            if (screenBrightness != 0) {
+            if (STATUS_SCREEN_BRIGHTNESS != 0) {
                 toggleLight();
             }
         } else {
 
             // 自动开启 Dark Mode
-            if (BackGroundColor != Color.BLACK) {
+            if (STATUS_BACKGROUND_COLOR != Color.BLACK) {
                 toggleDarkMode(true);
             }
 
             // 自动开启背光灯
-            if (screenBrightness != 1) {
+            if (STATUS_SCREEN_BRIGHTNESS != 1) {
                 toggleLight();
             }
         }
@@ -316,7 +323,7 @@ public class ClockFragment extends Fragment {
 
     // 自动刷新屏幕
     private void autoFlashScreen() {
-        if (COAST_MINUTE > 100 && COAST_MINUTE % 101 == 0) {
+        if (COAST_MINUTE != 0 && COAST_MINUTE % 100 == 0) {
             flashEInkScreen();
         }
     }
@@ -348,13 +355,20 @@ public class ClockFragment extends Fragment {
     // 切换屏幕方向
     @SuppressLint("SourceLockedOrientationActivity")
     private void changeOR(Activity activity) {
-        if (CurrentScreenOR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+        if (STATUS_SCREEN_OR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+//            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            setOR(activity, STATUS_SCREEN_OR);
         } else {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            setOR(activity, STATUS_SCREEN_OR);
+//            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+        sharedPreference.setSTATUS_SCREEN_OR(STATUS_SCREEN_OR);
+    }
+
+    private void setOR(Activity activity, int OR) {
+        activity.setRequestedOrientation(OR);
     }
 
     // 构建并显示弹窗
@@ -393,12 +407,12 @@ public class ClockFragment extends Fragment {
                         break;
                     }
                     case 6: {
-                        if (CurrentScreenOR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+                        if (STATUS_SCREEN_OR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                             mParent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+                            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
                         } else {
                             mParent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            CurrentScreenOR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+                            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
                         }
                         break;
                     }
@@ -407,7 +421,7 @@ public class ClockFragment extends Fragment {
         });
         MyDialog myDialog = new MyDialog(listDialog);
         myDialog.setFullScreen();
-//        myDialog.setGRAVITY(Gravity.BOTTOM);
+        myDialog.setGRAVITY(Gravity.BOTTOM);
         myDialog.show(mParent.getSupportFragmentManager(), "opt");
 
 
@@ -420,6 +434,8 @@ public class ClockFragment extends Fragment {
         COAST_FLASH = sharedPreference.getCOAST_FLASH();
         COAST_SWITCH_THEME = sharedPreference.getCOAST_SWITCH_THEME();
         COAST_SWITCH_LIGHT = sharedPreference.getCOAST_SWITCH_LIGHT();
+        STATUS_SCREEN_OR = sharedPreference.getSTATUS_SCREEN_OR();
+        STATUS_SCREEN_BRIGHTNESS = sharedPreference.getSTATUS_SCREEN_BRIGHTNESS();
         return sharedPreference;
     }
 
@@ -435,6 +451,9 @@ public class ClockFragment extends Fragment {
 
         private int TIME_DAY_HOUR = 8;
         private int TIME_NIGHT_HOUR = 20;
+
+        private int STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        private int STATUS_SCREEN_BRIGHTNESS = 0;
 
         private static final int DEFAULT_VALUE_INT = 0;
         private static final boolean DEFAULT_VALUE_BOOLEAN = false;
@@ -452,11 +471,19 @@ public class ClockFragment extends Fragment {
             COAST_SWITCH_LIGHT = sharedPreferences.getInt("COAST_SWITCH_LIGHT", DEFAULT_VALUE_INT);
 //            TIME_DAY_HOUR = sharedPreferences.getInt("TIME_DAY_HOUR", DEFAULT_VALUE_INT);
 //            TIME_NIGHT_HOUR = sharedPreferences.getInt("TIME_NIGHT_HOUR", DEFAULT_VALUE_INT);
+            STATUS_SCREEN_OR = sharedPreferences.getInt("STATUS_SCREEN_OR", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            STATUS_SCREEN_BRIGHTNESS = sharedPreferences.getInt("STATUS_SCREEN_BRIGHTNESS", DEFAULT_VALUE_INT);
         }
 
-        void saveIntSharedPreference(String NAME, int VALUE) {
+        void saveSharedPreference(String NAME, int VALUE) {
             SharedPreferences.Editor sharedPreferenceEditor = sharedPreferences.edit();
             sharedPreferenceEditor.putInt(NAME, VALUE);
+            sharedPreferenceEditor.apply();
+        }
+
+        void saveSharedPreference(String NAME, boolean VALUE) {
+            SharedPreferences.Editor sharedPreferenceEditor = sharedPreferences.edit();
+            sharedPreferenceEditor.putBoolean(NAME, VALUE);
             sharedPreferenceEditor.apply();
         }
 
@@ -488,40 +515,58 @@ public class ClockFragment extends Fragment {
             return TIME_NIGHT_HOUR;
         }
 
+        int getSTATUS_SCREEN_OR() {
+            return STATUS_SCREEN_OR;
+        }
+
+        int getSTATUS_SCREEN_BRIGHTNESS() {
+            return STATUS_SCREEN_BRIGHTNESS;
+        }
+
         void setCOAST_BATTERY(int COAST_BATTERY) {
             this.COAST_BATTERY = COAST_BATTERY;
-            saveIntSharedPreference("COAST_BATTERY", COAST_BATTERY);
+            saveSharedPreference("COAST_BATTERY", COAST_BATTERY);
         }
 
         void setCOAST_MINUTE(int COAST_MINUTE) {
             this.COAST_MINUTE = COAST_MINUTE;
-            saveIntSharedPreference("COAST_MINUTE", COAST_MINUTE);
+            saveSharedPreference("COAST_MINUTE", COAST_MINUTE);
         }
 
         void setCOAST_FLASH(int COAST_FLASH) {
             this.COAST_FLASH = COAST_FLASH;
-            saveIntSharedPreference("COAST_FLASH", COAST_FLASH);
+            saveSharedPreference("COAST_FLASH", COAST_FLASH);
         }
 
         void setCOAST_SWITCH_THEME(int COAST_SWITCH_THEME) {
             this.COAST_SWITCH_THEME = COAST_SWITCH_THEME;
-            saveIntSharedPreference("COAST_SWITCH_THEME", COAST_SWITCH_THEME);
+            saveSharedPreference("COAST_SWITCH_THEME", COAST_SWITCH_THEME);
 
         }
 
         void setCOAST_SWITCH_LIGHT(int COAST_SWITCH_LIGHT) {
             this.COAST_SWITCH_LIGHT = COAST_SWITCH_LIGHT;
-            saveIntSharedPreference("COAST_SWITCH_LIGHT", COAST_SWITCH_LIGHT);
+            saveSharedPreference("COAST_SWITCH_LIGHT", COAST_SWITCH_LIGHT);
         }
 
         public void setTIME_DAY_HOUR(int TIME_DAY_HOUR) {
             this.TIME_DAY_HOUR = TIME_DAY_HOUR;
-            saveIntSharedPreference("TIME_DAY_HOUR", COAST_SWITCH_LIGHT);
+            saveSharedPreference("TIME_DAY_HOUR", COAST_SWITCH_LIGHT);
         }
 
         public void setTIME_NIGHT_HOUR(int TIME_NIGHT_HOUR) {
             this.TIME_NIGHT_HOUR = TIME_NIGHT_HOUR;
-            saveIntSharedPreference("TIME_DAY_HOUR", TIME_DAY_HOUR);
+            saveSharedPreference("TIME_DAY_HOUR", TIME_DAY_HOUR);
+        }
+
+        void setSTATUS_SCREEN_OR(int STATUS_SCREEN_OR) {
+            this.STATUS_SCREEN_OR = STATUS_SCREEN_OR;
+            saveSharedPreference("STATUS_SCREEN_OR", STATUS_SCREEN_OR);
+        }
+
+        void setSTATUS_SCREEN_BRIGHTNESS(int STATUS_SCREEN_BRIGHTNESS) {
+            this.STATUS_SCREEN_BRIGHTNESS = STATUS_SCREEN_BRIGHTNESS;
+            saveSharedPreference("STATUS_SCREEN_BRIGHTNESS", STATUS_SCREEN_BRIGHTNESS);
         }
     }
 }

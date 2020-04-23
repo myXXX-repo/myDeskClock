@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Panel;
+package com.wh.mydeskclock.Panel.Sticky;
 
 import android.content.Context;
 import android.os.Bundle;

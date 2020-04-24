@@ -13,8 +13,8 @@
         android:id="@+id/panelCalendarFragment"
         android:icon="@drawable/ic_calendae"
         android:title="Calendar" />
-    <item
-        android:id="@+id/panelMoreFragment"
-        android:icon="@drawable/ic_more"
-        android:title="More" />
+    <!--    <item-->
+    <!--        android:id="@+id/panelMoreFragment"-->
+    <!--        android:icon="@drawable/ic_more"-->
+    <!--        android:title="More" />-->
 </menu>

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">myDeskClock</string>
-    <string name="time_limit" translatable="false">2020-04-30 00:00:00</string>
+    <string name="time_limit" translatable="false">2020-07-30 00:00:00</string>
 </resources>

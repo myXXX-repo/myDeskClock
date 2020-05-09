@@ -19,7 +19,7 @@
         app:layout_constraintGuide_percent="0.70" />
 
     <TextView
-        android:id="@+id/tv_item_checkbox_fragment_panel_more"
+        android:id="@+id/tv_title_item_checkbox_preference"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/cb_item_checkbox_fragment_panel_more"
+        android:id="@+id/cb_item_checkbox_preference"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

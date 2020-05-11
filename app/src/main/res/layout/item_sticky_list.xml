@@ -17,6 +17,7 @@
         android:id="@+id/sticky_list_item_cb"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:shadowColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +30,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="4dp"
         android:text="2020-4-20 12:01"
+        android:textColor="#000000"
         app:layout_constraintBottom_toTopOf="@+id/sticky_list_item_con"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +44,7 @@
         android:layout_marginBottom="6dp"
         android:singleLine="true"
         android:text='这是一条示例sticky，点击"+"按钮可以创建新的sticky'
+        android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

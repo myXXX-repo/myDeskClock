@@ -24,18 +24,19 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.wh.mydeskclock.DataBase.Sticky;
 import com.wh.mydeskclock.MainActivity;
+import com.wh.mydeskclock.Panel.Sticky.PanelStickyFragment;
 import com.wh.mydeskclock.Panel.Sticky.StickyViewModel;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.Utils;
 import com.wh.mydeskclock.Widget.MyDialog;
 
 
-public class PanelAFragment extends Fragment {
+public class MainPanelFragment extends Fragment {
     private String TAG = "WH_PanelAFragment";
     private MainActivity mParent;
     private StickyViewModel stickyViewModel;
 
-    public PanelAFragment() {
+    public MainPanelFragment() {
     }
 
     @Override

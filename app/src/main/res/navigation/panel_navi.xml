@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/panelCalendarFragment"
-        android:name="com.wh.mydeskclock.Panel.PanelCalendarFragment"
+        android:name="com.wh.mydeskclock.Panel.Calendar.PanelCalendarFragment"
         android:label="fragment_panel_calendar"
         tools:layout="@layout/fragment_panel_calendar" />
     <fragment
@@ -17,12 +17,12 @@
         tools:layout="@layout/fragment_panel_sticky" />
     <fragment
         android:id="@+id/panelMoreFragment"
-        android:name="com.wh.mydeskclock.Panel.PanelMoreFragment"
+        android:name="com.wh.mydeskclock.Panel.More.PanelMoreFragment"
         android:label="fragment_panel_more"
         tools:layout="@layout/fragment_panel_more" />
     <fragment
         android:id="@+id/panelDashBoardFragment"
-        android:name="com.wh.mydeskclock.Panel.PanelDashBoardFragment"
+        android:name="com.wh.mydeskclock.Panel.DashBoard.PanelDashBoardFragment"
         android:label="fragment_panel_statistics"
         tools:layout="@layout/fragment_panel_dashboard" />
 </navigation>

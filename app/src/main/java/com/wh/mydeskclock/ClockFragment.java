@@ -29,6 +29,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mySync.SharedPreferenceUtils;
 import com.wh.mydeskclock.Widget.MyDialog;
 
 import java.util.Calendar;
@@ -42,8 +43,7 @@ public class ClockFragment extends Fragment {
 
     private MainActivity mParent;
 
-    private SharedPreference sharedPreference = null;
-
+    private SharedPreferenceUtils sharedPreferenceUtils = null;
     private BroadcastReceiver timeReceiver = null;
     private BroadcastReceiver batteryReceiver = null;
 
@@ -101,14 +101,15 @@ public class ClockFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sharedPreference = initPreference(mParent);
+//        sharedPreference = initPreference(mParent);
+        sharedPreferenceUtils = initPreference(mParent);
 
         timeReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 setTime();
                 COAST_MINUTE += 1;
-                sharedPreference.setCOAST_MINUTE(COAST_MINUTE);
+                sharedPreferenceUtils.setCOAST_MINUTE(COAST_MINUTE);
             }
         };
         IntentFilter timeFilter = new IntentFilter();
@@ -127,7 +128,7 @@ public class ClockFragment extends Fragment {
                     } else {
                         if (lastBatteryLevel > currentBatteryLevel) {
                             COAST_BATTERY += (lastBatteryLevel - currentBatteryLevel);
-                            sharedPreference.setCOAST_BATTERY(COAST_BATTERY);
+                            sharedPreferenceUtils.setCOAST_BATTERY(COAST_BATTERY);
                             lastBatteryLevel = currentBatteryLevel;
                         }
                     }
@@ -241,7 +242,7 @@ public class ClockFragment extends Fragment {
         }.start();
         // 计数
         COAST_FLASH += 1;
-        sharedPreference.setCOAST_FLASH(COAST_FLASH);
+        sharedPreferenceUtils.setCOAST_FLASH(COAST_FLASH);
     }
 
     // 开关背光灯
@@ -258,8 +259,8 @@ public class ClockFragment extends Fragment {
         Toast.makeText(mParent, msg, Toast.LENGTH_SHORT).show();
         // 计数
         COAST_SWITCH_LIGHT += 1;
-        sharedPreference.setCOAST_SWITCH_LIGHT(COAST_SWITCH_LIGHT);
-        sharedPreference.setSTATUS_SCREEN_BRIGHTNESS(STATUS_SCREEN_BRIGHTNESS);
+        sharedPreferenceUtils.setCOAST_SWITCH_LIGHT(COAST_SWITCH_LIGHT);
+        sharedPreferenceUtils.setSTATUS_SCREEN_BRIGHTNESS(STATUS_SCREEN_BRIGHTNESS);
     }
 
     // 开关黑色背景
@@ -271,7 +272,7 @@ public class ClockFragment extends Fragment {
         // 计数
         if (Count) {
             COAST_SWITCH_THEME += 1;
-            sharedPreference.setCOAST_SWITCH_THEME(COAST_SWITCH_THEME);
+            sharedPreferenceUtils.setCOAST_SWITCH_THEME(COAST_SWITCH_THEME);
         }
     }
 
@@ -356,15 +357,13 @@ public class ClockFragment extends Fragment {
     @SuppressLint("SourceLockedOrientationActivity")
     private void changeOR(Activity activity) {
         if (STATUS_SCREEN_OR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-//            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
             setOR(activity, STATUS_SCREEN_OR);
         } else {
             STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
             setOR(activity, STATUS_SCREEN_OR);
-//            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        sharedPreference.setSTATUS_SCREEN_OR(STATUS_SCREEN_OR);
+        sharedPreferenceUtils.setSTATUS_SCREEN_OR(STATUS_SCREEN_OR);
     }
 
     private void setOR(Activity activity, int OR) {
@@ -427,148 +426,18 @@ public class ClockFragment extends Fragment {
 
     }
 
-    private SharedPreference initPreference(Context context) {
-        SharedPreference sharedPreference = new SharedPreference(context);
-        COAST_BATTERY = sharedPreference.getCOAST_BATTERY();
-        COAST_MINUTE = sharedPreference.getCOAST_MINUTE();
-        COAST_FLASH = sharedPreference.getCOAST_FLASH();
-        COAST_SWITCH_THEME = sharedPreference.getCOAST_SWITCH_THEME();
-        COAST_SWITCH_LIGHT = sharedPreference.getCOAST_SWITCH_LIGHT();
-        STATUS_SCREEN_OR = sharedPreference.getSTATUS_SCREEN_OR();
-        STATUS_SCREEN_BRIGHTNESS = sharedPreference.getSTATUS_SCREEN_BRIGHTNESS();
-        return sharedPreference;
+    private SharedPreferenceUtils initPreference(Context context) {
+        SharedPreferenceUtils sharedPreferenceUtils = new SharedPreferenceUtils(context);
+        COAST_BATTERY = sharedPreferenceUtils.getCOAST_BATTERY();
+        COAST_MINUTE = sharedPreferenceUtils.getCOAST_MINUTE();
+        COAST_FLASH = sharedPreferenceUtils.getCOAST_FLASH();
+        COAST_SWITCH_THEME = sharedPreferenceUtils.getCOAST_SWITCH_THEME();
+        COAST_SWITCH_LIGHT = sharedPreferenceUtils.getCOAST_SWITCH_LIGHT();
+        STATUS_SCREEN_OR = sharedPreferenceUtils.getSTATUS_SCREEN_OR();
+        STATUS_SCREEN_BRIGHTNESS = sharedPreferenceUtils.getSTATUS_SCREEN_BRIGHTNESS();
+        return sharedPreferenceUtils;
     }
 
-    private static class SharedPreference {
-        private SharedPreferences sharedPreferences;
-        private static final String SharedPreferenceFile = "com.wh.mydeskclock.COAST_REC";
-
-        private int COAST_BATTERY = 0;
-        private int COAST_MINUTE = 0;
-        private int COAST_FLASH = 0;
-        private int COAST_SWITCH_THEME = 0;
-        private int COAST_SWITCH_LIGHT = 0;
-
-        private int TIME_DAY_HOUR = 8;
-        private int TIME_NIGHT_HOUR = 20;
-
-        private int STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-        private int STATUS_SCREEN_BRIGHTNESS = 0;
-
-        private static final int DEFAULT_VALUE_INT = 0;
-        private static final boolean DEFAULT_VALUE_BOOLEAN = false;
-
-        SharedPreference(Context context) {
-            sharedPreferences = context.getSharedPreferences(SharedPreferenceFile, Context.MODE_PRIVATE);
-            updateValues();
-        }
-
-        void updateValues() {
-            COAST_BATTERY = sharedPreferences.getInt("COAST_BATTERY", DEFAULT_VALUE_INT);
-            COAST_MINUTE = sharedPreferences.getInt("COAST_MINUTE", DEFAULT_VALUE_INT);
-            COAST_FLASH = sharedPreferences.getInt("COAST_FLASH", DEFAULT_VALUE_INT);
-            COAST_SWITCH_THEME = sharedPreferences.getInt("COAST_SWITCH_THEME", DEFAULT_VALUE_INT);
-            COAST_SWITCH_LIGHT = sharedPreferences.getInt("COAST_SWITCH_LIGHT", DEFAULT_VALUE_INT);
-//            TIME_DAY_HOUR = sharedPreferences.getInt("TIME_DAY_HOUR", DEFAULT_VALUE_INT);
-//            TIME_NIGHT_HOUR = sharedPreferences.getInt("TIME_NIGHT_HOUR", DEFAULT_VALUE_INT);
-            STATUS_SCREEN_OR = sharedPreferences.getInt("STATUS_SCREEN_OR", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            STATUS_SCREEN_BRIGHTNESS = sharedPreferences.getInt("STATUS_SCREEN_BRIGHTNESS", DEFAULT_VALUE_INT);
-        }
-
-        void saveSharedPreference(String NAME, int VALUE) {
-            SharedPreferences.Editor sharedPreferenceEditor = sharedPreferences.edit();
-            sharedPreferenceEditor.putInt(NAME, VALUE);
-            sharedPreferenceEditor.apply();
-        }
-
-        void saveSharedPreference(String NAME, boolean VALUE) {
-            SharedPreferences.Editor sharedPreferenceEditor = sharedPreferences.edit();
-            sharedPreferenceEditor.putBoolean(NAME, VALUE);
-            sharedPreferenceEditor.apply();
-        }
-
-        int getCOAST_BATTERY() {
-            return COAST_BATTERY;
-        }
-
-        int getCOAST_MINUTE() {
-            return COAST_MINUTE;
-        }
-
-        int getCOAST_FLASH() {
-            return COAST_FLASH;
-        }
-
-        int getCOAST_SWITCH_THEME() {
-            return COAST_SWITCH_THEME;
-        }
-
-        int getCOAST_SWITCH_LIGHT() {
-            return COAST_SWITCH_LIGHT;
-        }
-
-        public int getTIME_DAY_HOUR() {
-            return TIME_DAY_HOUR;
-        }
-
-        public int getTIME_NIGHT_HOUR() {
-            return TIME_NIGHT_HOUR;
-        }
-
-        int getSTATUS_SCREEN_OR() {
-            return STATUS_SCREEN_OR;
-        }
-
-        int getSTATUS_SCREEN_BRIGHTNESS() {
-            return STATUS_SCREEN_BRIGHTNESS;
-        }
-
-        void setCOAST_BATTERY(int COAST_BATTERY) {
-            this.COAST_BATTERY = COAST_BATTERY;
-            saveSharedPreference("COAST_BATTERY", COAST_BATTERY);
-        }
-
-        void setCOAST_MINUTE(int COAST_MINUTE) {
-            this.COAST_MINUTE = COAST_MINUTE;
-            saveSharedPreference("COAST_MINUTE", COAST_MINUTE);
-        }
-
-        void setCOAST_FLASH(int COAST_FLASH) {
-            this.COAST_FLASH = COAST_FLASH;
-            saveSharedPreference("COAST_FLASH", COAST_FLASH);
-        }
-
-        void setCOAST_SWITCH_THEME(int COAST_SWITCH_THEME) {
-            this.COAST_SWITCH_THEME = COAST_SWITCH_THEME;
-            saveSharedPreference("COAST_SWITCH_THEME", COAST_SWITCH_THEME);
-
-        }
-
-        void setCOAST_SWITCH_LIGHT(int COAST_SWITCH_LIGHT) {
-            this.COAST_SWITCH_LIGHT = COAST_SWITCH_LIGHT;
-            saveSharedPreference("COAST_SWITCH_LIGHT", COAST_SWITCH_LIGHT);
-        }
-
-        public void setTIME_DAY_HOUR(int TIME_DAY_HOUR) {
-            this.TIME_DAY_HOUR = TIME_DAY_HOUR;
-            saveSharedPreference("TIME_DAY_HOUR", COAST_SWITCH_LIGHT);
-        }
-
-        public void setTIME_NIGHT_HOUR(int TIME_NIGHT_HOUR) {
-            this.TIME_NIGHT_HOUR = TIME_NIGHT_HOUR;
-            saveSharedPreference("TIME_DAY_HOUR", TIME_DAY_HOUR);
-        }
-
-        void setSTATUS_SCREEN_OR(int STATUS_SCREEN_OR) {
-            this.STATUS_SCREEN_OR = STATUS_SCREEN_OR;
-            saveSharedPreference("STATUS_SCREEN_OR", STATUS_SCREEN_OR);
-        }
-
-        void setSTATUS_SCREEN_BRIGHTNESS(int STATUS_SCREEN_BRIGHTNESS) {
-            this.STATUS_SCREEN_BRIGHTNESS = STATUS_SCREEN_BRIGHTNESS;
-            saveSharedPreference("STATUS_SCREEN_BRIGHTNESS", STATUS_SCREEN_BRIGHTNESS);
-        }
-    }
 }
 // 添加设置界面
 // 开关 更新时间的同时自动刷新屏幕

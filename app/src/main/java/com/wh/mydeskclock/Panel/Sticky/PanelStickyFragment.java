@@ -52,7 +52,7 @@ public class PanelStickyFragment extends Fragment {
         stickyViewModel = ViewModelProviders.of(mParent).get(StickyViewModel.class);
         recyclerView = mParent.findViewById(R.id.sticky_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(mParent));
-        stickyAdapter = new StickyAdapter(stickyViewModel);
+        stickyAdapter = new StickyAdapter(stickyViewModel,mParent);
         recyclerView.setAdapter(stickyAdapter);
         allStickiesLive = stickyViewModel.getAllStickiesLive();
         allStickiesLive.observe(getViewLifecycleOwner(), new Observer<List<Sticky>>() {
@@ -72,4 +72,5 @@ public class PanelStickyFragment extends Fragment {
 //        sticky.setStickyCreateTime("2020-02-20 20:20");
 //        stickyViewModel.insertStickies(sticky);
     }
+
 }

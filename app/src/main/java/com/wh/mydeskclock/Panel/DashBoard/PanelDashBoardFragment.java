@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Panel;
+package com.wh.mydeskclock.Panel.DashBoard;
 
 import android.content.Context;
 import android.os.Bundle;

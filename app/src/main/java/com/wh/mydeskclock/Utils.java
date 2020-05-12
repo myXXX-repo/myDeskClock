@@ -3,7 +3,10 @@ package com.wh.mydeskclock;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -125,7 +128,7 @@ public class Utils {
     }
 
     // 发送键码
-    public static void sendKeyCode(final int KeyCode) {
+    private static void sendKeyCode(final int KeyCode) {
         new Thread() {
             @Override
             public void run() {
@@ -134,5 +137,24 @@ public class Utils {
             }
         }.start();
     }
+
+    public static String getAppVersionName(Context context) {
+        String versionName = "";
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionName = pi.versionName;
+//            versioncode = pi.versionCode;
+            if (versionName == null || versionName.length() <= 0) {
+                return "";
+            }
+        } catch (Exception e) {
+            Log.e("VersionInfo", "Exception", e);
+        }
+        return versionName;
+    }
+
+
 
 }

@@ -32,6 +32,10 @@ import android.widget.Toast;
 import com.mySync.SharedPreferenceUtils;
 import com.wh.mydeskclock.Widget.MyDialog;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 import java.util.Calendar;
 
 import static android.content.Context.BATTERY_SERVICE;
@@ -216,6 +220,27 @@ public class ClockFragment extends Fragment {
 
 
         initScreen();
+
+
+        new Thread() {
+            @Override
+            public void run() {
+
+                try {
+                    Document document = Jsoup.connect("https://www.coolapk.com/apk/260552").get();
+                    String title = document.title();
+                    String newestVersionName = title.split(" ")[2];
+                    String currentVersionName = Utils.getAppVersionName(mParent);
+                    if (newestVersionName.equals(currentVersionName)) {
+                        Log.d(TAG, "app is the newest version");
+                    } else {
+                        Log.d(TAG, "currentVersion:" + currentVersionName + " newestVersion:" + newestVersionName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     private void initScreen() {

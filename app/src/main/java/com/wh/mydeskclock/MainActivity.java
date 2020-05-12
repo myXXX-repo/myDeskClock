@@ -3,15 +3,18 @@ package com.wh.mydeskclock;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
+
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.wh.mydeskclock.Widget.MyDialog;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {

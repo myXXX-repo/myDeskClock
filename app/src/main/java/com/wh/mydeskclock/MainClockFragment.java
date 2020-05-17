@@ -42,7 +42,7 @@ import static android.content.Context.BATTERY_SERVICE;
 import static java.lang.Thread.sleep;
 
 
-public class ClockFragment extends Fragment {
+public class MainClockFragment extends Fragment {
     private String TAG = "WH_ClockFragment";
 
     private MainActivity mParent;
@@ -72,15 +72,11 @@ public class ClockFragment extends Fragment {
     private int COAST_SWITCH_LIGHT = 0;
 
 
-    private boolean SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH = false;
-
-
-    private static final int TIME_DAY_HOUR = 6;
-    private static final int TIME_NIGHT_HOUR = 22;
-
-
-    public ClockFragment() {
-    }
+//    private boolean SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH = false;
+//
+//
+//    private static final int TIME_DAY_HOUR = 6;
+//    private static final int TIME_NIGHT_HOUR = 22;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -105,7 +101,6 @@ public class ClockFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        sharedPreference = initPreference(mParent);
         sharedPreferenceUtils = initPreference(mParent);
 
         timeReceiver = new BroadcastReceiver() {
@@ -312,47 +307,47 @@ public class ClockFragment extends Fragment {
         tv_hour.setText(Utils.ensure2Numbers(hour));
         tv_min.setText(Utils.ensure2Numbers(min));
 
-        if (SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH) {
-            autoTask(hour, min);
-        }
+//        if (SETTING_ENABLE_NIGHT_MODE_AUTO_SWITCH) {
+//            autoTask(hour, min);
+//        }
 
 //        autoFlashScreen();
     }
 
     // 定时自动任务
-    private void autoTask(int hour, int min) {
+//    private void autoTask(int hour, int min) {
         // 自动切换 dark mode
-        if (hour > TIME_DAY_HOUR && hour < TIME_NIGHT_HOUR) { // day
-
-            // 自动关闭 Dark Mode
-            if (STATUS_BACKGROUND_COLOR != Color.WHITE) {
-                toggleDarkMode(true);
-            }
-
-            // 自动关闭 背光灯
-            if (STATUS_SCREEN_BRIGHTNESS != 0) {
-                toggleLight();
-            }
-        } else {
-
-            // 自动开启 Dark Mode
-            if (STATUS_BACKGROUND_COLOR != Color.BLACK) {
-                toggleDarkMode(true);
-            }
-
-            // 自动开启背光灯
-            if (STATUS_SCREEN_BRIGHTNESS != 1) {
-                toggleLight();
-            }
-        }
-    }
+//        if (hour > TIME_DAY_HOUR && hour < TIME_NIGHT_HOUR) { // day
+//
+//            // 自动关闭 Dark Mode
+//            if (STATUS_BACKGROUND_COLOR != Color.WHITE) {
+//                toggleDarkMode(true);
+//            }
+//
+//            // 自动关闭 背光灯
+//            if (STATUS_SCREEN_BRIGHTNESS != 0) {
+//                toggleLight();
+//            }
+//        } else {
+//
+//            // 自动开启 Dark Mode
+//            if (STATUS_BACKGROUND_COLOR != Color.BLACK) {
+//                toggleDarkMode(true);
+//            }
+//
+//            // 自动开启背光灯
+//            if (STATUS_SCREEN_BRIGHTNESS != 1) {
+//                toggleLight();
+//            }
+//        }
+//    }
 
     // 自动刷新屏幕
-    private void autoFlashScreen() {
-        if (COAST_MINUTE != 0 && COAST_MINUTE % 100 == 0) {
-            flashEInkScreen();
-        }
-    }
+//    private void autoFlashScreen() {
+//        if (COAST_MINUTE != 0 && COAST_MINUTE % 100 == 0) {
+//            flashEInkScreen();
+//        }
+//    }
 
     // 获取并更新UI电池
     @SuppressLint("SetTextI18n")
@@ -398,51 +393,21 @@ public class ClockFragment extends Fragment {
     // 构建并显示弹窗
     private void showOptDialog(Context context) {
         final String[] items = {
-                "COAST_SWITCH_THEME " + COAST_SWITCH_THEME,
-                "COAST_SWITCH_LIGHT " + COAST_SWITCH_LIGHT,
-                "COAST_MINUTE " + COAST_MINUTE,
-                "COAST_FLASH " + COAST_FLASH,
-                "COAST_BATTERY " + COAST_BATTERY,
-                "Setting",
-                "or"
+                "已经切换背景" + COAST_SWITCH_THEME+"次",
+                "开关背光灯" + COAST_SWITCH_LIGHT+"次",
+                "屏幕刷新" + COAST_FLASH+"次",
+                "已经消耗电量" + COAST_BATTERY+"%",
+                "myDeskClock已陪伴你" + COAST_MINUTE +"分钟",
         };
 
         AlertDialog.Builder listDialog = new AlertDialog.Builder(context);
-        listDialog.setItems(items, new DialogInterface.OnClickListener() {
-            @SuppressLint("SourceLockedOrientationActivity")
+        listDialog.setPositiveButton("好的，知道了", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d(TAG, String.valueOf(which));
-                switch (which) {
-                    case 0: {// dark mode
-                        toggleDarkMode(true);
-                        break;
-                    }
-                    case 1: {// light
-                        toggleLight();
-                        break;
-                    }
-                    case 2: {// refresh time
-                        tv_hour.callOnClick();
-                        break;
-                    }
-                    case 3: {
-                        flashEInkScreen();
-                        break;
-                    }
-                    case 6: {
-                        if (STATUS_SCREEN_OR == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                            mParent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-                        } else {
-                            mParent.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                            STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-                        }
-                        break;
-                    }
-                }
+
             }
         });
+        listDialog.setItems(items,null);
         MyDialog myDialog = new MyDialog(listDialog);
         myDialog.setFullScreen();
         myDialog.setGRAVITY(Gravity.BOTTOM);

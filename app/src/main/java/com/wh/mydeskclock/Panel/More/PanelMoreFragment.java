@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.mySync.SharedPreferenceUtils;
 import com.wh.mydeskclock.MainActivity;
 import com.wh.mydeskclock.R;
+import com.wh.mydeskclock.Widget.MyDialog;
+import com.wh.mydeskclock.Widget.Preference;
 
 public class PanelMoreFragment extends Fragment {
     private MainActivity mParent;
@@ -48,6 +52,7 @@ public class PanelMoreFragment extends Fragment {
         linearLayout.addView(addCheckBox(mParent, "自动恢复屏幕方向", "2",false));
         linearLayout.addView(addCheckBox(mParent, "自动恢复屏幕亮度", "1",false));
         linearLayout.addView(addCheckBox(mParent, "每天检查新版本", "1",true));
+        linearLayout.addView(Preference.getInstance(mParent, "横屏方向", "", genScreenORSettingDialog(), "screen_or_setting_dialog"));
     }
 
     private View addCheckBox(final Context context, String TITLE, String KEY, boolean Enabled) {
@@ -69,5 +74,14 @@ public class PanelMoreFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private MyDialog genScreenORSettingDialog() {
+        AlertDialog.Builder screenORSettingDialog = new AlertDialog.Builder(mParent)
+                .setItems(new String[]{"向左为正", "向右为正"}, null)
+                .setTitle("设置横屏方向");
+        MyDialog myDialog = new MyDialog(screenORSettingDialog);
+        myDialog.setFullScreen();
+        return myDialog;
     }
 }

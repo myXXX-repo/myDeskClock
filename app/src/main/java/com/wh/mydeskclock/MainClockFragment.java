@@ -60,7 +60,8 @@ public class MainClockFragment extends Fragment {
 
     private int lastBatteryLevel = -1;
 
-    private int STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    private int STATUS_SCREEN_OR;
+//    private int STATUS_SCREEN_OR = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
     private int STATUS_SCREEN_BRIGHTNESS = 0;
     private int STATUS_BACKGROUND_COLOR = Color.WHITE;
 
@@ -102,6 +103,7 @@ public class MainClockFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         sharedPreferenceUtils = initPreference(mParent);
+        STATUS_SCREEN_OR = requireActivity().getSharedPreferences(SharedPreferenceUtils.SharedPreferenceFile,Context.MODE_PRIVATE).getInt("setting_screen_or",ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         timeReceiver = new BroadcastReceiver() {
             @Override

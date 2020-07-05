@@ -2,6 +2,9 @@ package com.wh.mydeskclock.Panel.More;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Paint;
 import android.os.Bundle;
 
@@ -77,8 +80,28 @@ public class PanelMoreFragment extends Fragment {
     }
 
     private MyDialog genScreenORSettingDialog() {
+        final SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(
+                SharedPreferenceUtils.SharedPreferenceFile, Context.MODE_PRIVATE);
         AlertDialog.Builder screenORSettingDialog = new AlertDialog.Builder(mParent)
-                .setItems(new String[]{"向左为正", "向右为正"}, null)
+                .setItems(new String[]{"正常横向", "反向横向"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case 0:{
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("setting_screen_or", ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                                editor.apply();
+                                break;
+                            }
+                            case 1:{
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("setting_screen_or", ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+                                editor.apply();
+                                break;
+                            }
+                        }
+                    }
+                })
                 .setTitle("设置横屏方向");
         MyDialog myDialog = new MyDialog(screenORSettingDialog);
         myDialog.setFullScreen();

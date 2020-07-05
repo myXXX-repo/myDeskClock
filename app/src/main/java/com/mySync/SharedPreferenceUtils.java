@@ -12,7 +12,7 @@ public class SharedPreferenceUtils {
 
     private SharedPreferences spf_default;
     private SharedPreferences spf;
-    private static final String SharedPreferenceFile = "com.wh.mydeskclock.COAST_REC";
+    public static final String SharedPreferenceFile = "com.wh.mydeskclock.COAST_REC";
 
     public SharedPreferenceUtils(Context context) {
         spf_default = PreferenceManager.getDefaultSharedPreferences(context);

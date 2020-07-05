@@ -6,10 +6,14 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TimeUtils {
-    private static final String fullDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    public static final String fullDateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+    public static final String yMdTimeFormat = "yyyy-MM-dd";
 
     public static String getFormattedTime(long MS){
         return genDateFormat(fullDateTimeFormat).format(new Date(MS));
+    }
+    public static String getFormattedTime(long MS,String format){
+        return genDateFormat(format).format(new Date(MS));
     }
 
     public static long getMSFromFormattedTime(String formattedTime) throws ParseException {

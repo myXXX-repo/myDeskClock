@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.os.BadParcelableException;
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +42,7 @@ public class ClockFragment extends Fragment {
     private TextView tv_min;
     private TextView tv_week;
     private TextView tv_battery;
+    private TextView tv_date;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,17 @@ public class ClockFragment extends Fragment {
         tv_min = requireActivity().findViewById(R.id.tv_min);
         tv_week = requireActivity().findViewById(R.id.tv_week);
         tv_battery = requireActivity().findViewById(R.id.tv_battery);
+        tv_date = requireActivity().findViewById(R.id.tv_date);
+        tv_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(requireActivity().getRequestedOrientation()==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                }else {
+                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
+            }
+        });
 
         setTime();
         tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext())+"%");
@@ -107,6 +121,7 @@ public class ClockFragment extends Fragment {
         tv_week.setText(String.format("星期%s", TimeUtils.num2Chinese(weekday)));
         tv_hour.setText(Utils.ensure2Numbers(hour));
         tv_min.setText(Utils.ensure2Numbers(min));
+        tv_date.setText(TimeUtils.getFormattedTime(System.currentTimeMillis(),TimeUtils.yMdTimeFormat));
     }
 
     @SuppressLint("HandlerLeak")

@@ -1,4 +1,4 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.Utils;
 
 import android.view.View;
 import android.view.Window;

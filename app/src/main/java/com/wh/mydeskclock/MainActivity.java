@@ -3,9 +3,8 @@ package com.wh.mydeskclock;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 
-import okhttp3.internal.Util;
+import com.wh.mydeskclock.Utils.UIUtils;
 
 public class MainActivity extends AppCompatActivity {
 

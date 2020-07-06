@@ -45,4 +45,7 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    implementation 'com.yanzhenjie.andserver:api:2.0.5'
+    annotationProcessor 'com.yanzhenjie.andserver:processor:2.0.5'
 }

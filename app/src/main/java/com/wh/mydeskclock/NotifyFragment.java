@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -114,6 +117,10 @@ public class NotifyFragment extends Fragment {
                     tv_device.setText(DEVICE);
                     tv_title.setText(TITLE);
                     tv_create_time.setText(TimeUtils.getFormattedTime(System.currentTimeMillis()));
+
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    Ringtone r = RingtoneManager.getRingtone(requireContext(), notification);
+                    r.play();
 
                     new Thread(){
                         @Override

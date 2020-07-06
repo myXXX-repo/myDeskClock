@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -21,7 +22,10 @@ public class MediaCtrlFragment extends Fragment {
     private ImageView iv_previous;
     private ImageView iv_play;
     private ImageView iv_next;
+    private ImageView iv_mini_mode;
 
+    private ConstraintLayout cl_media_ctrl_info;
+    private boolean isCLShow = true;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,7 @@ public class MediaCtrlFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        cl_media_ctrl_info = requireActivity().findViewById(R.id.cl_media_ctrl_info);
 
         iv_previous = requireActivity().findViewById(R.id.iv_previous);
         iv_previous.setOnClickListener(new View.OnClickListener() {
@@ -59,5 +64,20 @@ public class MediaCtrlFragment extends Fragment {
                 MediaUtils.nextPlay();
             }
         });
+        iv_mini_mode = requireActivity().findViewById(R.id.iv_mini_mode);
+        iv_mini_mode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isCLShow){
+                    cl_media_ctrl_info.setVisibility(View.GONE);
+                }else {
+                    cl_media_ctrl_info.setVisibility(View.VISIBLE);
+                }
+                isCLShow=!isCLShow;
+            }
+        });
+
+
+
     }
 }

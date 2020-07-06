@@ -11,25 +11,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wh.mydeskclock.NotifyNode.Notify;
-import com.wh.mydeskclock.NotifyNode.NotifyListAdapter;
-import com.wh.mydeskclock.NotifyNode.NotifyListViewModel;
+import com.wh.mydeskclock.TaskNode.Task;
+import com.wh.mydeskclock.TaskNode.TaskListAdapter;
+import com.wh.mydeskclock.TaskNode.TaskListViewModel;
 
 import java.util.List;
 
-public class NotifyListFragment extends Fragment {
-    private NotifyListViewModel notifyListViewModel;
+public class TaskListFragment extends Fragment {
+    private TaskListViewModel taskListViewModel;
     private RecyclerView rv_notify;
-    private NotifyListAdapter notifyListAdapter;
-    private LiveData<List<Notify>> allNotifiesLive;
-    private List<Notify> allNotifies;
+    private TaskListAdapter taskListAdapter;
+    private LiveData<List<Task>> allNotifiesLive;
+    private List<Task> allNotifies;
 
     private AppCompatActivity mParent;
 
@@ -54,20 +53,20 @@ public class NotifyListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        notifyListViewModel = ViewModelProviders.of(requireActivity()).get(NotifyListViewModel.class);
+        taskListViewModel = ViewModelProviders.of(requireActivity()).get(TaskListViewModel.class);
         rv_notify = requireActivity().findViewById(R.id.rv_notify);
         rv_notify.setLayoutManager(new LinearLayoutManager(requireContext()));
-        notifyListAdapter = new NotifyListAdapter(notifyListViewModel,mParent);
-        rv_notify.setAdapter(notifyListAdapter);
+        taskListAdapter = new TaskListAdapter(taskListViewModel,mParent);
+        rv_notify.setAdapter(taskListAdapter);
 
-        allNotifiesLive = notifyListViewModel.getAllNotifiesLive();
-        allNotifiesLive.observe(getViewLifecycleOwner(), new Observer<List<Notify>>() {
+        allNotifiesLive = taskListViewModel.getAllLive();
+        allNotifiesLive.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
             @Override
-            public void onChanged(List<Notify> notifies) {
-                int count = notifyListAdapter.getItemCount();
+            public void onChanged(List<Task> notifies) {
+                int count = taskListAdapter.getItemCount();
                 allNotifies = notifies;
                 if(count!=notifies.size()){
-                    notifyListAdapter.submitList(notifies);
+                    taskListAdapter.submitList(notifies);
                 }
             }
         });

@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.wh.mydeskclock.NotifyNode.Notify;
-import com.wh.mydeskclock.NotifyNode.NotifyRepository;
 import com.wh.mydeskclock.Utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,19 +21,6 @@ public class MainActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Log.d(TAG, "onCreate: ");
         startService(new Intent(MainActivity.this,MainServerService.class));
-
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                try {
-//                    sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                NotifyRepository notifyRepository = new NotifyRepository(getApplicationContext());
-//                notifyRepository.insertNotifies(new Notify("a","b","c"));
-//            }
-//        }.start();
     }
 
     @Override
@@ -50,4 +35,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
+    // TODO 需要刷新列表，从而解决收到新notice时新条目不显示在屏幕顶部的问题
 }

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_notify_list_item_con"
+        android:id="@+id/tv_task_list_item_con"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -27,7 +27,7 @@
         app:layout_constraintGuide_percent="0.15" />
 
     <CheckBox
-        android:id="@+id/cb_notify_list_item_done"
+        android:id="@+id/cb_task_list_item_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.NotifyNode;
+package com.wh.mydeskclock.TaskNode;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -6,18 +6,18 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Notify {
+public class Task {
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    @ColumnInfo(name = "notify")
-    private String NotifyCon;
+    @ColumnInfo(name = "con")
+    private String Con;
 
     @ColumnInfo(name = "title")
-    private String NotifyTitle;
+    private String Title;
 
     @ColumnInfo(name = "createTime")
-    private String NotifyCreateTime;
+    private String CreateTime;
 
     @ColumnInfo(name = "device")
     private String DeviceName;
@@ -29,22 +29,22 @@ public class Notify {
 //    @ColumnInfo(name = "runId")
 //    private int runId;
 
-    public Notify() {
-        this.NotifyCreateTime = String.valueOf(System.currentTimeMillis());
+    public Task() {
+        this.CreateTime = String.valueOf(System.currentTimeMillis());
         this.ReadDone = false;
     }
 
     @Ignore
-    public Notify(int id) {
+    public Task(int id) {
         this.id = id;
     }
 
     @Ignore
-    public Notify(String notifyCon, String notifyTitle,String deviceName) {
-        this.NotifyCon = notifyCon;
-        this.NotifyTitle = notifyTitle;
+    public Task(String con, String title, String deviceName) {
+        this.Con = con;
+        this.Title = title;
         this.DeviceName = deviceName;
-        this.NotifyCreateTime = String.valueOf(System.currentTimeMillis());
+        this.CreateTime = String.valueOf(System.currentTimeMillis());
         this.ReadDone = false;
     }
 
@@ -52,20 +52,20 @@ public class Notify {
         this.id = id;
     }
 
-    public void setNotifyCon(String notifyCon) {
-        NotifyCon = notifyCon;
+    public void setCon(String con) {
+        Con = con;
     }
 
-    public void setNotifyTitle(String notifyTitle) {
-        NotifyTitle = notifyTitle;
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public void setDeviceName(String deviceName) {
         DeviceName = deviceName;
     }
 
-    public void setNotifyCreateTime(String notifyCreateTime) {
-        NotifyCreateTime = notifyCreateTime;
+    public void setCreateTime(String createTime) {
+        CreateTime = createTime;
     }
 
     public void setReadDone(boolean readDone) {
@@ -80,20 +80,20 @@ public class Notify {
         return id;
     }
 
-    public String getNotifyCon() {
-        return NotifyCon;
+    public String getCon() {
+        return Con;
     }
 
-    public String getNotifyTitle() {
-        return NotifyTitle;
+    public String getTitle() {
+        return Title;
     }
 
     public String getDeviceName() {
         return DeviceName;
     }
 
-    public String getNotifyCreateTime() {
-        return NotifyCreateTime;
+    public String getCreateTime() {
+        return CreateTime;
     }
 
     public boolean isReadDone() {

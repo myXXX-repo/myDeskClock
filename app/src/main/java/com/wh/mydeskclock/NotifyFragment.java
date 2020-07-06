@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -113,6 +114,19 @@ public class NotifyFragment extends Fragment {
                     tv_device.setText(DEVICE);
                     tv_title.setText(TITLE);
                     tv_create_time.setText(TimeUtils.getFormattedTime(System.currentTimeMillis()));
+
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            rootView.setBackgroundColor(Color.BLACK);
+                            try {
+                                sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            rootView.setBackgroundColor(Color.WHITE);
+                        }
+                    }.start();
                     break;
                 }
             }

@@ -68,18 +68,11 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
         holder.itemView.setTag(R.id.task_tag,task);
         holder.tv_con.setText(task.getCon());
         holder.cb_done.setChecked(task.isReadDone());
-        holder.id = task.getId();
-        holder.con = task.getCon();
-        holder.title = task.getTitle();
-        holder.devName = task.getDeviceName();
-        holder.createTime = task.getCreateTime();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder{
         TextView tv_con;
         CheckBox cb_done;
-        int id;
-        String con,title,devName,createTime;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

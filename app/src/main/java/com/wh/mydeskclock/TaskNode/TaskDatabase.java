@@ -12,7 +12,7 @@ public abstract class TaskDatabase extends RoomDatabase {
     static synchronized TaskDatabase getDatabase(Context context){
         if(INSTANCE == null){
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    TaskDatabase.class,"notify_database")
+                    TaskDatabase.class,"task_database")
                     .build();
         }
         return INSTANCE;

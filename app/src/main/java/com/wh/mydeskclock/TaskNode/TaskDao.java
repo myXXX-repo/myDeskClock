@@ -20,12 +20,12 @@ public interface TaskDao {
     @Delete
     void delete(Task... tasks);
 
-    @Query("DELETE FROM Task")
+    @Query("DELETE FROM Notify")
     void deleteAll();
 
-    @Query("SELECT * FROM Task ORDER BY ID DESC")
+    @Query("SELECT * FROM Notify ORDER BY ID DESC")
     LiveData<List<Task>> getAllLive();
 
-    @Query("SELECT * FROM Task ORDER BY ID DESC")
-    List<Task> getAll();
+//    @Query("SELECT * FROM Notify ORDER BY ID DESC")
+//    List<Task> getAll();
 }

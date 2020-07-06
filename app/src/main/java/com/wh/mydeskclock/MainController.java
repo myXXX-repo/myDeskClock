@@ -2,6 +2,7 @@ package com.wh.mydeskclock;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -29,8 +30,20 @@ public class MainController {
             @RequestParam(value = "title",defaultValue = "default title",required = false) final String TITLE,
             @RequestParam(value = "task",defaultValue = "blank task") final String TASK){
         Log.d(TAG, "task_new: new task");
-        TaskRepository taskRepository = new TaskRepository(context);
-        taskRepository.insert(new Task(TASK,TITLE,DEVICE));
+        Task task = new Task(TASK,TITLE,DEVICE);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("DEVICE",DEVICE);
+        bundle.putString("TITLE",TITLE);
+        bundle.putString("TASK",TASK);
+
+        Intent intent = new Intent();
+        intent.putExtra("extra",bundle);
+        intent.setAction("sendTask");
+
+        context.sendBroadcast(intent);
+//        TaskRepository taskRepository = new TaskRepository(context);
+//        taskRepository.insert(new Task(TASK,TITLE,DEVICE));
         return "recvd";
     }
 

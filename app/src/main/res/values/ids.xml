@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="sticky_for_view_holder" type="id"/>
+    <item name="task_tag" type="id"/>
 </resources>

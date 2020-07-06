@@ -9,12 +9,14 @@ import java.util.List;
 
 public class TaskRepository {
     private LiveData<List<Task>> allLive;
+    private LiveData<List<Task>> allNotDoneLive;
     private TaskDao taskDao;
 
     public TaskRepository(Context context){
         TaskDatabase taskDatabase = TaskDatabase.getDatabase(context.getApplicationContext());
         taskDao = taskDatabase.getDao();
         allLive = taskDao.getAllLive();
+        allNotDoneLive = taskDao.getAllNotDoneLive();
     }
     public void insert(Task... tasks){
         new InsertAsyncTask(taskDao).execute(tasks);
@@ -32,8 +34,9 @@ public class TaskRepository {
     public LiveData<List<Task>> getAllLive(){
         return allLive;
     }
-
-//    public List<Task> getAll(){return taskDao.getAll();}
+    public LiveData<List<Task>> getAllNotDoneLive(){
+        return allNotDoneLive;
+    }
 
     static class InsertAsyncTask extends AsyncTask<Task,Void,Void>{
         private TaskDao taskDao;

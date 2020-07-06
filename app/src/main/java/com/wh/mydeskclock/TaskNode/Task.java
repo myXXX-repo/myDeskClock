@@ -36,6 +36,16 @@ public class Task {
     }
 
     @Ignore
+    public Task(int id,String con, String title, String deviceName,String createTime,boolean isDone) {
+        this.id = id;
+        this.Con = con;
+        this.Title = title;
+        this.DeviceName = deviceName;
+        this.CreateTime = createTime;
+        this.ReadDone = isDone;
+    }
+
+    @Ignore
     public Task(String con, String title, String deviceName) {
         this.Con = con;
         this.Title = title;

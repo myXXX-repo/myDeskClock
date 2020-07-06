@@ -1,4 +1,4 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.TaskNode;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.TaskNode.Task;
 import com.wh.mydeskclock.TaskNode.TaskListAdapter;
 import com.wh.mydeskclock.TaskNode.TaskListViewModel;

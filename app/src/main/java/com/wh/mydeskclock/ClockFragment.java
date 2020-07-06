@@ -96,6 +96,10 @@ public class ClockFragment extends Fragment {
             }
         });
 
+        if(requireActivity().getRequestedOrientation()==ActivityInfo.SCREEN_ORIENTATION_PORTRAIT){
+            requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         setTime();
         tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext())+"%");
 

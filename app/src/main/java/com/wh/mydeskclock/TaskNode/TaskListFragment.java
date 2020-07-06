@@ -18,9 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wh.mydeskclock.R;
-import com.wh.mydeskclock.TaskNode.Task;
-import com.wh.mydeskclock.TaskNode.TaskListAdapter;
-import com.wh.mydeskclock.TaskNode.TaskListViewModel;
 
 import java.util.List;
 
@@ -48,14 +45,14 @@ public class TaskListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notify_list, container, false);
+        return inflater.inflate(R.layout.fragment_task_list, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         taskListViewModel = ViewModelProviders.of(requireActivity()).get(TaskListViewModel.class);
-        rv_notify = requireActivity().findViewById(R.id.rv_notify);
+        rv_notify = requireActivity().findViewById(R.id.rv_task);
         rv_notify.setLayoutManager(new LinearLayoutManager(requireContext()));
         taskListAdapter = new TaskListAdapter(taskListViewModel,mParent);
         rv_notify.setAdapter(taskListAdapter);
@@ -68,6 +65,7 @@ public class TaskListFragment extends Fragment {
                 allNotifies = notifies;
                 if(count!=notifies.size()){
                     taskListAdapter.submitList(notifies);
+                    rv_notify.smoothScrollBy(0,-200);
                 }
             }
         });

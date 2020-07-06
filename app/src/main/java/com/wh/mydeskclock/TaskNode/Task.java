@@ -25,10 +25,6 @@ public class Task {
     @ColumnInfo(name = "done", defaultValue = "false")
     private boolean ReadDone;
 
-    // 可能用于后续的追加朗读
-//    @ColumnInfo(name = "runId")
-//    private int runId;
-
     public Task() {
         this.CreateTime = String.valueOf(System.currentTimeMillis());
         this.ReadDone = false;
@@ -72,10 +68,6 @@ public class Task {
         ReadDone = readDone;
     }
 
-//    public void setRunId(int runId){
-//        this.runId = runId;
-//    }
-
     public int getId() {
         return id;
     }
@@ -99,9 +91,4 @@ public class Task {
     public boolean isReadDone() {
         return ReadDone;
     }
-
-
-//    public int getRunId() {
-//        return runId;
-//    }
 }

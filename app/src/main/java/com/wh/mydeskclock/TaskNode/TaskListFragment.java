@@ -60,7 +60,8 @@ public class TaskListFragment extends Fragment {
         taskListAdapter = new TaskListAdapter(taskListViewModel,mParent);
         rv_notify.setAdapter(taskListAdapter);
 
-        LiveData<List<Task>> allTasksLive = taskListViewModel.getAllLive();
+        LiveData<List<Task>> allTasksLive = taskListViewModel.getAllNotDoneLive();
+//        LiveData<List<Task>> allTasksLive = taskListViewModel.getAllLive();
         allTasksLive.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {

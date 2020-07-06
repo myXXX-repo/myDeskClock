@@ -18,10 +18,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wh.mydeskclock.NotifyNode.bin.Notify;
-import com.wh.mydeskclock.NotifyNode.bin.NotifyListAdapter;
-import com.wh.mydeskclock.NotifyNode.bin.NotifyListViewModel;
-
 public class NotifyFragment extends Fragment {
     String TAG = "WH_"+NotifyFragment.class.getSimpleName();
 

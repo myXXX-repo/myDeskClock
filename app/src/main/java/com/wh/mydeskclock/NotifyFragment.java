@@ -134,6 +134,18 @@ public class NotifyFragment extends Fragment {
                             rootView.setBackgroundColor(Color.WHITE);
                         }
                     }.start();
+
+//                    new Thread(){
+//                        @Override
+//                        public void run() {
+//                            try {
+//                                sleep(30000);
+//                                rootView.setVisibility(View.GONE);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }.start();
                     break;
                 }
             }

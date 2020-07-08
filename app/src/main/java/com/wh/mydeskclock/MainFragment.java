@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wh.mydeskclock.Utils.HardwareUtils;
+import com.wh.mydeskclock.Utils.NetUtils;
 import com.wh.mydeskclock.Utils.TimeUtils;
 import com.wh.mydeskclock.Utils.Utils;
 
@@ -36,6 +37,7 @@ public class MainFragment extends Fragment {
     private TextView tv_week;
     private TextView tv_battery;
     private TextView tv_date;
+    private TextView tv_address;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,11 @@ public class MainFragment extends Fragment {
 
         setTime();
         tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext())+"%");
+
+        tv_address = requireActivity().findViewById(R.id.tv_address);
+        if(tv_address!=null){
+            tv_address.setText("http:/"+ NetUtils.getLocalIPAddress()+":"+AppConfig.port);
+        }
 
     }
 

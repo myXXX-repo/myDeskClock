@@ -2,25 +2,18 @@ package com.wh.mydeskclock;
 
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 import com.wh.mydeskclock.Utils.NetUtils;
-import com.wh.mydeskclock.Utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Random;
+import com.wh.mydeskclock.httpServer.MainServer;
 
 
 public class MainServerService extends Service {

@@ -1,4 +1,4 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.httpServer;
 
 import com.yanzhenjie.andserver.annotation.Website;
 import com.yanzhenjie.andserver.framework.website.AssetsWebsite;

@@ -1,7 +1,8 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.httpServer;
 
 import android.util.Log;
 
+import com.wh.mydeskclock.MainServerService;
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 
@@ -12,7 +13,7 @@ public class MainServer {
     private MainServerService mParent;
     String TAG = "WH_" + MainServer.class.getSimpleName();
 
-    MainServer(MainServerService mParent, int port) {
+    public MainServer(MainServerService mParent, int port) {
         this.mParent = mParent;
 //        server = AndServer.serverBuilder(mParent)
         server = AndServer.serverBuilder()
@@ -37,13 +38,13 @@ public class MainServer {
                 .build();
     }
 
-    void startServer() {
+    public void startServer() {
         if (!server.isRunning()) {
             server.startup();
         }
     }
 
-    void stopServer() {
+    public void stopServer() {
         if (server.isRunning()) {
             server.shutdown();
         }

@@ -47,7 +47,7 @@ public class MainControllerRest {
             final Context context,
             @RequestParam(value = "device",defaultValue = "default device",required = false) final String DEVICE,
             @RequestParam(value = "title",defaultValue = "default title",required = false) final String TITLE,
-            @RequestParam(value = "notify.py",defaultValue = "blank notify.py") final String NOTIFY){
+            @RequestParam(value = "notify",defaultValue = "blank notify") final String NOTIFY){
         Log.d(TAG, "notify_new: "+NOTIFY);
         Bundle bundle = new Bundle();
         bundle.putString("DEVICE",DEVICE);

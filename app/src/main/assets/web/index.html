@@ -31,7 +31,35 @@
     </table>
 </div>
 <div id="task_list">
-
+    <table border="1px">
+        <thead>
+        <th>app</th>
+        <th>method</th>
+        <th>api</th>
+        <th>params</th>
+        <th>desc.</th>
+        <th>sample</th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>task</td>
+            <td>GET</td>
+            <td>http://ip:8081/task</td>
+            <td>title task device</td>
+            <td>used to create task item, only param of "task" must exists</td>
+            <td>http://127.0.0.1:8081/task?task=testtask</td>
+        </tr>
+        <tr>
+            <td>notify</td>
+            <td>GET</td>
+            <td>http://ip:8081/notify</td>
+            <td>title notify device</td>
+            <td>used to send notify, only param of "notify" must exists</td>
+            <td>http://127.0.0.1:8081/notify?notify=test&title=defaulttitle&device=defaultdevice</td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/notify_script">click here to download python script for notify</a>
 </div>
 
 <script>
@@ -44,6 +72,10 @@
             },
             methods: {
                 send: function () {
+                    if (this.task == "") {
+                        alert("task can't be blank");
+                        return;
+                    }
                     axios.get("/task", {
                         params: {
                             "title": this.title,
@@ -60,16 +92,18 @@
         });
 
         var task_list = new Vue({
-            el:'#task_list',
-            data:{
+            el: '#task_list',
+            data: {
 
             },
-            methods:{
-                fetch:function(){
+            methods: {
+                fetch: function () {
 
                 }
             }
         });
+
+
 
     </script>
 </body>

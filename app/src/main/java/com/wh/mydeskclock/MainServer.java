@@ -14,7 +14,8 @@ public class MainServer {
 
     MainServer(MainServerService mParent, int port) {
         this.mParent = mParent;
-        server = AndServer.serverBuilder(mParent)
+//        server = AndServer.serverBuilder(mParent)
+        server = AndServer.serverBuilder()
                 .port(port)
                 .timeout(10, TimeUnit.SECONDS)
                 .listener(new Server.ServerListener() {

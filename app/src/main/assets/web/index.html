@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myDeskClock</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+</head>
+
+<body>
+<h3>Task Send</h3>
+<div id="app">
+    <table>
+        <tr>
+            <td>title</td>
+            <td><input placeholder="title" v-model:value="title"></td>
+        </tr>
+        <tr>
+            <td>task</td>
+            <td><input placeholder="task" v-model:value="task"></td>
+        </tr>
+        <tr>
+            <td>device</td>
+            <td><input placeholder="device" v-model:value="device"></td>
+        </tr>
+        <tr>
+            <td><input type="button" value="submit" v-on:click="send()"></td>
+        </tr>
+    </table>
+</div>
+<div id="task_list">
+
+</div>
+
+<script>
+        var task = new Vue({
+            el: '#app',
+            data: {
+                title: "",
+                task: "",
+                device: ""
+            },
+            methods: {
+                send: function () {
+                    axios.get("/task", {
+                        params: {
+                            "title": this.title,
+                            "task": this.task,
+                            "device": this.device
+                        }
+                    }).then(function (response) {
+                        alert("ok");
+                    }).catch(function (error) {
+                        alert(error);
+                    });
+                }
+            }
+        });
+
+        var task_list = new Vue({
+            el:'#task_list',
+            data:{
+
+            },
+            methods:{
+                fetch:function(){
+
+                }
+            }
+        });
+
+    </script>
+</body>
+
+</html>

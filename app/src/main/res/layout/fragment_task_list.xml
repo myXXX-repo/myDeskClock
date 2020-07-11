@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PanelFragment">
+    tools:context=".app.task.TaskListFragment">
 
-    <fragment
-        android:id="@+id/fragment3"
-        android:name="com.wh.mydeskclock.app.task.TaskListFragment"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_task"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

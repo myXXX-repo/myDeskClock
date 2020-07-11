@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Utils;
+package com.wh.mydeskclock.utils;
 
 import java.net.InetAddress;
 import java.net.NetworkInterface;

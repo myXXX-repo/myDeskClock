@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Utils;
+package com.wh.mydeskclock.utils;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

@@ -1,8 +1,8 @@
-package com.wh.mydeskclock.httpServer;
+package com.wh.mydeskclock.server;
 
 import android.util.Log;
 
-import com.wh.mydeskclock.MainServerService;
+import com.wh.mydeskclock.MainService;
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 
@@ -10,13 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 public class MainServer {
     private Server server;
-    private MainServerService mParent;
     String TAG = "WH_" + MainServer.class.getSimpleName();
 
-    public MainServer(MainServerService mParent, int port) {
-        this.mParent = mParent;
-//        server = AndServer.serverBuilder(mParent)
-        server = AndServer.serverBuilder()
+    public MainServer(MainService mParent, int port) {
+        server = AndServer.webServer(mParent)
                 .port(port)
                 .timeout(10, TimeUnit.SECONDS)
                 .listener(new Server.ServerListener() {

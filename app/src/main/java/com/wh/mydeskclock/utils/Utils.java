@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Utils;
+package com.wh.mydeskclock.utils;
 
 public class Utils {
     public static String ensure2Numbers(int num) {

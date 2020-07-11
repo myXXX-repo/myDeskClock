@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.TaskNode;
+package com.wh.mydeskclock.app.task;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -29,6 +29,9 @@ public interface TaskDao {
     @Query("SELECT * FROM Task WHERE done = 0 ORDER BY ID DESC")
     LiveData<List<Task>> getAllNotDoneLive();
 
-//    @Query("SELECT * FROM Notify ORDER BY ID DESC")
-//    List<Task> getAll();
+    @Query("SELECT * FROM Task WHERE id = :taskId")
+    Task getById(int taskId);
+
+    @Query("SELECT * FROM Task ORDER BY ID DESC")
+    List<Task> getAll();
 }

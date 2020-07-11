@@ -8,17 +8,17 @@ android {
         applicationId "com.wh.mydeskclock"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 23
-        versionName "2.2"
+        versionCode 24
+        versionName "2.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            zipAlignEnabled true
-            minifyEnabled true
-            shrinkResources true
+            zipAlignEnabled false
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

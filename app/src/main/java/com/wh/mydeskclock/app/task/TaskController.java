@@ -20,11 +20,6 @@ public class TaskController {
     String TAG= "WH_"+ TaskController.class.getSimpleName();
     private TaskRepository taskRepository;
 
-//    @GetMapping(value = "/notify_script",produces = MediaType.)
-//    public String download_py_script(){
-//        return "forward:notify.py";
-//    }
-
     /**
      * @path /task/get/{taskId}
      * @describe to get task by id
@@ -100,5 +95,22 @@ public class TaskController {
         Task task = new Task(TASK,DEVICE,TITLE);
         taskRepository.insert(task);
         return ReturnDataUtils.successfulJson("add new task done");
+    }
+
+    /**
+     * @path /task/done/{taskId}
+     * @describe set task done by id
+     * @method GET
+     * */
+    @GetMapping(path = "/done/{taskId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    String set_task_done_id(Context context,
+                            @PathVariable(name="taskId")int taskId){
+        if(null == taskRepository){
+            taskRepository = new TaskRepository(context);
+        }
+        Task task = taskRepository.getById(taskId);
+        task.setReadDone(true);
+        taskRepository.update(task);
+        return ReturnDataUtils.successfulJson("set task done successful "+taskId);
     }
 }

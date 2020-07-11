@@ -5,111 +5,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>myDeskClock</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.min.js"></script>
-    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="/static/vue.min.js"></script>
+    <script src="/static/axios.min.js"></script>
+    <script src="/static/jquery.js"></script>
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link href="/static/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 8px;
+        }
+
+        #send_task {
+            margin-bottom: 16px;
+        }
+
+        #api_list_table{
+            margin-top: 16px;
+        }
+    </style>
 </head>
 
+
 <body>
-<h3>Task Send</h3>
-<div id="app">
-    <table>
-        <tr>
-            <td>title</td>
-            <td><input placeholder="title" v-model:value="title"></td>
-        </tr>
-        <tr>
-            <td>task</td>
-            <td><input placeholder="task" v-model:value="task"></td>
-        </tr>
-        <tr>
-            <td>device</td>
-            <td><input placeholder="device" v-model:value="device"></td>
-        </tr>
-        <tr>
-            <td><input type="button" value="submit" v-on:click="send()"></td>
-        </tr>
-    </table>
+
+<div id="send_task">
+
+    <div class="panel panel-primary panel-head">
+        <div class="panel-body">
+            <legend>Send Task</legend>
+
+            <div class="form-group">
+                <label for="">title</label>
+                <input type="text" class="form-control" v-model:value="title" placeholder="default title">
+            </div>
+            <div class="form-group">
+                <label for="">task (must exists)</label>
+                <input type="text" class="form-control" v-model:value="task" placeholder="task content required">
+            </div>
+            <div class="form-group">
+                <label for="">device</label>
+                <input type="text" class="form-control" v-model:value="device" placeholder="default device">
+            </div>
+
+            <button type="button" class="btn btn-primary" v-on:click="send()">Submit</button>
+        </div>
+    </div>
+
+
 </div>
 <div id="task_list">
 
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <legend>Task List</legend>
+
+            <table class="table table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>title</th>
+                    <th>task</th>
+                    <th>create time</th>
+                    <th>device</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in tasks" v-if="!item.readDone">
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.con }}</td>
+                    <td>{{ item.createTime }}</td>
+                    <td>{{ item.deviceName }}</td>
+                    <td><a v-on:click='set_done($event)' href="#">set done</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
 <div id="api_list">
-    <h4>过时</h4>
-    <table border="1px">
-        <thead>
-        <th>app</th>
-        <th>method</th>
-        <th>api</th>
-        <th>params</th>
-        <th>desc.</th>
-        <th>sample</th>
-        </thead>
-        <tbody>
-        <tr>
-            <td>task</td>
-            <td>GET</td>
-            <td>http://ip:8081/task</td>
-            <td>title task device</td>
-            <td>used to create task item, only param of "task" must exists</td>
-            <td>http://127.0.0.1:8081/task?task=testtask</td>
-        </tr>
-        <tr>
-            <td>notify</td>
-            <td>GET</td>
-            <td>http://ip:8081/notify</td>
-            <td>title notify device</td>
-            <td>used to send notify, only param of "notify" must exists</td>
-            <td>http://127.0.0.1:8081/notify?notify=test&title=defaulttitle&device=defaultdevice</td>
-        </tr>
-        </tbody>
-    </table>
-    <a href="/notify.py">click here to download python script for notify</a>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <legend>Api List</legend>
+            <button type="button" class="btn btn-danger" v-on:click="show=!show">show/hide</button>
+
+            <table class="table table-bordered table-hover" v-if="show" id="api_list_table">
+                <thead>
+                <tr>
+                    <th>app</th>
+                    <th>path</th>
+                    <th>method</th>
+                    <th>describe</th>
+                    <th>sample</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in apis">
+                    <td>{{ item.app }}</td>
+                    <td>{{ item.path }}</td>
+                    <td>{{ item.method }}</td>
+                    <td>{{ item.describe }}</td>
+                    <td>{{ item.sample }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
 </div>
 
-<script>
-        var task = new Vue({
-            el: '#app',
-            data: {
-                title: "",
-                task: "",
-                device: ""
-            },
-            methods: {
-                send: function () {
-                    if (this.task == "") {
-                        alert("task can't be blank");
-                        return;
-                    }
-                    axios.get("/task", {
-                        params: {
-                            "title": this.title,
-                            "task": this.task,
-                            "device": this.device
-                        }
-                    }).then(function (response) {
-                        alert("ok");
-                    }).catch(function (error) {
-                        alert(error);
-                    });
-                }
-            }
-        });
-
-        var task_list = new Vue({
-            el: '#task_list',
-            data: {
-
-            },
-            methods: {
-                fetch: function () {
-
-                }
-            }
-        });
-
-
-
-    </script>
+<a href="/notify.py">click here to download python script for notify</a>
 </body>
+
+<script src="/static/index.js"></script>
 
 </html>

@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.TaskNode;
+package com.wh.mydeskclock.app.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -30,6 +30,8 @@ public class TaskRepository {
     public void deleteAll(){
         new DeleteAllAsyncTask(taskDao).execute();
     }
+    public List<Task> getAll() {return taskDao.getAll();}
+    public Task getById(int taskId) {return taskDao.getById(taskId);}
 
     public LiveData<List<Task>> getAllLive(){
         return allLive;

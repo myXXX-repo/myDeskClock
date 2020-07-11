@@ -1,4 +1,4 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.app.notify;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -24,7 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wh.mydeskclock.Utils.TimeUtils;
+import com.wh.mydeskclock.R;
+import com.wh.mydeskclock.utils.TimeUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -134,18 +135,6 @@ public class NotifyFragment extends Fragment {
                             rootView.setBackgroundColor(Color.WHITE);
                         }
                     }.start();
-
-//                    new Thread(){
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                sleep(30000);
-//                                rootView.setVisibility(View.GONE);
-//                            } catch (InterruptedException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }.start();
                     break;
                 }
             }

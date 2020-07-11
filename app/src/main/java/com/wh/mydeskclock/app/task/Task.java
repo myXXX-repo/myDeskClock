@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.TaskNode;
+package com.wh.mydeskclock.app.task;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

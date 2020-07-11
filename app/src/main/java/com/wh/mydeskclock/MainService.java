@@ -12,12 +12,12 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.wh.mydeskclock.Utils.NetUtils;
-import com.wh.mydeskclock.httpServer.MainServer;
+import com.wh.mydeskclock.utils.NetUtils;
+import com.wh.mydeskclock.server.MainServer;
 
 
-public class MainServerService extends Service {
-    String TAG = "WH_" + MainServerService.class.getSimpleName();
+public class MainService extends Service {
+    String TAG = "WH_" + MainService.class.getSimpleName();
     int port = AppConfig.port;
     String URL = "http:/" + NetUtils.getLocalIPAddress() + ":" + port;
 
@@ -44,7 +44,7 @@ public class MainServerService extends Service {
         Log.d(TAG, "onCreate: "+URL);
         mainServer = new MainServer(this, port);
 
-        MainServerService.notificationManager = getNotificationManager();
+        MainService.notificationManager = getNotificationManager();
 
         // 创建通知
         NotificationCompat.Builder frontActivityNotificationBuilder = genForegroundNotification();

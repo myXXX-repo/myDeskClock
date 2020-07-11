@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".MediaCtrlFragment">
+    tools:context=".app.mediaCtrl.MediaCtrlFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_media_ctrl_info"

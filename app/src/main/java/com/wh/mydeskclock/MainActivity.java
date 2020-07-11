@@ -3,7 +3,6 @@ package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.PrimaryKey;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.wh.mydeskclock.Utils.UiUtils;
+import com.wh.mydeskclock.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "WH_" + MainActivity.class.getSimpleName();
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         UiUtils.setFullScreen(getWindow());
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Log.d(TAG, "onCreate: ");
-        startService(new Intent(MainActivity.this, MainServerService.class));
+        startService(new Intent(MainActivity.this, MainService.class));
         myHandler = new MyHandler(this);
 
 //        flashScreen(myHandler);
@@ -53,19 +52,15 @@ public class MainActivity extends AppCompatActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    // TODO 需要刷新列表，从而解决收到新notice时新条目不显示在屏幕顶部的问题
-
     public static class MyHandler extends Handler {
         private static final int WHAT_SET_VISIBLE = 986;
         private static final int WHAT_SET_GONE = 512;
         private static final int WHAT_SET_BLACK = 513;
         private static final int WHAT_SET_WHITE = 514;
 
-        private AppCompatActivity mParent;
         private View v_cover;
 
         public MyHandler(AppCompatActivity mParent) {
-            this.mParent = mParent;
             this.v_cover = mParent.findViewById(R.id.v_cover);
         }
 

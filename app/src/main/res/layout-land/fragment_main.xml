@@ -143,7 +143,7 @@
 
     <fragment
         android:id="@+id/fragment4"
-        android:name="com.wh.mydeskclock.NotifyFragment"
+        android:name="com.wh.mydeskclock.app.notify.NotifyFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -155,7 +155,7 @@
 
     <fragment
         android:id="@+id/fragment5"
-        android:name="com.wh.mydeskclock.MediaCtrlFragment"
+        android:name="com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"

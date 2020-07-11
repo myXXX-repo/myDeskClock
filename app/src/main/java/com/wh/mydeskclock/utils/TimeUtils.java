@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.Utils;
+package com.wh.mydeskclock.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

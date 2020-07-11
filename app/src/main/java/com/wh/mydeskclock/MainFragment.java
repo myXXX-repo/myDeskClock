@@ -19,10 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.wh.mydeskclock.Utils.HardwareUtils;
-import com.wh.mydeskclock.Utils.NetUtils;
-import com.wh.mydeskclock.Utils.TimeUtils;
-import com.wh.mydeskclock.Utils.Utils;
+import com.wh.mydeskclock.utils.HardwareUtils;
+import com.wh.mydeskclock.utils.NetUtils;
+import com.wh.mydeskclock.utils.TimeUtils;
+import com.wh.mydeskclock.utils.Utils;
 
 import java.util.Calendar;
 

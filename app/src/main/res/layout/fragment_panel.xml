@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragment3"
-        android:name="com.wh.mydeskclock.TaskNode.TaskListFragment"
+        android:name="com.wh.mydeskclock.app.task.TaskListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </FrameLayout>

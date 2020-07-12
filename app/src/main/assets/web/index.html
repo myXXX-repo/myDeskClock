@@ -70,7 +70,7 @@
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
                     <td>{{ item.con }}</td>
-                    <td>{{ item.createTime }}</td>
+                    <td>{{ FormatDateTime(item.createTime) }}</td>
                     <td>{{ item.deviceName }}</td>
                     <td><a v-on:click='set_done($event)' href="#">set done</a></td>
                 </tr>

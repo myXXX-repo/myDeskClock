@@ -92,7 +92,7 @@ public class TaskController {
         if(null == taskRepository){
             taskRepository = new TaskRepository(context);
         }
-        Task task = new Task(TASK,DEVICE,TITLE);
+        Task task = new Task(TASK,TITLE,DEVICE);
         taskRepository.insert(task);
         return ReturnDataUtils.successfulJson("add new task done");
     }

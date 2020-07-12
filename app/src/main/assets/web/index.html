@@ -18,6 +18,7 @@
         #send_task {
             margin-bottom: 16px;
         }
+
         #api_list_table{
             margin-top: 16px;
         }
@@ -28,11 +29,9 @@
 <body>
 
 <div id="send_task">
-
     <div class="panel panel-primary panel-head" id="send_task_panel">
         <div class="panel-body">
             <legend>Send Task</legend>
-
             <div class="form-group">
                 <label>title</label>
                 <input type="text" class="form-control" v-model:value="title" placeholder="default title">
@@ -49,11 +48,9 @@
             <button type="button" class="btn btn-primary" v-on:click="send()">Submit</button>
         </div>
     </div>
-
-
 </div>
-<div id="task_list">
 
+<div id="task_list">
     <div class="panel panel-default">
         <div class="panel-body">
             <legend>Task List</legend>
@@ -84,7 +81,6 @@
 </div>
 
 <div id="api_list">
-
     <div class="panel panel-default">
         <div class="panel-body">
             <legend>Api List</legend>
@@ -113,10 +109,9 @@
 
         </div>
     </div>
-
 </div>
 
-<a href="/notify.py">click here to download python script for notify</a>
+<a href="/notify.py">click here to download python script for notify, may need right click and save as</a>
 </body>
 
 <script src="/static/index.js"></script>

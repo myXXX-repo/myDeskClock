@@ -1,11 +1,9 @@
 package com.wh.mydeskclock.app.task;
 
-import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -19,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wh.mydeskclock.MyDialog;
 import com.wh.mydeskclock.R;
-import com.wh.mydeskclock.utils.UiUtils;
 
 public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHolder> {
     AppCompatActivity mParent;
@@ -64,27 +61,17 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
                 }
             }
         });
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mParent)
-//                        .setTitle(holder.title+" "+holder.device)
-//                        .setMessage(holder.tv_con.getText().toString())
-//                        .setPositiveButton("Close",null)
-//                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                            @Override
-//                            public void onDismiss(DialogInterface dialogInterface) {
-//                                UiUtils.setFullScreen(mParent.getWindow());
-//                            }
-//                        });
-////                Window window = alertDialog.getWindow();
-////                UiUtils.setFullScreen(window);
-////                alertDialog.show();
-//                MyDialog myDialog = new MyDialog(alertDialog);
-//                myDialog.setFullScreen();
-//                myDialog.show(mParent.getSupportFragmentManager(),"taskDetail");
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mParent)
+                        .setTitle(holder.title+" "+holder.device)
+                        .setMessage(holder.tv_con.getText().toString());
+                MyDialog myDialog = new MyDialog(alertDialog);
+                myDialog.setFullScreen();
+                myDialog.show(mParent.getSupportFragmentManager(),"myDeskClock_task_list_item");
+            }
+        });
         return holder;
     }
 

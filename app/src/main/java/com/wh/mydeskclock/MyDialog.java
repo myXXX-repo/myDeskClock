@@ -1,9 +1,11 @@
 package com.wh.mydeskclock;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,12 +24,17 @@ public class MyDialog extends DialogFragment {
     private boolean DIALOG_FULL_SCREEN;
     private int DIALOG_GRAVITY = Gravity.CENTER;
     private androidx.appcompat.app.AlertDialog.Builder dialog;
+    private View view;
 
     public MyDialog() {
 
     }
 
     public MyDialog(androidx.appcompat.app.AlertDialog.Builder dialog) {
+        this.dialog = dialog;
+    }
+    public MyDialog(androidx.appcompat.app.AlertDialog.Builder dialog,View view) {
+        this.view = view;
         this.dialog = dialog;
     }
 
@@ -42,6 +49,10 @@ public class MyDialog extends DialogFragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        if (DIALOG_FULL_SCREEN) {
+            requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
         super.onCreate(savedInstanceState);
         setCancelable(true);
     }
@@ -55,17 +66,14 @@ public class MyDialog extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-
         Window window = Objects.requireNonNull(getDialog()).getWindow();
         if (window == null) {
             return;
         }
-//        Utils.setWindowSystemUiVisibility(requireActivity());
-        if (DIALOG_FULL_SCREEN) {
-            window.getDecorView().setSystemUiVisibility(UiUtils.getHideSystemUIFlags());
-        }
+
         WindowManager.LayoutParams layoutParams = window.getAttributes();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = DIALOG_GRAVITY;
         window.setAttributes(layoutParams);
     }
@@ -73,6 +81,7 @@ public class MyDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        UiUtils.setFullScreen(requireActivity().getWindow());
         if (dialog == null) {
             dialog = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
             dialog.setTitle("Dialog标题");
@@ -89,6 +98,9 @@ public class MyDialog extends DialogFragment {
                     Toast.makeText(getContext(), "No pressed", Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+        if(view!=null){
+            dialog.setView(view);
         }
         return dialog.create();
     }

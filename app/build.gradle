@@ -8,7 +8,7 @@ android {
         applicationId "com.wh.mydeskclock"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 25
+        versionCode 28
         versionName "2.2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

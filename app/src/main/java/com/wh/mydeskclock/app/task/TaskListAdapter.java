@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.wh.mydeskclock.MyDialog;
 import com.wh.mydeskclock.R;
+import com.wh.mydeskclock.utils.TimeUtils;
+
+import java.util.concurrent.TimeUnit;
 
 public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHolder> {
     AppCompatActivity mParent;
@@ -64,9 +67,19 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                View v_task_item_dialog = LayoutInflater.from(mParent).inflate(R.layout.item_task_list_item_dialog,null,false);
+
+                TextView tv_task_title = v_task_item_dialog.findViewById(R.id.tv_task_item_title);
+                tv_task_title.setText(holder.title);
+                TextView tv_task_dev = v_task_item_dialog.findViewById(R.id.tv_task_item_device);
+                tv_task_dev.setText(holder.device);
+                TextView tv_task_createTime = v_task_item_dialog.findViewById(R.id.tv_task_item_create_time);
+                tv_task_createTime.setText(TimeUtils.getFormattedTime(Long.parseLong(holder.createTime)));
+                TextView tv_task_con = v_task_item_dialog.findViewById(R.id.tv_task_item_task);
+                tv_task_con.setText(holder.task);
+
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mParent)
-                        .setTitle(holder.title+" "+holder.device)
-                        .setMessage(holder.tv_con.getText().toString());
+                        .setView(v_task_item_dialog);
                 MyDialog myDialog = new MyDialog(alertDialog);
                 myDialog.setFullScreen();
                 myDialog.show(mParent.getSupportFragmentManager(),"myDeskClock_task_list_item");
@@ -83,12 +96,14 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
         holder.cb_done.setChecked(task.isReadDone());
         holder.title = task.getTitle();
         holder.device = task.getDeviceName();
+        holder.createTime = task.getCreateTime();
+        holder.task = task.getCon();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_con;
         CheckBox cb_done;
-        String title,device;
+        String title,device,createTime,task;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

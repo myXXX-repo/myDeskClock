@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -133,12 +134,19 @@ public class MainFragment extends Fragment {
 
                     ImageView iv = new ImageView(requireContext());
                     iv.setImageBitmap(new QRCodeGenerator(url, 500, 500).getQRCode());
+                    iv.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                            startActivity(intent);
+                        }
+                    });
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext())
                             .setView(iv);
                     MyDialog myDialog = new MyDialog(alertDialog);
                     myDialog.setFullScreen();
-                    myDialog.show(requireActivity().getSupportFragmentManager(),"a");
+                    myDialog.show(requireActivity().getSupportFragmentManager(),"myDeskClock_address");
                 }
             });
         }

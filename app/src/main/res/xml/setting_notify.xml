@@ -2,14 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
         android:key=""
-        android:title="启用接收Notify">
+        android:title="启用接收Notify"
+        android:enabled="false">
     </CheckBoxPreference>
     <CheckBoxPreference
         android:key="ada"
-        android:title="启用提示声">
+        android:title="启用提示声"
+        android:enabled="false">
     </CheckBoxPreference>
     <CheckBoxPreference
         android:key="ada"
-        android:title="启用Notify超时">
+        android:title="启用Notify超时"
+        android:enabled="false">
     </CheckBoxPreference>
 </PreferenceScreen>

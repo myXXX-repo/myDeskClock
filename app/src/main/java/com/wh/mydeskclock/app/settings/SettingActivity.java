@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wh.mydeskclock.Config;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.UiUtils;
 
@@ -28,9 +33,23 @@ public class SettingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
+        if(SETTING_UI_RE_LAND){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        }else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_setting);
         UiUtils.setFullScreen(getWindow());
+
+
+        SettingActivity.this.setResult(0,new Intent());
+
+
         fragments = new Fragment[]{
                 new SettingUiFragment(),
                 new SettingTaskFragment(),
@@ -98,7 +117,18 @@ public class SettingActivity extends AppCompatActivity {
         UiUtils.setFullScreen(getWindow());
     }
 
-    private void setWhiteB(View view,TextView tv_cap){
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        UiUtils.setFullScreen(getWindow());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void setWhiteB(View view, TextView tv_cap){
         view.setBackgroundColor(Color.WHITE);
         tv_cap.setTextColor(Color.BLACK);
     }

@@ -3,8 +3,11 @@ package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,14 +20,31 @@ import com.wh.mydeskclock.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "WH_" + MainActivity.class.getSimpleName();
+    private SharedPreferences sharedPreferences;
+    private boolean SETTING_UI_RE_LAND;
+    private boolean SETTING_UI_LAND;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
+        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND,true);
+
+        if(SETTING_UI_LAND){
+            if(SETTING_UI_RE_LAND){
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+            }else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        }else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         super.onCreate(savedInstanceState);
         UiUtils.setFullScreen(getWindow());
         setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        Log.d(TAG, "onCreate: ");
+
         startService(new Intent(MainActivity.this, MainService.class));
     }
 
@@ -38,6 +58,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        UiUtils.setFullScreen(getWindow());
+
+        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
+        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND,true);
+        if(SETTING_UI_LAND){
+            if(SETTING_UI_RE_LAND){
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+            }else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            }
+        }else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         UiUtils.setFullScreen(getWindow());
     }
 

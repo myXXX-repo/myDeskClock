@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="ada"
+        android:key="setting_media_ctrl_enable_media_ctrl"
         android:title="启用媒体控制"
-        android:summary="wegege">
+        android:summary="勾选此项即在横屏界面显示媒体控制部件"
+        android:defaultValue="true"
+        android:enabled="true">
     </CheckBoxPreference>
     <CheckBoxPreference
-        android:key="ada"
+        android:key="setting_media_ctrl_show_media_info"
         android:title="显示媒体信息"
-        android:summary="wegege">
+        android:summary="勾选此项即在媒体控制中显示媒体信息"
+        android:defaultValue="false"
+        android:enabled="true">
     </CheckBoxPreference>
 </PreferenceScreen>

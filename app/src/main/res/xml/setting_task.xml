@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key=""
-        android:title="隐藏完成的Task">
+        android:key="setting_task_hide_done"
+        android:title="隐藏完成的Task"
+        android:defaultValue="true"
+        android:enabled="true">
 
     </CheckBoxPreference>
 </PreferenceScreen>

@@ -8,16 +8,16 @@
     <Preference
         android:key="setting_about_me_coolapk"
         android:title="CoolApk：XX人来电"
-        android:summary="wegege">
+        android:summary="http://www.coolapk.com/u/445310">
     </Preference>
     <Preference
         android:key="setting_about_goto_app_coolapk"
         android:title="CoolApk：myDeskClock"
-        android:summary="wegege">
+        android:summary="https://www/coolapk.com/apk/com.wh.mydeskclock">
     </Preference>
     <Preference
         android:key="setting_about_version"
         android:title="应用版本"
-        android:summary="wegege">
+        android:summary="v2.2.2">
     </Preference>
 </PreferenceScreen>

@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import android.os.Handler;
 import android.os.Message;
@@ -20,11 +24,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
+import com.wh.mydeskclock.app.notify.NotifyFragment;
 import com.wh.mydeskclock.app.settings.SettingActivity;
+import com.wh.mydeskclock.app.task.TaskListFragment;
 import com.wh.mydeskclock.utils.HardwareUtils;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
@@ -35,7 +42,7 @@ import java.util.Calendar;
 
 public class MainFragment extends Fragment {
 
-    private ClockHandler clockHandler;
+    private UiHandler uiHandler;
 
     private BroadcastReceiver timeReceiver;
     private BroadcastReceiver batteryReceiver;
@@ -49,6 +56,15 @@ public class MainFragment extends Fragment {
     private MainActivity mParent;
     private MainActivity.MyHandler myHandler;
     private String url = "http:/" + NetUtils.getLocalIPAddress() + ":" + AppConfig.port;
+    private SharedPreferences sharedPreferences;
+    private boolean SETTING_UI_SHOW_SERVER_ADDRESS;
+    private boolean SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL;
+    private boolean SETTING_UI_LAND;
+    private FrameLayout fl_media_ctrl;
+    private FrameLayout fl_notify;
+    private FrameLayout fl_task;
+    private boolean SETTING_TASK_HIDE_DONE;
+    private FragmentManager fragmentManager;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,27 +75,12 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        clockHandler = new ClockHandler();
-        timeReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                clockHandler.sendEmptyMessage(ClockHandler.WHAT_TIME);
-            }
-        };
-        IntentFilter timeFilter = new IntentFilter();
-        timeFilter.addAction(Intent.ACTION_TIME_TICK);
-        requireActivity().registerReceiver(timeReceiver, timeFilter);
-
-        batteryReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                clockHandler.sendEmptyMessage(ClockHandler.WHAT_BATTERY);
-            }
-        };
-        IntentFilter batteryFilter = new IntentFilter();
-        batteryFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        requireActivity().registerReceiver(batteryReceiver, batteryFilter);
-
+        // 获取需要的设置项目
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
+        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
+        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND, true);
+        SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE,true);
     }
 
     @Override
@@ -92,6 +93,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        // 获取界面中的元素
         tv_hour = requireActivity().findViewById(R.id.tv_hour);
         tv_hour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,37 +110,33 @@ public class MainFragment extends Fragment {
             }
         });
         tv_week = requireActivity().findViewById(R.id.tv_week);
-        tv_battery = requireActivity().findViewById(R.id.tv_battery);
         tv_date = requireActivity().findViewById(R.id.tv_date);
-        tv_date.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (requireActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                } else {
-                    requireActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                }
-            }
-        });
-
+        // 获取界面元素后 立即更新时间
         setTime();
+
+        // 获取界面并设置电量数值
+        tv_battery = requireActivity().findViewById(R.id.tv_battery);
         tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext()) + "%");
 
+        // 获取并处理屏幕底部的地址
         tv_address = requireActivity().findViewById(R.id.tv_address);
         if (tv_address != null) {
-
+            if (SETTING_UI_SHOW_SERVER_ADDRESS) {
+                tv_address.setVisibility(View.VISIBLE);
+            } else {
+                tv_address.setVisibility(View.GONE);
+            }
             tv_address.setText(url);
             tv_address.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     ImageView iv = new ImageView(requireContext());
                     iv.setImageBitmap(new QRCodeGenerator(url, 500, 500).getQRCode());
                     iv.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                            startActivity(intent);
+                            startActivityForResult(intent, 0);
                         }
                     });
 
@@ -146,9 +144,84 @@ public class MainFragment extends Fragment {
                             .setView(iv);
                     MyDialog myDialog = new MyDialog(alertDialog);
                     myDialog.setFullScreen();
-                    myDialog.show(requireActivity().getSupportFragmentManager(),"myDeskClock_address");
+                    myDialog.show(requireActivity().getSupportFragmentManager(), "myDeskClock_address");
                 }
             });
+        }
+
+        fl_notify = requireActivity().findViewById(R.id.fl_notify);
+        fl_media_ctrl = requireActivity().findViewById(R.id.fl_media_ctrl);
+        fl_task = requireActivity().findViewById(R.id.fl_task);
+
+        if (fl_notify != null) {
+            fragmentManager = requireActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.fl_notify, new NotifyFragment());
+
+            fragmentTransaction.add(R.id.fl_media_ctrl, new MediaCtrlFragment());
+            if (SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL) {
+                fl_media_ctrl.setVisibility(View.VISIBLE);
+            } else {
+                fl_media_ctrl.setVisibility(View.GONE);
+            }
+
+            fragmentTransaction.add(R.id.fl_task, new TaskListFragment());
+            fragmentTransaction.commit();
+        }
+
+
+        uiHandler = new UiHandler();
+
+        timeReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                uiHandler.sendEmptyMessage(UiHandler.WHAT_TIME);
+            }
+        };
+        IntentFilter timeFilter = new IntentFilter();
+        timeFilter.addAction(Intent.ACTION_TIME_TICK);
+        requireActivity().registerReceiver(timeReceiver, timeFilter);
+
+        batteryReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                uiHandler.sendEmptyMessage(UiHandler.WHAT_BATTERY);
+            }
+        };
+        IntentFilter batteryFilter = new IntentFilter();
+        batteryFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        requireActivity().registerReceiver(batteryReceiver, batteryFilter);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
+        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
+        if (SETTING_UI_SHOW_SERVER_ADDRESS) {
+            if (tv_address != null) {
+                tv_address.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (tv_address != null) {
+                tv_address.setVisibility(View.GONE);
+            }
+        }
+        if (SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL) {
+            if (fl_media_ctrl != null) {
+                fl_media_ctrl.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (fl_media_ctrl != null) {
+                fl_media_ctrl.setVisibility(View.GONE);
+            }
+        }
+        boolean SETTING_TASK_HIDE_DONE_TMP = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
+        if (SETTING_TASK_HIDE_DONE != SETTING_TASK_HIDE_DONE_TMP) {
+            SETTING_TASK_HIDE_DONE = SETTING_TASK_HIDE_DONE_TMP;
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fl_task,new TaskListFragment()).commit();
         }
     }
 
@@ -176,7 +249,7 @@ public class MainFragment extends Fragment {
     }
 
     @SuppressLint("HandlerLeak")
-    class ClockHandler extends Handler {
+    class UiHandler extends Handler {
         private static final int WHAT_TIME = 261;
         private static final int WHAT_BATTERY = 440;
 
@@ -189,7 +262,9 @@ public class MainFragment extends Fragment {
                     break;
                 }
                 case WHAT_BATTERY: {
-                    tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext()) + "%");
+                    if (tv_battery != null) {
+                        tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext()) + "%");
+                    }
                     break;
                 }
             }

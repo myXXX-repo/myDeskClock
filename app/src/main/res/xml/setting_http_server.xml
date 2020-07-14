@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
-        android:key="ada"
+        android:key="setting_http_server_enable_http_server"
         android:title="启用http服务器"
-        android:summary="wegege">
+        android:summary="禁用该选项后 App将无法处理http请求"
+        android:defaultValue="true"
+        android:enabled="false">
     </CheckBoxPreference>
     <EditTextPreference
-        android:key="a"
-        android:title="设置服务器端口">
+        android:key="setting_http_server_port"
+        android:title="设置服务器端口"
+        android:enabled="false">
     </EditTextPreference>
 </PreferenceScreen>

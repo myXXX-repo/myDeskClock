@@ -125,25 +125,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_battery_full_24" />
 
-    <fragment
-        android:id="@+id/fragment2"
-        android:name="com.wh.mydeskclock.PanelFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/tv_battery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/fragment5"
-        app:layout_constraintVertical_bias="0.504" />
-
-    <fragment
-        android:id="@+id/fragment4"
-        android:name="com.wh.mydeskclock.app.notify.NotifyFragment"
+    <FrameLayout
+        android:id="@+id/fl_notify"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
@@ -151,10 +134,12 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <fragment
-        android:id="@+id/fragment5"
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_media_ctrl"
         android:name="com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -163,7 +148,20 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/fragment4" />
+        app:layout_constraintTop_toBottomOf="@+id/fl_notify"/>
+
+    <FrameLayout
+        android:id="@+id/fl_task"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_battery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view2"
+        app:layout_constraintTop_toBottomOf="@+id/fl_media_ctrl" />
 
     <TextView
         android:id="@+id/tv_address"
@@ -174,25 +172,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="#A5A5A5"
-        app:layout_constraintEnd_toEndOf="@+id/fragment4"
-        app:layout_constraintStart_toStartOf="@+id/fragment4"
-        app:layout_constraintTop_toBottomOf="@+id/fragment4" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:background="#A5A5A5"
-        app:layout_constraintEnd_toEndOf="@+id/fragment5"
-        app:layout_constraintStart_toStartOf="@+id/fragment5"
-        app:layout_constraintTop_toBottomOf="@+id/fragment5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

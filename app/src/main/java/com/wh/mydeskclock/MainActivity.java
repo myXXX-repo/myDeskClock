@@ -17,20 +17,15 @@ import com.wh.mydeskclock.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
     String TAG = "WH_" + MainActivity.class.getSimpleName();
-//    private View v_cover;
-    private MyHandler myHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         UiUtils.setFullScreen(getWindow());
+        setContentView(R.layout.activity_main);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         Log.d(TAG, "onCreate: ");
         startService(new Intent(MainActivity.this, MainService.class));
-        myHandler = new MyHandler(this);
-
-//        flashScreen(myHandler);
     }
 
     @Override

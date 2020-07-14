@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key=""
+        android:title="启用接收Notify">
+    </CheckBoxPreference>
+    <CheckBoxPreference
+        android:key="ada"
+        android:title="启用提示声">
+    </CheckBoxPreference>
+    <CheckBoxPreference
+        android:key="ada"
+        android:title="启用Notify超时">
+    </CheckBoxPreference>
+</PreferenceScreen>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="setting_about_me_github"
+        android:title="我的GitHub主页"
+        android:summary="https://github.com/alone-wolf">
+    </Preference>
+    <Preference
+        android:key="setting_about_me_coolapk"
+        android:title="CoolApk：XX人来电"
+        android:summary="wegege">
+    </Preference>
+    <Preference
+        android:key="setting_about_goto_app_coolapk"
+        android:title="CoolApk：myDeskClock"
+        android:summary="wegege">
+    </Preference>
+    <Preference
+        android:key="setting_about_version"
+        android:title="应用版本"
+        android:summary="wegege">
+    </Preference>
+</PreferenceScreen>

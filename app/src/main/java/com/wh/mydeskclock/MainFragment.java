@@ -18,7 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.utils.HardwareUtils;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.TimeUtils;
@@ -86,7 +88,6 @@ public class MainFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         tv_hour = requireActivity().findViewById(R.id.tv_hour);
         tv_hour.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 myHandler = new MainActivity.MyHandler(mParent);
@@ -94,6 +95,12 @@ public class MainFragment extends Fragment {
             }
         });
         tv_min = requireActivity().findViewById(R.id.tv_min);
+        tv_min.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requireContext().startActivity(new Intent(requireActivity(), SettingActivity.class));
+            }
+        });
         tv_week = requireActivity().findViewById(R.id.tv_week);
         tv_battery = requireActivity().findViewById(R.id.tv_battery);
         tv_date = requireActivity().findViewById(R.id.tv_date);
@@ -113,7 +120,14 @@ public class MainFragment extends Fragment {
 
         tv_address = requireActivity().findViewById(R.id.tv_address);
         if (tv_address != null) {
-            tv_address.setText("http:/" + NetUtils.getLocalIPAddress() + ":" + AppConfig.port);
+            final String URL = "http:/"+NetUtils.getLocalIPAddress()+":"+AppConfig.port;
+            tv_address.setText(URL);
+            tv_address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(requireActivity(),URL,Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
     }

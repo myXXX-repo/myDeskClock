@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="ada"
+        android:title="启用http服务器"
+        android:summary="wegege">
+    </CheckBoxPreference>
+    <EditTextPreference
+        android:key="a"
+        android:title="设置服务器端口">
+    </EditTextPreference>
+</PreferenceScreen>

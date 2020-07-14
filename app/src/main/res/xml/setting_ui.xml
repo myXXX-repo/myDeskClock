@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="setting_ui_show_server_address"
+        android:summary="横屏底部显示服务器地址"
+        android:title="显示地址">
+    </CheckBoxPreference>
+    <CheckBoxPreference
+        android:key="setting_ui_re_land"
+        android:summary="设置横屏方向为反向"
+        android:title="反向横屏">
+    </CheckBoxPreference>
+    <CheckBoxPreference
+        android:key="setting_ui_default_land"
+        android:summary="设置默认横屏"
+        android:title="默认横屏">
+    </CheckBoxPreference>
+</PreferenceScreen>

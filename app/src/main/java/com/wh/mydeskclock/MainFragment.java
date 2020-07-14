@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -17,12 +18,15 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.utils.HardwareUtils;
 import com.wh.mydeskclock.utils.NetUtils;
+import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.TimeUtils;
 import com.wh.mydeskclock.utils.Utils;
 
@@ -43,6 +47,7 @@ public class MainFragment extends Fragment {
 
     private MainActivity mParent;
     private MainActivity.MyHandler myHandler;
+    private String url = "http:/" + NetUtils.getLocalIPAddress() + ":" + AppConfig.port;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -120,16 +125,23 @@ public class MainFragment extends Fragment {
 
         tv_address = requireActivity().findViewById(R.id.tv_address);
         if (tv_address != null) {
-            final String URL = "http:/"+NetUtils.getLocalIPAddress()+":"+AppConfig.port;
-            tv_address.setText(URL);
+
+            tv_address.setText(url);
             tv_address.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(requireActivity(),URL,Toast.LENGTH_SHORT).show();
+
+                    ImageView iv = new ImageView(requireContext());
+                    iv.setImageBitmap(new QRCodeGenerator(url, 500, 500).getQRCode());
+
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(requireContext())
+                            .setView(iv);
+                    MyDialog myDialog = new MyDialog(alertDialog);
+                    myDialog.setFullScreen();
+                    myDialog.show(requireActivity().getSupportFragmentManager(),"a");
                 }
             });
         }
-
     }
 
     @Override

@@ -107,7 +107,7 @@ var api_list = new Vue({
                     path:"/task/add",
                     method:"GET",
                     describe:"add new task item",
-                    sample:'http://ip:port/task/add?task="newTask"&title="title",device="phone"'
+                    sample:'http://ip:port/task/add?task=newTask&title=title,device=phone'
                 },
                 {
                     app:"task",
@@ -121,7 +121,7 @@ var api_list = new Vue({
                     path:"/notify",
                     method:"GET",
                     describe:"add notify",
-                    sample:"http://ip:port/notify?notify=newNotify"
+                    sample:"http://ip:port/notify?notify=newNotify&title=title&device=devices"
                 }
             ]
         }

@@ -1,9 +1,21 @@
+let init = function(){
+    if(localStorage.getItem('inited') != 1){
+        localStorage.setItem('inited',1);
+        localStorage.setItem('api_list_show',false);
+        localStorage.setItem('task_list_done_show',false);
+        localStorage.setItem('task_default_title','default title');
+        localStorage.setItem('device_name','default device');
+    }
+}
+
+init();
+
 var task = new Vue({
     el: '#send_task',
     data: {
-        title: "",
+        title: localStorage.getItem('task_default_title'),
         task: "",
-        device: ""
+        device: localStorage.getItem('device_name')
     },
     methods: {
         send: function () {
@@ -30,6 +42,7 @@ var task = new Vue({
 var task_list = new Vue({
     el: '#task_list',
     data: {
+        task_list_done_show: localStorage.getItem('task_list_done_show'),
         tasks: []
     },
     methods: {
@@ -37,17 +50,24 @@ var task_list = new Vue({
             that = this
             axios.get("/task/get/all")
                 .then(function (response) {
+//                    console.log(response.data);
                     that.tasks = response.data.data;
                 });
         },
         set_done: function(e){
             var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
-            console.log(id);
+//            console.log(id);
             axios.get("/task/done/"+id)
-            .then(function(response){
+                .then(function(response){
                 that.fetch();
-//                location.reload();
             });
+        },
+        set_undone: function(e){
+            var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
+            axios.get("/task/undone/"+id)
+                .then(function(response){
+                    that.fetch();
+                });
         },
         FormatDateTime: function(UnixTime) {
             var date = new Date(parseInt(UnixTime));
@@ -73,7 +93,7 @@ var task_list = new Vue({
 var api_list = new Vue({
         el: '#api_list',
         data:{
-            show:false,
+            show: localStorage.getItem('api_list_show'),
             apis:[
                 {
                     app:"task",
@@ -121,7 +141,7 @@ var api_list = new Vue({
                     app:"notify",
                     path:"/notify",
                     method:"GET",
-                    describe:"add notify",
+                    describe:"add notify (notify required)",
                     sample:"http://ip:port/notify?notify=newNotify&title=title&device=devices"
                 }
             ]

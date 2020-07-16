@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:v-model="http://www.w3.org/1999/xhtml"
-      xmlns:v-on="http://www.w3.org/1999/xhtml">
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-if="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -81,16 +81,22 @@
                     <th>task</th>
                     <th>create time</th>
                     <th>device</th>
+                    <th>done</th>
+                    <th>operate</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item in tasks" v-if="!item.readDone">
+                <tr v-for="item in tasks" v-if=" task_list_done_show === 'true' || !item.readDone ">
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
                     <td>{{ item.con }}</td>
                     <td>{{ FormatDateTime(item.createTime) }}</td>
                     <td>{{ item.deviceName }}</td>
-                    <td><a v-on:click='set_done($event)' href="#">set done</a></td>
+                    <td>{{ item.readDone }}</td>
+                    <td>
+                        <a v-if="!item.readDone" v-on:click='set_done($event)' href="#">set done</a>
+                        <a v-else v-on:click='set_undone($event)' href="#">set unDone</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

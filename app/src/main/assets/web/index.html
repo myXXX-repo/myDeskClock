@@ -11,6 +11,11 @@
     <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        ::-webkit-scrollbar {
+            display: none; /* Chrome Safari */
+        }
         body {
             margin: 8px;
         }
@@ -22,6 +27,15 @@
         #api_list_table{
             margin-top: 16px;
         }
+        #api_list div div div::-webkit-scrollbar {
+            display: none; /* Chrome Safari */
+        }
+        #api_list div div div{
+            scrollbar-width: none; /* firefox */
+            -ms-overflow-style: none; /* IE 10+ */
+            overflow:scroll;
+        }
+
     </style>
 </head>
 
@@ -34,15 +48,18 @@
             <legend>Send Task</legend>
             <div class="form-group">
                 <label>title</label>
-                <input type="text" class="form-control" v-model:value="title" placeholder="default title">
+                <input type="text" class="form-control" v-model:value="title"
+                       placeholder="default title">
             </div>
             <div class="form-group">
                 <label>task (must exists)</label>
-                <input type="text" class="form-control" v-model:value="task" placeholder="task content required">
+                <input type="text" class="form-control" v-model:value="task"
+                       placeholder="task content required">
             </div>
             <div class="form-group">
                 <label>device</label>
-                <input type="text" class="form-control" v-model:value="device" placeholder="default device">
+                <input type="text" class="form-control" v-model:value="device"
+                       placeholder="default device">
             </div>
 
             <button type="button" class="btn btn-primary" v-on:click="send()">Submit</button>
@@ -85,33 +102,36 @@
         <div class="panel-body">
             <legend>Api List</legend>
             <button type="button" class="btn btn-danger" v-on:click="show=!show">show/hide</button>
+            <div>
+                <table class="table table-bordered table-hover" v-if="show" id="api_list_table">
+                    <thead>
+                    <tr>
+                        <th>app</th>
+                        <th>path</th>
+                        <th>method</th>
+                        <th>describe</th>
+                        <th>sample</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in apis">
+                        <td>{{ item.app }}</td>
+                        <td>{{ item.path }}</td>
+                        <td>{{ item.method }}</td>
+                        <td>{{ item.describe }}</td>
+                        <td>{{ item.sample }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <table class="table table-bordered table-hover" v-if="show" id="api_list_table">
-                <thead>
-                <tr>
-                    <th>app</th>
-                    <th>path</th>
-                    <th>method</th>
-                    <th>describe</th>
-                    <th>sample</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="item in apis">
-                    <td>{{ item.app }}</td>
-                    <td>{{ item.path }}</td>
-                    <td>{{ item.method }}</td>
-                    <td>{{ item.describe }}</td>
-                    <td>{{ item.sample }}</td>
-                </tr>
-                </tbody>
-            </table>
 
         </div>
     </div>
 </div>
 
-<a href="/notify.py">click here to download python script for notify, may need right click and save as</a>
+<a href="/notify.py">click here to download python script for notify, may need right click and save
+    as</a>
 </body>
 
 <script src="/static/index.js"></script>

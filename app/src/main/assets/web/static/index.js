@@ -45,7 +45,8 @@ var task_list = new Vue({
             console.log(id);
             axios.get("/task/done/"+id)
             .then(function(response){
-                location.reload();
+                that.fetch();
+//                location.reload();
             });
         },
         FormatDateTime: function(UnixTime) {

@@ -3,6 +3,7 @@ package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatCallback;
 import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.wh.mydeskclock.utils.AppUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,19 +26,39 @@ public class MainActivity extends AppCompatActivity {
     private boolean SETTING_UI_RE_LAND;
     private boolean SETTING_UI_LAND;
 
+    public static void flashScreen(final MyHandler myHandler) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_VISIBLE);
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
+                    sleep(300);
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_BLACK);
+                    sleep(300);
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
+                    sleep(900);
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_GONE);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
-        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND,true);
+        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND, false);
+        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND, true);
 
-        if(SETTING_UI_LAND){
-            if(SETTING_UI_RE_LAND){
+        if (SETTING_UI_LAND) {
+            if (SETTING_UI_RE_LAND) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-            }else {
+            } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
-        }else {
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -60,15 +82,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         UiUtils.setFullScreen(getWindow());
 
-        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
-        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND,true);
-        if(SETTING_UI_LAND){
-            if(SETTING_UI_RE_LAND){
+        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND, false);
+        boolean SETTING_UI_LAND_TMP = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND, true);
+        if (SETTING_UI_LAND_TMP != SETTING_UI_LAND) {
+            SETTING_UI_LAND = SETTING_UI_LAND_TMP;
+            //  重启app
+            AppUtils.restartApp(getBaseContext(),this);
+        }
+        if (SETTING_UI_LAND) {
+            if (SETTING_UI_RE_LAND) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-            }else {
+            } else {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
-        }else {
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
@@ -119,25 +146,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public static void flashScreen(final MyHandler myHandler){
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_VISIBLE);
-                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
-                    sleep(300);
-                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_BLACK);
-                    sleep(300);
-                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
-                    sleep(900);
-                    myHandler.sendEmptyMessage(MyHandler.WHAT_SET_GONE);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
     }
 }

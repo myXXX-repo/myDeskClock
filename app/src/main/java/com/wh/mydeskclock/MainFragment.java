@@ -77,9 +77,9 @@ public class MainFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // 获取需要的设置项目
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND, true);
         SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
         SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
-        SETTING_UI_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_LAND, true);
         SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE,true);
     }
 
@@ -217,11 +217,13 @@ public class MainFragment extends Fragment {
                 fl_media_ctrl.setVisibility(View.GONE);
             }
         }
-        boolean SETTING_TASK_HIDE_DONE_TMP = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
-        if (SETTING_TASK_HIDE_DONE != SETTING_TASK_HIDE_DONE_TMP) {
-            SETTING_TASK_HIDE_DONE = SETTING_TASK_HIDE_DONE_TMP;
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fl_task,new TaskListFragment()).commit();
+        if(SETTING_UI_LAND){
+            boolean SETTING_TASK_HIDE_DONE_TMP = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
+            if (SETTING_TASK_HIDE_DONE != SETTING_TASK_HIDE_DONE_TMP) {
+                SETTING_TASK_HIDE_DONE = SETTING_TASK_HIDE_DONE_TMP;
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fl_task,new TaskListFragment()).commit();
+            }
         }
     }
 

@@ -29,15 +29,15 @@ public class SettingActivity extends AppCompatActivity {
     ArrayList<View> views;
     int currentFragmentId = 0;
 
-    String TAG= "WH_"+SettingActivity.class.getSimpleName();
+    String TAG = "WH_" + SettingActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND,false);
-        if(SETTING_UI_RE_LAND){
+        boolean SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND, false);
+        if (SETTING_UI_RE_LAND) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
-        }else {
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
 
@@ -47,7 +47,7 @@ public class SettingActivity extends AppCompatActivity {
         UiUtils.setFullScreen(getWindow());
 
 
-        SettingActivity.this.setResult(0,new Intent());
+        SettingActivity.this.setResult(0, new Intent());
 
 
         fragments = new Fragment[]{
@@ -75,8 +75,8 @@ public class SettingActivity extends AppCompatActivity {
             TextView textView = view.findViewById(R.id.tv_cap);
             textView.setText(setting_caps[finalI]);
 
-            if(i==0){
-                setBlackB(view,textView);
+            if (i == 0) {
+                setBlackB(view, textView);
             }
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -86,11 +86,11 @@ public class SettingActivity extends AppCompatActivity {
                     if (currentFragmentId != -1) {
                         fragmentTransaction.replace(R.id.fl_set, fragments[finalI]).commit();
                     }
-                    for(int ii=0;ii<setting_caps.length;ii++){
-                        if(ii==finalI){
+                    for (int ii = 0; ii < setting_caps.length; ii++) {
+                        if (ii == finalI) {
                             setBlackB(views.get(ii), (TextView) views.get(ii).findViewById(R.id.tv_cap));
 
-                        }else {
+                        } else {
                             setWhiteB(views.get(ii), (TextView) views.get(ii).findViewById(R.id.tv_cap));
                         }
                     }
@@ -98,6 +98,10 @@ public class SettingActivity extends AppCompatActivity {
                 }
             });
             views.add(view);
+            if (i == 2 || i == 4) {
+                view.setEnabled(false);
+                textView.setTextColor(Color.GRAY);
+            }
             ll_setting_cap.addView(view);
         }
 
@@ -128,13 +132,17 @@ public class SettingActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void setWhiteB(View view, TextView tv_cap){
-        view.setBackgroundColor(Color.WHITE);
-        tv_cap.setTextColor(Color.BLACK);
+    private void setWhiteB(View view, TextView tv_cap) {
+        if (view.isEnabled()) {
+            view.setBackgroundColor(Color.WHITE);
+            tv_cap.setTextColor(Color.BLACK);
+        }
     }
 
-    private void setBlackB(View view, TextView tv_cap){
-        view.setBackgroundColor(Color.BLACK);
-        tv_cap.setTextColor(Color.WHITE);
+    private void setBlackB(View view, TextView tv_cap) {
+        if (view.isEnabled()) {
+            view.setBackgroundColor(Color.BLACK);
+            tv_cap.setTextColor(Color.WHITE);
+        }
     }
 }

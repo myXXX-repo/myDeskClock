@@ -64,6 +64,9 @@ public class TaskListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         taskListViewModel = ViewModelProviders.of(requireActivity()).get(TaskListViewModel.class);
         rv_notify = requireActivity().findViewById(R.id.rv_task);
+        if(rv_notify==null){
+            return;
+        }
         rv_notify.setLayoutManager(new LinearLayoutManager(requireContext()));
         taskListAdapter = new TaskListAdapter(taskListViewModel, mParent);
         rv_notify.setAdapter(taskListAdapter);

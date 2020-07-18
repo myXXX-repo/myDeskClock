@@ -13,4 +13,11 @@ public class HardwareUtils {
         }
         return HardwareUtils.batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
     }
+
+    public static int getBatteryLevel() {
+        if (HardwareUtils.batteryManager != null) {
+            return HardwareUtils.batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        }
+        return -1;
+    }
 }

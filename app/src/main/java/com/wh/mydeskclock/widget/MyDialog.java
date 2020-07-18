@@ -1,4 +1,4 @@
-package com.wh.mydeskclock;
+package com.wh.mydeskclock.widget;
 
 import android.app.Dialog;
 import android.content.Context;

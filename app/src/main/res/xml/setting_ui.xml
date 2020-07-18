@@ -12,13 +12,6 @@
         android:summary="设置横屏方向为反向"
         android:title="反向横屏"
         android:defaultValue="false"
-        android:enabled="false">
-    </CheckBoxPreference>
-    <CheckBoxPreference
-        android:key="setting_ui_land"
-        android:summary="横屏显示"
-        android:title="设置UI为横屏"
-        android:defaultValue="true"
         android:enabled="true">
     </CheckBoxPreference>
 </PreferenceScreen>

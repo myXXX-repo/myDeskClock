@@ -103,12 +103,10 @@ public class MediaCtrlFragment extends Fragment {
         SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
         if (SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO) {
             if (iv_mini_mode != null) {
-
                 iv_mini_mode.setVisibility(View.VISIBLE);
             }
         } else {
             if (iv_mini_mode != null) {
-
                 iv_mini_mode.setVisibility(View.GONE);
             }
         }

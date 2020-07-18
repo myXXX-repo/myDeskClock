@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.wh.mydeskclock.MyDialog;
+import com.wh.mydeskclock.widget.MyDialog;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.TimeUtils;
-
-import java.util.concurrent.TimeUnit;
 
 public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHolder> {
     AppCompatActivity mParent;

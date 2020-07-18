@@ -5,11 +5,16 @@
         android:title="启用http服务器"
         android:summary="禁用该选项后 App将无法处理http请求"
         android:defaultValue="true"
-        android:enabled="false">
+        android:enabled="true">
     </CheckBoxPreference>
     <EditTextPreference
         android:key="setting_http_server_port"
         android:title="设置服务器端口"
-        android:enabled="false">
+        android:defaultValue="8081"
+        android:enabled="true">
     </EditTextPreference>
+    <Preference
+        android:key="setting_http_server_force_stop"
+        android:title="force stop server"
+        android:enabled="true"/>
 </PreferenceScreen>

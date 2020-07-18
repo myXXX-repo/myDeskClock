@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".app.settings.SettingActivity"
     tools:ignore="MissingDefaultResource">
 
@@ -11,6 +12,7 @@
         android:id="@+id/scrollView2"
         android:layout_width="150dp"
         android:layout_height="0dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,6 +37,7 @@
         android:id="@+id/fl_set"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view"

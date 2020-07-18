@@ -8,20 +8,36 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
+        android:name=".App"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
         <activity
-            android:name=".app.settings.SettingActivity"
-            android:screenOrientation="userLandscape"/>
-        <activity
-            android:name=".MainActivity">
+            android:label="myDC横屏"
+            android:name=".MainActivityLand"
+            android:screenOrientation="landscape" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:label="myDC竖屏"
+            android:name=".MainActivityPort"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".app.settings.SettingActivity"
+            android:screenOrientation="landscape" />
 
         <service
             android:name=".MainService"

@@ -24,12 +24,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wh.mydeskclock.BaseFragment;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.TimeUtils;
 
 import org.jetbrains.annotations.NotNull;
 
-public class NotifyFragment extends Fragment {
+public class NotifyFragment extends BaseFragment {
     String TAG = "WH_"+NotifyFragment.class.getSimpleName();
 
     private BroadcastReceiver notifyReceiver;

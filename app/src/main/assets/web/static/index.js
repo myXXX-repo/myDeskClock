@@ -91,7 +91,7 @@ var body_main = new Vue({
             }
             axios.get("/task/add", {
                 params: {
-                    "title": this.title,
+                    "title": this.task_title,
                     "task": this.task,
                     "device": this.device
                 }

@@ -16,7 +16,8 @@
         <activity
             android:label="myDC横屏"
             android:name=".MainActivityLand"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:clearTaskOnLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +28,8 @@
         <activity
             android:label="myDC竖屏"
             android:name=".MainActivityPort"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:clearTaskOnLaunch="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -30,7 +30,6 @@ var body_main = new Vue({
         tasks: [],
 
         api_list_show: toBool(localStorage.getItem('api_list_show')),
-        api_list_show_setting: toBool(localStorage.getItem('api_list_show')),
         apis: [
         {
                 app: "task",
@@ -140,8 +139,7 @@ var body_main = new Vue({
         },
         save: function(){
             // 保存api list 的配置
-            this.api_list_show=this.api_list_show_setting;
-            localStorage.setItem('api_list_show',this.api_list_show_setting);
+            localStorage.setItem('api_list_show',this.api_list_show);
             // 保存task list 的配置
             this.task_list_done_show=this.task_list_done_show_setting;
             localStorage.setItem('task_list_done_show',this.task_list_done_show_setting);

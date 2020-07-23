@@ -81,7 +81,7 @@
                             <th>task</th>
                             <th>create time</th>
                             <th>device</th>
-                            <th>done</th>
+                            <th v-if="task_list_done_show">done</th>
                             <th>operate</th>
                         </tr>
                         </thead>
@@ -92,7 +92,7 @@
                             <td>{{ item.con }}</td>
                             <td>{{ FormatDateTime(item.createTime) }}</td>
                             <td>{{ item.deviceName }}</td>
-                            <td>{{ item.readDone }}</td>
+                            <td v-if="task_list_done_show">{{ item.readDone }}</td>
                             <td>
                                 <a v-if="item.readDone" v-on:click='set_undone($event)' href="#">set
                                     unDone</a>

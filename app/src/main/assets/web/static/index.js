@@ -26,7 +26,6 @@ var body_main = new Vue({
         device: localStorage.getItem('device_name'),
 
         task_list_done_show: toBool(localStorage.getItem('task_list_done_show')),
-        task_list_done_show_setting: toBool(localStorage.getItem('task_list_done_show')),
         tasks: [],
 
         api_list_show: toBool(localStorage.getItem('api_list_show')),
@@ -141,8 +140,7 @@ var body_main = new Vue({
             // 保存api list 的配置
             localStorage.setItem('api_list_show',this.api_list_show);
             // 保存task list 的配置
-            this.task_list_done_show=this.task_list_done_show_setting;
-            localStorage.setItem('task_list_done_show',this.task_list_done_show_setting);
+            localStorage.setItem('task_list_done_show',this.task_list_done_show);
             // 保存 default done task title
             localStorage.setItem('task_default_title',this.task_title);
             // 保存 device name

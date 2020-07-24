@@ -18,6 +18,6 @@
     <Preference
         android:key="setting_about_version"
         android:title="应用版本"
-        android:summary="v2.2.2">
+        android:summary="v2.4">
     </Preference>
 </PreferenceScreen>

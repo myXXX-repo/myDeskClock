@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-model="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:v-model="http://www.w3.org/1999/xhtml"
+      xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml"
+      xmlns:v-text="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -36,6 +38,8 @@
             /* -ms-overflow-style: none; */
             /* IE 10+ */
             overflow-x: scroll;
+            // text-overflow: ellipsis;
+            // white-space: nowrap;
         }
     </style>
 </head>
@@ -88,13 +92,13 @@
                         <tbody>
                         <tr v-for="item in tasks" v-if=" task_list_done_show || !item.readDone ">
                             <td>
-                                <a v-if="item.readDone" v-on:click='set_undone($event)' href="#">set
+                                <a v-if="item.readDone" v-on:click='set_undone(item.id)' href="#" v-bind:task_id="item.id">set
                                     unDone</a>
-                                <a v-else v-on:click='set_done($event)' href="#">set done</a>
+                                <a v-else v-on:click='set_done(item.id)' href="#" v-bind:task_id="item.id">set done</a>
                             </td>
                             <td>{{ item.id }}</td>
                             <td>{{ item.title }}</td>
-                            <td v-on:click='show_task_detail($event)'>{{ item.con }}</td>
+                            <td v-on:click='show_task_detail(item.con)'>{{ item.con }}</td>
                             <td>{{ item.deviceName }}</td>
                             <td>{{ FormatDateTime(item.createTime) }}</td>
                             <td v-if="task_list_done_show">{{ item.readDone }}</td>
@@ -180,7 +184,6 @@
                                                title="">
                         </label>
                     </div>
-                    <!--                <button type="button" class="btn btn-primary" v-on:click="save()">Save</button>-->
 
                 </div>
                 <div class="modal-footer">
@@ -203,7 +206,7 @@
                     <h4 class="modal-title">task detail</h4>
                 </div>
                 <div class="modal-body">
-                    <p>{{ task_con_for_show }}</p>
+                    <p style="max-width:95%;word-wrap:break-word;">{{ task_con_for_show }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span

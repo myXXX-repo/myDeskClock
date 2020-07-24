@@ -25,7 +25,7 @@ var body_main = new Vue({
         task: '',
         device: localStorage.getItem('device_name'),
 
-        task_con_for_show: '',
+        task_con_for_show: 'blank',
 
         task_list_done_show: toBool(localStorage.getItem('task_list_done_show')),
         tasks: [],
@@ -109,15 +109,15 @@ var body_main = new Vue({
                     that.tasks = response.data.data;
                 });
         },
-        set_done: function(e) {
-            var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
+        set_done: function(id) {
+            var that = this;
             axios.get("/task/done/" + id)
                 .then(function(response) {
                     that.fetch();
                 });
         },
-        set_undone: function(e) {
-            var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
+        set_undone: function(id) {
+            var that = this;
             axios.get("/task/undone/" + id)
                 .then(function(response) {
                     that.fetch();
@@ -151,10 +151,8 @@ var body_main = new Vue({
         openSetting: function(){
             $("#settingDialogPanel").modal();
         },
-        show_task_detail: function(e){
-//            var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
-            var task_con = e.currentTarget.innerHTML;
-            this.task_con_for_show = task_con;
+        show_task_detail: function(con){
+            this.task_con_for_show = con;
             $("#task_detail").modal();
         }
     },

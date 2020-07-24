@@ -76,28 +76,28 @@
                     <table class="table table-condensed table-hover">
                         <thead>
                         <tr>
+                            <th></th>
                             <th>id</th>
                             <th>title</th>
                             <th>task</th>
                             <th>device</th>
                             <th>create time</th>
                             <th v-if="task_list_done_show">done</th>
-                            <th>operate</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="item in tasks" v-if=" task_list_done_show || !item.readDone ">
+                            <td>
+                                <a v-if="item.readDone" v-on:click='set_undone($event)' href="#">set
+                                    unDone</a>
+                                <a v-else v-on:click='set_done($event)' href="#">set done</a>
+                            </td>
                             <td>{{ item.id }}</td>
                             <td>{{ item.title }}</td>
                             <td>{{ item.con }}</td>
                             <td>{{ item.deviceName }}</td>
                             <td>{{ FormatDateTime(item.createTime) }}</td>
                             <td v-if="task_list_done_show">{{ item.readDone }}</td>
-                            <td>
-                                <a v-if="item.readDone" v-on:click='set_undone($event)' href="#">set
-                                    unDone</a>
-                                <a v-else v-on:click='set_done($event)' href="#">set done</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -112,8 +112,6 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <legend>Api List</legend>
-<!--                <button type="button" class="btn btn-danger" v-on:click="api_list_show=!api_list_show">show/hide-->
-<!--                </button>-->
                 <div>
                     <table class="table table-bordered table-hover" id="api_list_table">
                         <thead>

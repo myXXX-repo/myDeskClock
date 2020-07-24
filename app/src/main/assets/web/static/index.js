@@ -145,7 +145,9 @@ var body_main = new Vue({
             localStorage.setItem('task_default_title',this.task_title);
             // 保存 device name
             localStorage.setItem('device_name',this.device);
-            alert('saved');
+        },
+        openSetting: function(){
+            $("#settingDialogPanel").modal();
         }
     },
     created() {

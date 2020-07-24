@@ -25,6 +25,8 @@ var body_main = new Vue({
         task: '',
         device: localStorage.getItem('device_name'),
 
+        task_con_for_show: '',
+
         task_list_done_show: toBool(localStorage.getItem('task_list_done_show')),
         tasks: [],
 
@@ -148,6 +150,12 @@ var body_main = new Vue({
         },
         openSetting: function(){
             $("#settingDialogPanel").modal();
+        },
+        show_task_detail: function(e){
+//            var id = e.currentTarget.parentElement.parentElement.firstElementChild.innerHTML;
+            var task_con = e.currentTarget.innerHTML;
+            this.task_con_for_show = task_con;
+            $("#task_detail").modal();
         }
     },
     created() {

@@ -31,6 +31,7 @@ public class TaskRepository {
         new DeleteAllAsyncTask(taskDao).execute();
     }
     public List<Task> getAll() {return taskDao.getAll();}
+    public List<Task> getNotDoneAll(){return taskDao.getNotDoneAll();}
     public Task getById(int taskId) {return taskDao.getById(taskId);}
 
     public LiveData<List<Task>> getAllLive(){

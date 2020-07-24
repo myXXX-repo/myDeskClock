@@ -50,6 +50,22 @@ public class TaskController {
     }
 
     /**
+     * @path /task/get/undone
+     * @describe to get all tasks
+     * @method GET
+     * */
+    @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    String get_task_undone(Context context) {
+        if(null == taskRepository){
+            taskRepository = new TaskRepository(context);
+        }
+        List<Task> tasks = taskRepository.getNotDoneAll();
+        Log.d(TAG, "get_task_not_: "+tasks.size());
+        return ReturnDataUtils.successfulJson(tasks);
+    }
+
+
+    /**
      * @path /task/delete/{taskId}
      * @describe delete task by id
      * @method DELETE
@@ -110,6 +126,23 @@ public class TaskController {
         }
         Task task = taskRepository.getById(taskId);
         task.setReadDone(true);
+        taskRepository.update(task);
+        return ReturnDataUtils.successfulJson("set task done successful "+taskId);
+    }
+
+    /**
+     * @path /task/undone/{taskId}
+     * @describe set task done by id
+     * @method GET
+     * */
+    @GetMapping(path = "/undone/{taskId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    String set_task_undone_id(Context context,
+                            @PathVariable(name="taskId")int taskId){
+        if(null == taskRepository){
+            taskRepository = new TaskRepository(context);
+        }
+        Task task = taskRepository.getById(taskId);
+        task.setReadDone(false);
         taskRepository.update(task);
         return ReturnDataUtils.successfulJson("set task done successful "+taskId);
     }

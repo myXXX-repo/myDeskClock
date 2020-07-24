@@ -34,4 +34,7 @@ public interface TaskDao {
 
     @Query("SELECT * FROM Task ORDER BY ID DESC")
     List<Task> getAll();
+
+    @Query("SELECT * FROM Task WHERE done = 0 ORDER BY ID DESC")
+    List<Task> getNotDoneAll();
 }

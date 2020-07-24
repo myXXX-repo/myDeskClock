@@ -164,6 +164,11 @@ var body_main = new Vue({
         show_task_detail: function(con){
             this.task_con_for_show = con;
             $("#task_detail").modal();
+        },
+        setUnInit: function(){
+            localStorage.setItem('inited', 0);
+            alert('Set UnInit Done\nPage Will ReFresh');
+            location.reload();
         }
     },
     created() {

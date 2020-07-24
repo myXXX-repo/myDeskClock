@@ -23,7 +23,7 @@ public class NotifyController {
             @RequestParam(value = "device",defaultValue = "default device",required = false) final String DEVICE,
             @RequestParam(value = "title",defaultValue = "default title",required = false) final String TITLE,
             @RequestParam(value = "notify",defaultValue = "blank notify") final String NOTIFY){
-        Log.d(TAG, "notify_new: "+NOTIFY);
+//        Log.d(TAG, "notify_new: "+NOTIFY);
         Bundle bundle = new Bundle();
         bundle.putString("DEVICE",DEVICE);
         bundle.putString("TITLE",TITLE);

@@ -13,6 +13,7 @@ let init = function() {
         localStorage.setItem('task_list_done_show', false);
         localStorage.setItem('task_default_title', 'default title');
         localStorage.setItem('device_name', 'default device');
+        localStorage.setItem('task_list_get_undone_only',true);
     }
 }
 
@@ -26,6 +27,7 @@ var body_main = new Vue({
         device: localStorage.getItem('device_name'),
 
         task_con_for_show: 'blank',
+        task_list_get_undone_only: toBool(localStorage.getItem('task_list_get_undone_only')),
 
         task_list_done_show: toBool(localStorage.getItem('task_list_done_show')),
         tasks: [],
@@ -103,8 +105,14 @@ var body_main = new Vue({
             });
         },
         fetch: function() {
+            var address = '/task/get/';
+            if(this.task_list_get_undone_only){
+                address+='undone';
+            }else{
+                address+='all';
+            }
             that = this
-            axios.get("/task/get/all")
+            axios.get(address)
                 .then(function(response) {
                     that.tasks = response.data.data;
                 });
@@ -147,6 +155,8 @@ var body_main = new Vue({
             localStorage.setItem('task_default_title',this.task_title);
             // 保存 device name
             localStorage.setItem('device_name',this.device);
+            // 保存 是否只获取un done items
+            localStorage.setItem('task_list_get_undone_only',this.task_list_get_undone_only);
         },
         openSetting: function(){
             $("#settingDialogPanel").modal();

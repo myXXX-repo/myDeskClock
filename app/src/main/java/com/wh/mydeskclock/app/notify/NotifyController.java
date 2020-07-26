@@ -17,27 +17,39 @@ import com.yanzhenjie.andserver.util.MediaType;
 public class NotifyController {
     private NotifyRepository notifyRepository;
 
-    String TAG = "WH_"+NotifyController.class.getSimpleName();
-        @GetMapping(value = "/",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    String TAG = "WH_" + NotifyController.class.getSimpleName();
+
+    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_new(final Context context,
-            @RequestParam(value = "device",defaultValue = "default device",required = false) final String DEVICE,
-            @RequestParam(value = "title",defaultValue = "default title",required = false) final String TITLE,
-            @RequestParam(value = "notify",defaultValue = "blank notify") final String NOTIFY){
-//        Log.d(TAG, "notify_new: "+NOTIFY);
+                             @RequestParam(value = "device", defaultValue = "default device", required = false) final String DEVICE,
+                             @RequestParam(value = "title", defaultValue = "default title", required = false) final String TITLE,
+                             @RequestParam(value = "notify", defaultValue = "blank notify") final String NOTIFY) {
         Bundle bundle = new Bundle();
-        bundle.putString("DEVICE",DEVICE);
-        bundle.putString("TITLE",TITLE);
-        bundle.putString("NOTIFY",NOTIFY);
+        bundle.putString("DEVICE", DEVICE);
+        bundle.putString("TITLE", TITLE);
+        bundle.putString("NOTIFY", NOTIFY);
         Intent intent = new Intent();
         intent.setAction("showNotify");
-        intent.putExtra("extra",bundle);
+        intent.putExtra("extra", bundle);
         context.sendBroadcast(intent);
 
-        if(notifyRepository==null){
+        if (notifyRepository == null) {
             notifyRepository = new NotifyRepository(context);
         }
 
-        notifyRepository.insert(new Notify(NOTIFY,TITLE,DEVICE));
+        notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
         return ReturnDataUtils.successfulJson("notify received");
     }
+
+    @GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String notify_get_all(final Context context) {
+
+        if (notifyRepository == null) {
+            notifyRepository = new NotifyRepository(context);
+        }
+
+        return ReturnDataUtils.successfulJson(notifyRepository.getAll());
+    }
+
+
 }

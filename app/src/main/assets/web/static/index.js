@@ -172,6 +172,16 @@ var body_main = new Vue({
             localStorage.setItem('inited', 0);
             alert('Set UnInit Done\nPage Will ReFresh');
             location.reload();
+        },
+        resetTitle: function(){
+            this.task_title = localStorage.getItem("task_default_title");
+        },
+        help: function(){
+            var a = "1.提交和获取task条目过程使用的是纯正的ajax技术，因此可以实现无刷新更新数据\n";
+            var b = "2.点击Send Task中 ‘title’ 文字，可以重置输入的值\n";
+            var c = "3.类比上一条，点击task相应位置，清空task输入框\n";
+            var d = "4.为了提高响应速度，减少资源浪费，建议开启 Only Get UnDone Task Items 设置项目\n";
+            alert(a+b+c+d);
         }
     },
     created() {

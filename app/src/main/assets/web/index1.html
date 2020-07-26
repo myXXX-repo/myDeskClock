@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-model="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myDeskClock-back yard</title>
+    <script src="/static/vue.js"></script>
+    <script src="/static/axios.min.js"></script>
+    <script src="/static/jquery.js"></script>
+    <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <link href="/static/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .body_main {
+            margin: 16px;
+        }
+
+        #send_task {
+            margin-bottom: 16px;
+        }
+
+        #api_list_table {
+            margin-top: 16px;
+        }
+
+        #api_list div div div,
+        #task_list div div div {
+            overflow-x: scroll;
+        }
+
+        .sticky_list_item:hover {
+            box-shadow: rgb(141, 185, 255) 0px 0px 4px;
+        }
+
+        .sticky_list_item_title {
+            font-size: 24px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            margin-left: 16px;
+            font-weight: 500;
+            line-height: 1.1;
+            font-family: inherit;
+            word-break: break-all;
+        }
+
+        .sticky_list_item_device {
+            margin: 0 0 10px;
+            margin-left: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            line-height: 1.42;
+            font-weight: 200;
+            word-break: break-all;
+        }
+
+        .sticky_list_item_time {
+            margin-left: 16px;
+        }
+
+        .sticky_list_item_con {
+            word-break: break-all;
+            margin-left: 16px;
+            width: 90%;
+        }
+    </style>
+</head>
+
+
+<body>
+<div id="page_main">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">myDeskClock Back Yard</a>
+        </div>
+
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li v-bind:class="panels.task.active"><a href="#" v-on:click='switchPanel("task")'>Task</a></li>
+                <li v-bind:class="panels.notify.active"><a href="#" v-on:click='switchPanel("notify")'>Notify</a></li>
+                <li v-bind:class="panels.sticky.active"><a href="#" v-on:click='switchPanel("sticky")'>Sticky</a></li>
+                <li v-bind:class="panels.remote_ctrl.active"><a href="#" v-on:click='switchPanel("remote_ctrl")'>RemoteCtrl</a></li>
+                <li v-bind:class="panels.settings.active"><a href="#" v-on:click='switchPanel("settings")'>Settings</a></li>
+            </ul>
+<!--            <form class="navbar-form navbar-left" role="search">-->
+<!--                <div class="form-group">-->
+<!--                    <input type="text" class="form-control" placeholder="Search">-->
+<!--                </div>-->
+<!--                <button type="submit" class="btn btn-default">Submit</button>-->
+<!--            </form>-->
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="body_main">
+        <div id="panel_task" v-if=' panels.task.active == "active" '>
+            <div id="send_task">
+                <div class="panel panel-primary panel-head" id="send_task_panel">
+                    <div class="panel-body">
+                        <legend>Send Task</legend>
+                        <div class="form-group">
+                            <label v-on:click='resetTitle'>title</label>
+                            <input type="text" class="form-control" v-model:value="task_title" placeholder="default title">
+                        </div>
+                        <div class="form-group">
+                            <label v-on:click=' task="" '>task (must exists)</label>
+                            <input type="text" class="form-control" v-model:value="task" placeholder="task content required" @keyup.enter="send()">
+                        </div>
+                        <div class="form-group">
+                            <label>device</label>
+                            <input type="text" class="form-control" v-model:value="device" placeholder="default device">
+                        </div>
+
+                        <button type="button" class="btn btn-primary" v-on:click="send()">Submit</button>
+                    </div>
+                </div>
+            </div>
+
+            <!--    // task list-->
+            <div id="task_list">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <legend>Task List</legend>
+                        <div>
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>id</th>
+                                    <th>title</th>
+                                    <th>task</th>
+                                    <th>device</th>
+                                    <th>create time</th>
+                                    <th v-if="task_list_done_show">done</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in tasks" v-if=" task_list_done_show || !item.readDone ">
+                                    <td>
+                                        <a v-if="item.readDone" v-on:click='set_undone(item.id)' href="#" v-bind:task_id="item.id">set
+                                            unDone</a>
+                                        <a v-else v-on:click='set_done(item.id)' href="#" v-bind:task_id="item.id">set done</a>
+                                    </td>
+                                    <td>{{ item.id }}</td>
+                                    <td>{{ item.title }}</td>
+                                    <td v-on:click='show_task_detail(item.con)'>{{ item.con }}</td>
+                                    <td>{{ item.deviceName }}</td>
+                                    <td>{{ FormatDateTime(item.createTime) }}</td>
+                                    <td v-if="task_list_done_show">{{ item.readDone }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+<!--            <button type="button" class="btn btn-danger" v-on:click='openSetting'>Settings</button>-->
+            <br/>
+            <br/>
+
+            <a href="/static/notify.py">click here to download python script for notify, may need right click and
+                save
+                as</a>
+        </div>
+
+        <div id="panel_notify" v-if=' panels.notify.active == "active" '>
+            notify
+        </div>
+
+        <div id="panel_sticky" v-if=' panels.sticky.active == "active" '>
+            sticky
+        </div>
+
+        <div id="panel_remote_ctrl" v-if=' panels.remote_ctrl.active == "active" '>
+            panel_remote_ctrl
+        </div>
+
+        <div id="panel_settings" v-if=' panels.settings.active == "active" '>
+            <div class="panel panel-danger">
+                <div class="panel-body">
+                    <div class="input-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="api_list_show">
+                                Show Api List
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="task_list_done_show">
+                                Show Done Task Items
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="task_list_get_undone_only">
+                                Only Get UnDone Task Items
+                            </label>
+                        </div>
+                        <label>
+                            Default Task Title <input type="text" class="form-control" v-model:value="task_title" title="">
+                        </label>
+                        <br />
+                        <label>
+                            Device Name <input type="text" class="form-control" v-model:value="device" title="">
+                        </label>
+                    </div>
+                    <br/>
+                    <button type="button" class="btn btn-danger" v-on:click='setUnInit'>Reset Data In Browser</button>
+                    <button type="button" class="btn btn-danger" v-on:click='help'>Usage</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click='save()'><span class="glyphicon glyphicon-floppy-disk"
+                                                                                                                 aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </div>
+
+            <!--    api list-->
+            <div id="api_list" v-if="api_list_show">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <legend>Api List</legend>
+                        <div>
+                            <table class="table table-bordered table-hover" id="api_list_table">
+                                <thead>
+                                <tr>
+                                    <th>app</th>
+                                    <th>path</th>
+                                    <th>method</th>
+                                    <th>describe</th>
+                                    <th>sample</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="item in apis">
+                                    <td>{{ item.app }}</td>
+                                    <td>{{ item.path }}</td>
+                                    <td>{{ item.method }}</td>
+                                    <td>{{ item.describe }}</td>
+                                    <td>{{ item.sample }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="settingDialogPanel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">设置</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="input-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="api_list_show">
+                                Show Api List
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="task_list_done_show">
+                                Show Done Task Items
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" v-model:value="task_list_get_undone_only">
+                                Only Get UnDone Task Items
+                            </label>
+                        </div>
+                        <label>
+                            Default Task Title <input type="text" class="form-control"
+                                                      v-model:value="task_title" title="">
+                        </label>
+                        <br/>
+                        <label>
+                            Device Name <input type="text" class="form-control" v-model:value="device"
+                                               title="">
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-danger" v-on:click='setUnInit'>Reset Data In Browser</button>
+                    <button type="button" class="btn btn-danger" v-on:click='help'>Usage</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="save()"><span class="glyphicon glyphicon-floppy-disk"
+                                                                                                                 aria-hidden="true"></span>保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="task_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">task detail</h4>
+                </div>
+                <div class="modal-body">
+                    <p style="max-width:95%;word-wrap:break-word;">{{ task_con_for_show }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/static/index1.js"></script>
+
+</html>

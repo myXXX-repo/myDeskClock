@@ -18,10 +18,31 @@ let init = function() {
 }
 
 init();
-
 new Vue({
-    el: '#panel_task',
+    el: "#page_main",
     data: {
+        panels: {
+            task: {
+                active: "active",
+                inited: true
+            },
+            notify: {
+                active: "",
+                inited: false
+            },
+            sticky: {
+                active: "",
+                inited: false
+            },
+            remote_ctrl: {
+                active: "",
+                inited: false
+            },
+            settings: {
+                active: "",
+                inited: false
+            }
+        },
         task_title: localStorage.getItem('task_default_title'),
         task: '',
         device: localStorage.getItem('device_name'),
@@ -99,7 +120,7 @@ new Vue({
             second = second < 10 ? ('0' + second) : second;
             return y + '-' + m + '-' + d + ' ' + h + ':' + minute + ':' + second;
         },
-        save: function() {
+        save: function(show) {
             // 保存api list 的配置
             localStorage.setItem('api_list_show', this.api_list_show);
             // 保存task list 的配置
@@ -110,6 +131,9 @@ new Vue({
             localStorage.setItem('device_name', this.device);
             // 保存 是否只获取un done items
             localStorage.setItem('task_list_get_undone_only', this.task_list_get_undone_only);
+            if(show=="1"){
+                alert("save done");
+            }
         },
         openSetting: function() {
             $("#settingDialogPanel").modal();
@@ -132,12 +156,26 @@ new Vue({
             var c = "3.类比上一条，点击task相应位置，清空task输入框\n";
             var d = "4.为了提高响应速度，减少资源浪费，建议开启 Only Get UnDone Task Items 设置项目\n";
             alert(a + b + c + d);
-        }
+        },
+        switchPanel: function(panelName) {
+            var active_status = {
+                task: "",
+                notify: "",
+                sticky: "",
+                remote_ctrl: "",
+                settings: ""
+            }
+            active_status[panelName] = "active";
+            Object.keys(active_status).forEach(element => {
+                this.panels[element].active = active_status[element];
+            });
+        },
     },
     created() {
         this.fetch();
-        axios.get("/static/api_list.json").then(function(response) {
-            that.apis = response.data;
+        var that = this;
+        axios.get("/static/api_list.json").then(function(response){
+        that.apis = response.data;
         });
     }
-});
+})

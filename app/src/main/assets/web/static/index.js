@@ -91,15 +91,18 @@ var body_main = new Vue({
                 alert("task can't be blank");
                 return;
             }
+            var that = this;
+            var task_tmp = this.task;
+            this.task = "";
             axios.get("/task/add", {
                 params: {
                     "title": this.task_title,
-                    "task": this.task,
+                    "task": task_tmp,
                     "device": this.device
                 }
             }).then(function(response) {
                 alert("ok");
-                location.reload();
+                that.fetch();
             }).catch(function(error) {
                 alert(error);
             });

@@ -1,9 +1,11 @@
 package com.wh.mydeskclock.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,4 +46,13 @@ public class UiUtils {
     public static void setScreenOR(AppCompatActivity mParent, int OR){
         mParent.setRequestedOrientation(OR);
     }
+
+    // 设置窗口屏幕亮度
+    public static void setWindowBrightness(Activity mParent, int brightness) {
+        Window window = mParent.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.screenBrightness = brightness / 255.0f;
+        window.setAttributes(lp);
+    }
+
 }

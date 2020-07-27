@@ -131,7 +131,7 @@ new Vue({
             localStorage.setItem('device_name', this.device);
             // 保存 是否只获取un done items
             localStorage.setItem('task_list_get_undone_only', this.task_list_get_undone_only);
-            if(show=="1"){
+            if (show == "1") {
                 alert("save done");
             }
         },
@@ -174,8 +174,8 @@ new Vue({
     created() {
         this.fetch();
         var that = this;
-        axios.get("/static/api_list.json").then(function(response){
-        that.apis = response.data;
+        axios.get("/static/api_list.json").then(function(response) {
+            that.apis = response.data;
         });
     }
 })

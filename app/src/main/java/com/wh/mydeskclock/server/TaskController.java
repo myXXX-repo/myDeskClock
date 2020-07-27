@@ -24,11 +24,82 @@ public class TaskController {
     String TAG = "WH_" + getClass().getSimpleName();
 
     public TaskController() {
-        ApiNode api_task_get_id = new ApiNode("task","/task/get/{taskId}","http://ip:port/task/get/11","","GET","taskId int","");
-        MainServer.apiList.add(api_task_get_id);
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/get/{taskId}",
+                "http://ip:port/task/get/11",
+                "get certain task item by id",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/get/all",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/get/undone",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/delete/{taskId}",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/delete/all",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/add",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/done/{taskId}",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
+                "/task/undone/{taskId}",
+                "http://ip:port/task/get/all",
+                "",
+                "GET",
+                "taskId int",
+                ""
+        ));
     }
 
     /**
+     * api 0
      * @path /task/get/{taskId}
      * @describe to get task by id
      * @method GET
@@ -40,6 +111,7 @@ public class TaskController {
     }
 
     /**
+     * api 1
      * @path /task/get/all
      * @describe to get all tasks
      * @method GET
@@ -52,6 +124,7 @@ public class TaskController {
     }
 
     /**
+     * api 2
      * @path /task/get/undone
      * @describe to get all tasks
      * @method GET
@@ -65,12 +138,13 @@ public class TaskController {
 
 
     /**
+     * api 3
+     * @param returnData 1 2
+     *                   1 返回全部task数据
+     *                   2 返回undone的task
      * @path /task/delete/{taskId}
      * @describe delete task by id
      * @method DELETE
-     * @param returnData 1 2
-     *               1 返回全部task数据
-     *               2 返回undone的task
      */
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_id(Context context, @PathVariable("taskId") int taskId,
@@ -78,13 +152,14 @@ public class TaskController {
         BaseApp.taskRepository.delete(new Task(taskId));
         if (returnData == 1) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
-        }else if(returnData==2){
+        } else if (returnData == 2) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("delete task done with id " + taskId);
     }
 
     /**
+     * api 4
      * @path = /task/delete/all
      * @describe delete all tasks
      * @method DELETE
@@ -96,12 +171,13 @@ public class TaskController {
     }
 
     /**
+     * api 5
+     * @param returnData 1 2
+     *                   1 返回全部task数据
+     *                   2 返回undone的task
      * @path = /task/add
      * @describe add task by get
      * @method GET
-     * @param returnData 1 2
-     *               1 返回全部task数据
-     *               2 返回undone的task
      */
     @GetMapping(path = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_task_with_get(
@@ -114,19 +190,20 @@ public class TaskController {
         BaseApp.taskRepository.insert(task);
         if (returnData == 1) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
-        }else if(returnData==2){
+        } else if (returnData == 2) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("add new task done");
     }
 
     /**
+     * api 6
+     * @param returnData 1 2
+     *                   1 返回全部task数据
+     *                   2 返回undone的task
      * @path /task/done/{taskId}
      * @describe set task done by id
      * @method GET
-     * @param returnData 1 2
-     *               1 返回全部task数据
-     *               2 返回undone的task
      */
     @GetMapping(path = "/done/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_done_id(Context context,
@@ -137,19 +214,20 @@ public class TaskController {
         BaseApp.taskRepository.update(task);
         if (returnData == 1) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
-        }else if(returnData==2){
+        } else if (returnData == 2) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
 
     /**
+     * api 7
+     * @param returnData 1 2
+     *                   1 返回全部task数据
+     *                   2 返回undone的数据
      * @path /task/undone/{taskId}
      * @describe set task done by id
      * @method GET
-     * @param returnData 1 2
-     *               1 返回全部task数据
-     *               2 返回undone的数据
      */
     @GetMapping(path = "/undone/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_undone_id(Context context,
@@ -160,7 +238,7 @@ public class TaskController {
         BaseApp.taskRepository.update(task);
         if (returnData == 1) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
-        }else if(returnData==2){
+        } else if (returnData == 2) {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);

@@ -1,77 +1,77 @@
 package com.wh.mydeskclock.utils;
 
 public class ApiNode {
-    String APP;
-    String PATH;
-    String USAGE;
-    String DESCRIBE;
-    String METHOD;
-    String PATH_VARIABLE;
-    String PARAM;
+    String app;
+    String path;
+    String usage;
+    String describe;
+    String method;
+    String path_variable;
+    String param;
 
-    public ApiNode(String APP, String PATH, String USAGE, String DESCRIBE, String METHOD, String PATH_VARIABLE, String PARAM) {
-        this.APP = APP;
-        this.PATH = PATH;
-        this.USAGE = USAGE;
-        this.DESCRIBE = DESCRIBE;
-        this.METHOD = METHOD;
-        this.PATH_VARIABLE = PATH_VARIABLE;
-        this.PARAM = PARAM;
+    public ApiNode(String app, String path, String usage, String describe, String method, String path_variable, String param) {
+        this.app = app;
+        this.path = path;
+        this.usage = usage;
+        this.describe = describe;
+        this.method = method;
+        this.path_variable = path_variable;
+        this.param = param;
     }
 
-    public String getAPP() {
-        return APP;
+    public String getApp() {
+        return app;
     }
 
-    public void setAPP(String APP) {
-        this.APP = APP;
+    public void setApp(String app) {
+        this.app = app;
     }
 
-    public String getPATH() {
-        return PATH;
+    public String getPath() {
+        return path;
     }
 
-    public void setPATH(String PATH) {
-        this.PATH = PATH;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public String getUSAGE() {
-        return USAGE;
+    public String getUsage() {
+        return usage;
     }
 
-    public void setUSAGE(String USAGE) {
-        this.USAGE = USAGE;
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
 
-    public String getDESCRIBE() {
-        return DESCRIBE;
+    public String getDescribe() {
+        return describe;
     }
 
-    public void setDESCRIBE(String DESCRIBE) {
-        this.DESCRIBE = DESCRIBE;
+    public void setDescribe(String describe) {
+        this.describe = describe;
     }
 
-    public String getMETHOD() {
-        return METHOD;
+    public String getMethod() {
+        return method;
     }
 
-    public void setMETHOD(String METHOD) {
-        this.METHOD = METHOD;
+    public void setMethod(String method) {
+        this.method = method;
     }
 
-    public String getPATH_VARIABLE() {
-        return PATH_VARIABLE;
+    public String getPath_variable() {
+        return path_variable;
     }
 
-    public void setPATH_VARIABLE(String PATH_VARIABLE) {
-        this.PATH_VARIABLE = PATH_VARIABLE;
+    public void setPath_variable(String path_variable) {
+        this.path_variable = path_variable;
     }
 
-    public String getPARAM() {
-        return PARAM;
+    public String getParam() {
+        return param;
     }
 
-    public void setPARAM(String PARAM) {
-        this.PARAM = PARAM;
+    public void setParam(String param) {
+        this.param = param;
     }
 }

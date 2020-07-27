@@ -16,7 +16,6 @@ import com.yanzhenjie.andserver.util.MediaType;
 @RestController
 @RequestMapping("/notify")
 public class NotifyController {
-//    private NotifyRepository notifyRepository;
 
     String TAG = "WH_" + NotifyController.class.getSimpleName();
 
@@ -33,22 +32,12 @@ public class NotifyController {
         intent.setAction("showNotify");
         intent.putExtra("extra", bundle);
         context.sendBroadcast(intent);
-
-//        if (notifyRepository == null) {
-//            notifyRepository = new NotifyRepository(context);
-//        }
-
         BaseApp.notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
         return ReturnDataUtils.successfulJson("notify received");
     }
 
     @GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_get_all(final Context context) {
-
-//        if (notifyRepository == null) {
-//            notifyRepository = new NotifyRepository(context);
-//        }
-
         return ReturnDataUtils.successfulJson(BaseApp.notifyRepository.getAll());
     }
 

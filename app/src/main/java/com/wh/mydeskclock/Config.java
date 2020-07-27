@@ -1,5 +1,10 @@
 package com.wh.mydeskclock;
 
+import com.wh.mydeskclock.utils.ApiNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Config {
     public static class SharedPreferenceKey {
         public static final String SHARED_PREFERENCE_NAME = "SHARED_PREFERENCE_NAME";
@@ -34,4 +39,6 @@ public class Config {
         public static final String SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = "setting_http_server_enable_http_server";
         public static final String SETTING_HTTP_SERVER_PORT = "setting_http_server_port";
     }
+
+    public static List<ApiNode> HttpServerApis = new ArrayList<>();
 }

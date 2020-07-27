@@ -3,7 +3,10 @@ package com.wh.mydeskclock.app.task;
 import android.content.Context;
 import android.util.Log;
 
+import com.wh.mydeskclock.Config;
+import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
+import com.yanzhenjie.andserver.annotation.Controller;
 import com.yanzhenjie.andserver.annotation.DeleteMapping;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
@@ -19,6 +22,11 @@ import java.util.List;
 public class TaskController {
     String TAG = "WH_" + getClass().getSimpleName();
     private TaskRepository taskRepository;
+
+    public TaskController() {
+        ApiNode api_task_get_id = new ApiNode("task","/task/get/{taskId}","http://ip:port/task/get/11","","GET","taskId int","");
+        Config.HttpServerApis.add(api_task_get_id);
+    }
 
     /**
      * @path /task/get/{taskId}

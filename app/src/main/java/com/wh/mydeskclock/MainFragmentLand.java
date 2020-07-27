@@ -62,11 +62,19 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     private boolean SETTING_TASK_HIDE_DONE;
     private FragmentManager fragmentManager;
 
+    public static AppCompatActivity mParent;
+
     private int FlashDistanceTime = 100;
     private boolean SETTING_UI_AUTO_FLASH_SCREEN;
 
     public MainFragmentLand() {
         super.setTAG("WH_" + getClass().getSimpleName());
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mParent = (AppCompatActivity) context;
     }
 
     @Nullable
@@ -322,5 +330,9 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                 }
             }
         }
+    }
+
+    public static void setBrightness(int b){
+        UiUtils.setWindowBrightness(mParent,b);
     }
 }

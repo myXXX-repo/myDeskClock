@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wh.mydeskclock.Config;
+import com.wh.mydeskclock.App;
+import com.wh.mydeskclock.SharedPreferenceUtils;
 import com.wh.mydeskclock.R;
 
 import java.util.List;
@@ -37,7 +36,6 @@ public class TaskListFragment extends Fragment {
 
     private BroadcastReceiver taskReceiver;
     private boolean SETTING_TASK_HIDE_DONE;
-    private SharedPreferences sharedPreferences;
     private LiveData<List<Task>> allTasksLive;
 
     @Override
@@ -49,8 +47,7 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
+        SETTING_TASK_HIDE_DONE = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_TASK_HIDE_DONE, true);
     }
 
     @Override
@@ -109,23 +106,6 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
-//        if (SETTING_TASK_HIDE_DONE) {
-//            allTasksLive = taskListViewModel.getAllNotDoneLive();
-//        } else {
-//            allTasksLive = taskListViewModel.getAllLive();
-//        }
-//        allTasksLive.observe(getViewLifecycleOwner(), new Observer<List<Task>>() {
-//            @Override
-//            public void onChanged(List<Task> tasks) {
-//                int count = taskListAdapter.getItemCount();
-//                allTasks = tasks;
-//                if (count != allTasks.size()) {
-//                    taskListAdapter.submitList(tasks);
-//                    rv_notify.smoothScrollBy(0, -200);
-//                }
-//            }
-//        });
     }
 
     @Override

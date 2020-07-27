@@ -1,7 +1,6 @@
 package com.wh.mydeskclock.utils;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.view.View;
 import android.view.Window;
@@ -9,7 +8,10 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.wh.mydeskclock.SharedPreferenceUtils;
+
 public class UiUtils {
+
     public static int getHideSystemUIFlags() {
         return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -53,6 +55,16 @@ public class UiUtils {
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.screenBrightness = brightness / 255.0f;
         window.setAttributes(lp);
+    }
+
+    public static void setLightOn(Activity mParent){
+        setWindowBrightness(mParent,1);
+        Utils.pf_coast_int_add(SharedPreferenceUtils.sp_coast.COAST_LIGHT_ON);
+    }
+
+    public static void setLightOff(Activity mParent){
+        setWindowBrightness(mParent,0);
+        Utils.pf_coast_int_add(SharedPreferenceUtils.sp_coast.COAST_LIGHT_OFF);
     }
 
 }

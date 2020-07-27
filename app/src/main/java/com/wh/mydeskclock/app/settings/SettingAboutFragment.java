@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.wh.mydeskclock.Config;
+import com.wh.mydeskclock.SharedPreferenceUtils;
 import com.wh.mydeskclock.widget.MyDialog;
 import com.wh.mydeskclock.R;
 
@@ -22,9 +22,9 @@ public class SettingAboutFragment extends PreferenceFragmentCompat {
     @Override
     public boolean onPreferenceTreeClick(final Preference preference) {
         switch (preference.getKey()){
-            case Config.DefaultSharedPreferenceKey.SETTING_ABOUT_ME_GITHUB:{}
-            case Config.DefaultSharedPreferenceKey.SETTING_ABOUT_ME_COOLAPK:{}
-            case Config.DefaultSharedPreferenceKey.SETTING_ABOUT_GOTO_APP_COOLAPK:{
+            case SharedPreferenceUtils.sp_default.SETTING_ABOUT_ME_GITHUB:{}
+            case SharedPreferenceUtils.sp_default.SETTING_ABOUT_ME_COOLAPK:{}
+            case SharedPreferenceUtils.sp_default.SETTING_ABOUT_GOTO_APP_COOLAPK:{
                 AlertDialog.Builder builder = new AlertDialog.Builder(requireContext())
                         .setTitle("Navigation Alert")
                         .setMessage("Open URL "+preference.getSummary()+" with browser")

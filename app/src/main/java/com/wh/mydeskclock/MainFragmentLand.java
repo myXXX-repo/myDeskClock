@@ -1,13 +1,11 @@
 package com.wh.mydeskclock;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +22,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
 import com.wh.mydeskclock.app.notify.NotifyFragment;
@@ -54,7 +51,6 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     private FrameLayout fl_media_ctrl;
     private FrameLayout fl_task;
     private MyHandler myHandler;
-    private SharedPreferences sharedPreferences;
     private boolean SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER;
     private boolean SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL;
     private int SETTING_HTTP_SERVER_PORT = 0;
@@ -93,12 +89,12 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     @Override
     public void onResume() {
         super.onResume();
-        SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(sharedPreferences.getString(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_PORT, "8081")));
-        SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER, true);
-        SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
-        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
-        SETTING_UI_AUTO_FLASH_SCREEN = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_AUTO_FLASH_SCREEN,false);
-        if (SETTING_TASK_HIDE_DONE != sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true)) {
+        SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(App.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT, "8081")));
+        SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER, true);
+        SETTING_UI_SHOW_SERVER_ADDRESS = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_SHOW_SERVER_ADDRESS, true);
+        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
+        SETTING_UI_AUTO_FLASH_SCREEN = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_AUTO_FLASH_SCREEN,false);
+        if (SETTING_TASK_HIDE_DONE != App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_TASK_HIDE_DONE, true)) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fl_task,new TaskListFragment()).commit();
         }
@@ -170,13 +166,12 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     @SuppressLint("SetTextI18n")
     private void init() {
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(sharedPreferences.getString(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_PORT, "8081")));
-        SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER, true);
-        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
-        SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
-        SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
-        SETTING_UI_AUTO_FLASH_SCREEN = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_AUTO_FLASH_SCREEN,false);
+        SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(App.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT, "8081")));
+        SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER, true);
+        SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
+        SETTING_UI_SHOW_SERVER_ADDRESS = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_SHOW_SERVER_ADDRESS, true);
+        SETTING_TASK_HIDE_DONE = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_TASK_HIDE_DONE, true);
+        SETTING_UI_AUTO_FLASH_SCREEN = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_AUTO_FLASH_SCREEN,false);
 
         if (SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER) {
             requireContext().startService(new Intent(requireContext(), MainService.class));

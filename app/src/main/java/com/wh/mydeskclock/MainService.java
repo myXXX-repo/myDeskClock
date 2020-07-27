@@ -1,7 +1,6 @@
 package com.wh.mydeskclock;
 
 
-import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -50,7 +49,7 @@ public class MainService extends Service {
         super.onCreate();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SETTING_HTTP_SERVER_PORT = Integer.parseInt(sharedPreferences.getString(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_PORT,"8081"));
+        SETTING_HTTP_SERVER_PORT = Integer.parseInt(sharedPreferences.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT,"8081"));
         URL = "http:/" + NetUtils.getLocalIPAddress() + ":" + SETTING_HTTP_SERVER_PORT;
         Log.d(TAG, "onCreate: "+URL);
         mainServer = new MainServer(this, SETTING_HTTP_SERVER_PORT);

@@ -3,10 +3,11 @@ package com.wh.mydeskclock.app.task;
 import android.content.Context;
 import android.util.Log;
 
-import com.wh.mydeskclock.Config;
+import com.wh.mydeskclock.App;
+import com.wh.mydeskclock.SharedPreferenceUtils;
+import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
-import com.yanzhenjie.andserver.annotation.Controller;
 import com.yanzhenjie.andserver.annotation.DeleteMapping;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
@@ -21,11 +22,10 @@ import java.util.List;
 @RequestMapping("/task")
 public class TaskController {
     String TAG = "WH_" + getClass().getSimpleName();
-    private TaskRepository taskRepository;
 
     public TaskController() {
         ApiNode api_task_get_id = new ApiNode("task","/task/get/{taskId}","http://ip:port/task/get/11","","GET","taskId int","");
-        Config.HttpServerApis.add(api_task_get_id);
+        MainServer.apiList.add(api_task_get_id);
     }
 
     /**
@@ -35,10 +35,7 @@ public class TaskController {
      */
     @GetMapping(path = "/get/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_id(Context context, @PathVariable("taskId") int taskId) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        Task task = taskRepository.getById(taskId);
+        Task task = App.taskRepository.getById(taskId);
         return ReturnDataUtils.successfulJson(task);
     }
 
@@ -49,10 +46,7 @@ public class TaskController {
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_all(Context context) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        List<Task> tasks = taskRepository.getAll();
+        List<Task> tasks = App.taskRepository.getAll();
         Log.d(TAG, "get_task_all: " + tasks.size());
         return ReturnDataUtils.successfulJson(tasks);
     }
@@ -64,10 +58,7 @@ public class TaskController {
      */
     @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_undone(Context context) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        List<Task> tasks = taskRepository.getNotDoneAll();
+        List<Task> tasks = App.taskRepository.getNotDoneAll();
         Log.d(TAG, "get_task_not_: " + tasks.size());
         return ReturnDataUtils.successfulJson(tasks);
     }
@@ -84,15 +75,11 @@ public class TaskController {
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_id(Context context, @PathVariable("taskId") int taskId,
                           @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
-        // delete task by id
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        taskRepository.delete(new Task(taskId));
+        App.taskRepository.delete(new Task(taskId));
         if (returnData == 1) {
-            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getAll());
         }else if(returnData==2){
-            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("delete task done with id " + taskId);
     }
@@ -104,10 +91,7 @@ public class TaskController {
      */
     @DeleteMapping(path = "/delete/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_all(Context context) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        taskRepository.deleteAll();
+        App.taskRepository.deleteAll();
         return ReturnDataUtils.successfulJson("delete all task done");
     }
 
@@ -126,15 +110,12 @@ public class TaskController {
             @RequestParam(name = "device", required = false, defaultValue = "default device") String DEVICE,
             @RequestParam(name = "title", required = false, defaultValue = "default title") String TITLE,
             @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
         Task task = new Task(TASK, TITLE, DEVICE);
-        taskRepository.insert(task);
+        App.taskRepository.insert(task);
         if (returnData == 1) {
-            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getAll());
         }else if(returnData==2){
-            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("add new task done");
     }
@@ -151,16 +132,13 @@ public class TaskController {
     String set_task_done_id(Context context,
                             @PathVariable(name = "taskId") int taskId,
                             @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        Task task = taskRepository.getById(taskId);
+        Task task = App.taskRepository.getById(taskId);
         task.setReadDone(true);
-        taskRepository.update(task);
+        App.taskRepository.update(task);
         if (returnData == 1) {
-            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getAll());
         }else if(returnData==2){
-            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
@@ -177,16 +155,13 @@ public class TaskController {
     String set_task_undone_id(Context context,
                               @PathVariable(name = "taskId") int taskId,
                               @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
-        if (null == taskRepository) {
-            taskRepository = new TaskRepository(context);
-        }
-        Task task = taskRepository.getById(taskId);
+        Task task = App.taskRepository.getById(taskId);
         task.setReadDone(false);
-        taskRepository.update(task);
+        App.taskRepository.update(task);
         if (returnData == 1) {
-            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getAll());
         }else if(returnData==2){
-            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+            return ReturnDataUtils.successfulJson(App.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }

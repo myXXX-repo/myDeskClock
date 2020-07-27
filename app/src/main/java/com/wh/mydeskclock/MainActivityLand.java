@@ -1,20 +1,17 @@
 package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.wh.mydeskclock.utils.UiUtils;
+import com.wh.mydeskclock.utils.Utils;
 
 public class MainActivityLand extends BaseActivity {
     private boolean SETTING_UI_RE_LAND;
@@ -27,8 +24,7 @@ public class MainActivityLand extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_land);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SETTING_UI_RE_LAND = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_RE_LAND, false);
+        SETTING_UI_RE_LAND = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_RE_LAND, false);
 
         if (SETTING_UI_RE_LAND) {
             UiUtils.setScreenOR_LAND_RE(this);
@@ -53,7 +49,8 @@ public class MainActivityLand extends BaseActivity {
     }
 
     public static void flash(){
-        new Thread() {
+
+                new Thread() {
             @Override
             public void run() {
                 try {
@@ -64,6 +61,8 @@ public class MainActivityLand extends BaseActivity {
                     myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
                     sleep(500);
                     myHandler.sendEmptyMessage(MyHandler.WHAT_SET_GONE);
+
+                    Utils.pf_coast_int_add(SharedPreferenceUtils.sp_coast.COAST_FLASH_SCREEN);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

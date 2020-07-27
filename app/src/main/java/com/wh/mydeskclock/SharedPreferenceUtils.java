@@ -5,17 +5,15 @@ import com.wh.mydeskclock.utils.ApiNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Config {
-    public static class SharedPreferenceKey {
-        public static final String SHARED_PREFERENCE_NAME = "SHARED_PREFERENCE_NAME";
-        public static final String SPV_COAST_MINUTE = "SPV_COAST_MINUTE";
-        public static final String SPV_COAST_BATTERY = "SPV_COAST_BATTERY";
-        public static final String SPV_COAST_SCREEN_BRIGHT_SWITCH = "SPV_COAST_SCREEN_BRIGHT_SWITCH";
-        public static final String SPV_COAST_SCREEN_OR_SWITCH = "SPV_COAST_SCREEN_OR_SWITCH";
-        public static final String SPV_COAST_COLOR_SWITCH = "SPV_COAST_COLOR_SWITCH";
+public class SharedPreferenceUtils {
+    public static class sp_coast {
+        public static final String FILENAME = "COAST";
+        public static final String COAST_FLASH_SCREEN = "COAST_FLASH_SCREEN";
+        public static final String COAST_LIGHT_OFF = "COAST_LIGHT_OFF";
+        public static final String COAST_LIGHT_ON = "COAST_LIGHT_ON";
     }
 
-    public static class DefaultSharedPreferenceKey {
+    public static class sp_default {
         // Setting UI
         public static final String SETTING_UI_SHOW_SERVER_ADDRESS = "setting_ui_show_server_address";
         public static final String SETTING_UI_RE_LAND = "setting_ui_re_land";
@@ -40,5 +38,5 @@ public class Config {
         public static final String SETTING_HTTP_SERVER_PORT = "setting_http_server_port";
     }
 
-    public static List<ApiNode> HttpServerApis = new ArrayList<>();
+//    public static List<ApiNode> HttpServerApis = new ArrayList<>();
 }

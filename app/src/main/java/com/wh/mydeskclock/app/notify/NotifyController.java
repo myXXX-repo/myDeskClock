@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.wh.mydeskclock.App;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import com.yanzhenjie.andserver.util.MediaType;
 @RestController
 @RequestMapping("/notify")
 public class NotifyController {
-    private NotifyRepository notifyRepository;
+//    private NotifyRepository notifyRepository;
 
     String TAG = "WH_" + NotifyController.class.getSimpleName();
 
@@ -33,22 +34,22 @@ public class NotifyController {
         intent.putExtra("extra", bundle);
         context.sendBroadcast(intent);
 
-        if (notifyRepository == null) {
-            notifyRepository = new NotifyRepository(context);
-        }
+//        if (notifyRepository == null) {
+//            notifyRepository = new NotifyRepository(context);
+//        }
 
-        notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
+        App.notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
         return ReturnDataUtils.successfulJson("notify received");
     }
 
     @GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_get_all(final Context context) {
 
-        if (notifyRepository == null) {
-            notifyRepository = new NotifyRepository(context);
-        }
+//        if (notifyRepository == null) {
+//            notifyRepository = new NotifyRepository(context);
+//        }
 
-        return ReturnDataUtils.successfulJson(notifyRepository.getAll());
+        return ReturnDataUtils.successfulJson(App.notifyRepository.getAll());
     }
 
 

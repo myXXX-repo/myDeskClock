@@ -1,7 +1,6 @@
 package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -11,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.wh.mydeskclock.utils.Utils;
 
 public class MainActivityPort extends BaseActivity {
     private View v_cover;
@@ -54,6 +55,8 @@ public class MainActivityPort extends BaseActivity {
                     myHandler.sendEmptyMessage(MyHandler.WHAT_SET_WHITE);
                     sleep(500);
                     myHandler.sendEmptyMessage(MyHandler.WHAT_SET_GONE);
+
+                    Utils.pf_coast_int_add(SharedPreferenceUtils.sp_coast.COAST_FLASH_SCREEN);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

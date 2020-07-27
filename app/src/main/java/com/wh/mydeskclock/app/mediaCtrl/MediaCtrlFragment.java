@@ -1,19 +1,18 @@
 package com.wh.mydeskclock.app.mediaCtrl;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.wh.mydeskclock.Config;
+import com.wh.mydeskclock.App;
+import com.wh.mydeskclock.SharedPreferenceUtils;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.MediaUtils;
 
@@ -23,14 +22,14 @@ public class MediaCtrlFragment extends Fragment {
     private ConstraintLayout cl_media_ctrl_info;
     private boolean isCLShow = true;
     private boolean SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO;
-    private SharedPreferences sharedPreferences;
+//    private SharedPreferences sharedPreferences;
     private ImageView iv_mini_mode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
+//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
     }
 
     @Override
@@ -100,7 +99,7 @@ public class MediaCtrlFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
+        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
         if (SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO) {
             if (iv_mini_mode != null) {
                 iv_mini_mode.setVisibility(View.VISIBLE);

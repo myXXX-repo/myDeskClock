@@ -3,11 +3,8 @@ package com.wh.mydeskclock.app.settings;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceManager;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wh.mydeskclock.BaseActivity;
-import com.wh.mydeskclock.Config;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.UiUtils;
 

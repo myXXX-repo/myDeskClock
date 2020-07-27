@@ -17,10 +17,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 public class TaskController {
-    String TAG= "WH_"+ getClass().getSimpleName();
+    String TAG = "WH_" + getClass().getSimpleName();
     private TaskRepository taskRepository;
-
-    // todo 为可能需要操作后获取更新的api增加一个参数 @return bool
 
     /**
      * @path /task/get/{taskId}
@@ -28,8 +26,8 @@ public class TaskController {
      * @method GET
      */
     @GetMapping(path = "/get/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_task_id(Context context,@PathVariable("taskId") int taskId) {
-        if(null == taskRepository){
+    String get_task_id(Context context, @PathVariable("taskId") int taskId) {
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         Task task = taskRepository.getById(taskId);
@@ -40,14 +38,14 @@ public class TaskController {
      * @path /task/get/all
      * @describe to get all tasks
      * @method GET
-     * */
+     */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_all(Context context) {
-        if(null == taskRepository){
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         List<Task> tasks = taskRepository.getAll();
-        Log.d(TAG, "get_task_all: "+tasks.size());
+        Log.d(TAG, "get_task_all: " + tasks.size());
         return ReturnDataUtils.successfulJson(tasks);
     }
 
@@ -55,14 +53,14 @@ public class TaskController {
      * @path /task/get/undone
      * @describe to get all tasks
      * @method GET
-     * */
+     */
     @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_undone(Context context) {
-        if(null == taskRepository){
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         List<Task> tasks = taskRepository.getNotDoneAll();
-        Log.d(TAG, "get_task_not_: "+tasks.size());
+        Log.d(TAG, "get_task_not_: " + tasks.size());
         return ReturnDataUtils.successfulJson(tasks);
     }
 
@@ -71,14 +69,23 @@ public class TaskController {
      * @path /task/delete/{taskId}
      * @describe delete task by id
      * @method DELETE
-     * */
+     * @param return 1 2
+     *               1 返回全部task数据
+     *               2 返回undone的task
+     */
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String delete_task_id(Context context,@PathVariable("taskId") int taskId) {
+    String delete_task_id(Context context, @PathVariable("taskId") int taskId,
+                          @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
         // delete task by id
-        if(null == taskRepository){
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         taskRepository.delete(new Task(taskId));
+        if (returnData == 1) {
+            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+        }else if(returnData==2){
+            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+        }
         return ReturnDataUtils.successfulJson("delete task done with id " + taskId);
     }
 
@@ -86,10 +93,10 @@ public class TaskController {
      * @path = /task/delete/all
      * @describe delete all tasks
      * @method DELETE
-     * */
+     */
     @DeleteMapping(path = "/delete/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_all(Context context) {
-        if(null == taskRepository){
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         taskRepository.deleteAll();
@@ -100,18 +107,27 @@ public class TaskController {
      * @path = /task/add
      * @describe add task by get
      * @method GET
-     * */
+     * @param return 1 2
+     *               1 返回全部task数据
+     *               2 返回undone的task
+     */
     @GetMapping(path = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_task_with_get(
             Context context,
             @RequestParam(name = "task", required = true) String TASK,
             @RequestParam(name = "device", required = false, defaultValue = "default device") String DEVICE,
-            @RequestParam(name = "title", required = false, defaultValue = "default title") String TITLE) {
-        if(null == taskRepository){
+            @RequestParam(name = "title", required = false, defaultValue = "default title") String TITLE,
+            @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
-        Task task = new Task(TASK,TITLE,DEVICE);
+        Task task = new Task(TASK, TITLE, DEVICE);
         taskRepository.insert(task);
+        if (returnData == 1) {
+            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+        }else if(returnData==2){
+            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+        }
         return ReturnDataUtils.successfulJson("add new task done");
     }
 
@@ -119,33 +135,51 @@ public class TaskController {
      * @path /task/done/{taskId}
      * @describe set task done by id
      * @method GET
-     * */
-    @GetMapping(path = "/done/{taskId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+     * @param return 1 2
+     *               1 返回全部task数据
+     *               2 返回undone的task
+     */
+    @GetMapping(path = "/done/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_done_id(Context context,
-                            @PathVariable(name="taskId")int taskId){
-        if(null == taskRepository){
+                            @PathVariable(name = "taskId") int taskId,
+                            @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         Task task = taskRepository.getById(taskId);
         task.setReadDone(true);
         taskRepository.update(task);
-        return ReturnDataUtils.successfulJson("set task done successful "+taskId);
+        if (returnData == 1) {
+            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+        }else if(returnData==2){
+            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+        }
+        return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
 
     /**
      * @path /task/undone/{taskId}
      * @describe set task done by id
      * @method GET
-     * */
-    @GetMapping(path = "/undone/{taskId}",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+     * @param return 1 2
+     *               1 返回全部task数据
+     *               2 返回undone的数据
+     */
+    @GetMapping(path = "/undone/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_undone_id(Context context,
-                            @PathVariable(name="taskId")int taskId){
-        if(null == taskRepository){
+                              @PathVariable(name = "taskId") int taskId,
+                              @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
+        if (null == taskRepository) {
             taskRepository = new TaskRepository(context);
         }
         Task task = taskRepository.getById(taskId);
         task.setReadDone(false);
         taskRepository.update(task);
-        return ReturnDataUtils.successfulJson("set task done successful "+taskId);
+        if (returnData == 1) {
+            return ReturnDataUtils.successfulJson(taskRepository.getAll());
+        }else if(returnData==2){
+            return ReturnDataUtils.successfulJson(taskRepository.getNotDoneAll());
+        }
+        return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
 }

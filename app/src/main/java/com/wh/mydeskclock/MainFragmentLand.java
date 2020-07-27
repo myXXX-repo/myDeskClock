@@ -1,8 +1,10 @@
 package com.wh.mydeskclock;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
@@ -31,6 +34,7 @@ import com.wh.mydeskclock.utils.HardwareUtils;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.TimeUtils;
+import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.utils.Utils;
 import com.wh.mydeskclock.widget.MyDialog;
 
@@ -58,6 +62,9 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     private boolean SETTING_TASK_HIDE_DONE;
     private FragmentManager fragmentManager;
 
+    private int FlashDistanceTime = 100;
+    private boolean SETTING_UI_AUTO_FLASH_SCREEN;
+
     public MainFragmentLand() {
         super.setTAG("WH_" + getClass().getSimpleName());
     }
@@ -74,6 +81,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         init();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
@@ -81,6 +89,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER, true);
         SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
         SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
+        SETTING_UI_AUTO_FLASH_SCREEN = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_AUTO_FLASH_SCREEN,false);
         if (SETTING_TASK_HIDE_DONE != sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true)) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fl_task,new TaskListFragment()).commit();
@@ -150,6 +159,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void init() {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
@@ -158,6 +168,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL, true);
         SETTING_UI_SHOW_SERVER_ADDRESS = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_SHOW_SERVER_ADDRESS, true);
         SETTING_TASK_HIDE_DONE = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_TASK_HIDE_DONE, true);
+        SETTING_UI_AUTO_FLASH_SCREEN = sharedPreferences.getBoolean(Config.DefaultSharedPreferenceKey.SETTING_UI_AUTO_FLASH_SCREEN,false);
 
         if (SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER) {
             requireContext().startService(new Intent(requireContext(), MainService.class));
@@ -165,6 +176,32 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
 
         tv_hour = requireActivity().findViewById(R.id.tv_hour);
         tv_min = requireActivity().findViewById(R.id.tv_min);
+        tv_min.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                MyDialog myDialog = new MyDialog(
+                        new AlertDialog.Builder(requireContext())
+                                .setTitle("test")
+                .setItems(new String[]{"打开背光", "关闭背光"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i){
+                            case 0:{
+                                UiUtils.setWindowBrightness(requireActivity(),1);
+                                break;
+                            }
+                            case 1:{
+                                UiUtils.setWindowBrightness(requireActivity(),0);
+                                break;
+                            }
+                        }
+                    }
+                }));
+                myDialog.setFullScreen();
+                myDialog.show(requireActivity().getSupportFragmentManager(),"mydc_dialog_test");
+                return true;
+            }
+        });
         tv_week = requireActivity().findViewById(R.id.tv_week);
         tv_date = requireActivity().findViewById(R.id.tv_date);
         tv_address = requireActivity().findViewById(R.id.tv_address);
@@ -219,6 +256,17 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                 switch (ACTION) {
                     case Intent.ACTION_TIME_TICK: {
                         myHandler.sendEmptyMessage(MyHandler.WHAT_TIME);
+                        if(SETTING_UI_AUTO_FLASH_SCREEN){
+                            FlashDistanceTime--;
+                            switch (FlashDistanceTime){
+                                case 0:{
+                                    FlashDistanceTime=100;
+                                }
+                                case 99:{
+                                    MainActivityLand.flash();
+                                }
+                            }
+                        }
                         break;
                     }
                     case Intent.ACTION_BATTERY_CHANGED: {

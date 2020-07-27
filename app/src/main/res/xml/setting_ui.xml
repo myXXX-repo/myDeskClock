@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
+        android:defaultValue="true"
+        android:enabled="true"
         android:key="setting_ui_show_server_address"
         android:summary="横屏底部显示服务器地址"
-        android:title="显示地址"
-        android:defaultValue="true"
-        android:enabled="true">
-    </CheckBoxPreference>
+        android:title="显示地址" />
     <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="true"
         android:key="setting_ui_re_land"
         android:summary="设置横屏方向为反向"
-        android:title="反向横屏"
+        android:title="反向横屏" />
+    <CheckBoxPreference
         android:defaultValue="false"
-        android:enabled="true">
-    </CheckBoxPreference>
+        android:enabled="true"
+        android:key="setting_ui_auto_flash_screen"
+        android:summary="大约100分钟刷新一次"
+        android:title="自动刷新屏幕" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="setting_ui_switch_light_by_time"
+        android:summary="根据时间自动开启或关闭背光"
+        android:title="自动切换背光(时间)"/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="setting_ui_switch_light_by_battery"
+        android:summary="根据电池电量自动开启或关闭背光"
+        android:title="自动切换背光(电池)"/>
 </PreferenceScreen>

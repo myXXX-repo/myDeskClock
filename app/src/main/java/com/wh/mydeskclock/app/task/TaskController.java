@@ -17,8 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 public class TaskController {
-    String TAG= "WH_"+ TaskController.class.getSimpleName();
+    String TAG= "WH_"+ getClass().getSimpleName();
     private TaskRepository taskRepository;
+
+    // todo 为可能需要操作后获取更新的api增加一个参数 @return bool
 
     /**
      * @path /task/get/{taskId}

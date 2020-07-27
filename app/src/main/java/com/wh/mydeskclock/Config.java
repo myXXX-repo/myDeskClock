@@ -15,6 +15,7 @@ public class Config {
         public static final String SETTING_UI_SHOW_SERVER_ADDRESS = "setting_ui_show_server_address";
         public static final String SETTING_UI_RE_LAND = "setting_ui_re_land";
         public static final String SETTING_UI_LAND = "setting_ui_land";
+        public static final String SETTING_UI_AUTO_FLASH_SCREEN= "setting_ui_auto_flash_screen";
 
         // Setting Task
         public static final String SETTING_TASK_HIDE_DONE = "setting_task_hide_done";

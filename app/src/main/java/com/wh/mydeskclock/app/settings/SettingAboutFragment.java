@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.wh.mydeskclock.SharedPreferenceUtils;
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.widget.MyDialog;
 import com.wh.mydeskclock.R;
 

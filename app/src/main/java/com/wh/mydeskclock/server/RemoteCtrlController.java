@@ -1,4 +1,4 @@
-package com.wh.mydeskclock.app.remoteCtrl;
+package com.wh.mydeskclock.server;
 
 import com.wh.mydeskclock.MainActivityLand;
 import com.wh.mydeskclock.MainFragmentLand;

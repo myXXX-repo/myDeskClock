@@ -9,13 +9,10 @@ import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.app.notify.NotifyRepository;
 import com.wh.mydeskclock.app.task.TaskRepository;
-import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.HardwareUtils;
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class App extends Application {
+public class BaseApp extends Application {
     public static SharedPreferences sp_default;
     public static SharedPreferences sp_COAST;
 

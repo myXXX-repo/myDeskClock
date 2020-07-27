@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.utils.Utils;
 
@@ -24,7 +25,7 @@ public class MainActivityLand extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_land);
 
-        SETTING_UI_RE_LAND = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_RE_LAND, false);
+        SETTING_UI_RE_LAND = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_UI_RE_LAND, false);
 
         if (SETTING_UI_RE_LAND) {
             UiUtils.setScreenOR_LAND_RE(this);

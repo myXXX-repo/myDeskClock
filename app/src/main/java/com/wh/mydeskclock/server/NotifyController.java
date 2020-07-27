@@ -1,11 +1,11 @@
-package com.wh.mydeskclock.app.notify;
+package com.wh.mydeskclock.server;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.wh.mydeskclock.App;
+import com.wh.mydeskclock.BaseApp;
+import com.wh.mydeskclock.app.notify.Notify;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
@@ -38,7 +38,7 @@ public class NotifyController {
 //            notifyRepository = new NotifyRepository(context);
 //        }
 
-        App.notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
+        BaseApp.notifyRepository.insert(new Notify(NOTIFY, TITLE, DEVICE));
         return ReturnDataUtils.successfulJson("notify received");
     }
 
@@ -49,7 +49,7 @@ public class NotifyController {
 //            notifyRepository = new NotifyRepository(context);
 //        }
 
-        return ReturnDataUtils.successfulJson(App.notifyRepository.getAll());
+        return ReturnDataUtils.successfulJson(BaseApp.notifyRepository.getAll());
     }
 
 

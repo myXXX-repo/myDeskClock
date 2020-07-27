@@ -8,8 +8,6 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.wh.mydeskclock.SharedPreferenceUtils;
-
 public class UiUtils {
 
     public static int getHideSystemUIFlags() {

@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.wh.mydeskclock.App;
-import com.wh.mydeskclock.SharedPreferenceUtils;
+import com.wh.mydeskclock.BaseApp;
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.MediaUtils;
 
@@ -29,7 +29,7 @@ public class MediaCtrlFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
+        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class MediaCtrlFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
+        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
         if (SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO) {
             if (iv_mini_mode != null) {
                 iv_mini_mode.setVisibility(View.VISIBLE);

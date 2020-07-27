@@ -20,8 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wh.mydeskclock.App;
-import com.wh.mydeskclock.SharedPreferenceUtils;
+import com.wh.mydeskclock.BaseApp;
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.R;
 
 import java.util.List;
@@ -47,7 +47,7 @@ public class TaskListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SETTING_TASK_HIDE_DONE = App.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_TASK_HIDE_DONE, true);
+        SETTING_TASK_HIDE_DONE = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_TASK_HIDE_DONE, true);
     }
 
     @Override

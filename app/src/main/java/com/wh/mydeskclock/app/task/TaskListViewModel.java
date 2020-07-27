@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.wh.mydeskclock.App;
+import com.wh.mydeskclock.BaseApp;
 
 import java.util.List;
 
@@ -18,25 +18,25 @@ public class TaskListViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Task>> getAllLive() {
-        return App.taskRepository.getAllLive();
+        return BaseApp.taskRepository.getAllLive();
     }
     public LiveData<List<Task>> getAllNotDoneLive() {
-        return App.taskRepository.getAllNotDoneLive();
+        return BaseApp.taskRepository.getAllNotDoneLive();
     }
 
     public void insert(Task... tasks) {
-        App.taskRepository.insert(tasks);
+        BaseApp.taskRepository.insert(tasks);
     }
 
     void update(Task... tasks){
-        App.taskRepository.update(tasks);
+        BaseApp.taskRepository.update(tasks);
     }
 
     void delete(Task... tasks){
-        App.taskRepository.delete(tasks);
+        BaseApp.taskRepository.delete(tasks);
     }
 
     public void deleteAll() {
-        App.taskRepository.deleteAll();
+        BaseApp.taskRepository.deleteAll();
     }
 }

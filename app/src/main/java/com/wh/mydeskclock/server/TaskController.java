@@ -9,8 +9,10 @@ import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.DeleteMapping;
+import com.yanzhenjie.andserver.annotation.FormPart;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
+import com.yanzhenjie.andserver.annotation.PostMapping;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
 import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
@@ -100,6 +102,7 @@ public class TaskController {
 
     /**
      * api 0
+     *
      * @path /task/get/{taskId}
      * @describe to get task by id
      * @method GET
@@ -112,6 +115,7 @@ public class TaskController {
 
     /**
      * api 1
+     *
      * @path /task/get/all
      * @describe to get all tasks
      * @method GET
@@ -125,6 +129,7 @@ public class TaskController {
 
     /**
      * api 2
+     *
      * @path /task/get/undone
      * @describe to get all tasks
      * @method GET
@@ -139,6 +144,7 @@ public class TaskController {
 
     /**
      * api 3
+     *
      * @param returnData 1 2
      *                   1 返回全部task数据
      *                   2 返回undone的task
@@ -160,6 +166,7 @@ public class TaskController {
 
     /**
      * api 4
+     *
      * @path = /task/delete/all
      * @describe delete all tasks
      * @method DELETE
@@ -172,6 +179,7 @@ public class TaskController {
 
     /**
      * api 5
+     *
      * @param returnData 1 2
      *                   1 返回全部task数据
      *                   2 返回undone的task
@@ -198,6 +206,7 @@ public class TaskController {
 
     /**
      * api 6
+     *
      * @param returnData 1 2
      *                   1 返回全部task数据
      *                   2 返回undone的task
@@ -222,6 +231,7 @@ public class TaskController {
 
     /**
      * api 7
+     *
      * @param returnData 1 2
      *                   1 返回全部task数据
      *                   2 返回undone的数据
@@ -243,4 +253,31 @@ public class TaskController {
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
+
+//    /**
+//     * api 8
+//     *
+//     * @param returnData 1 2
+//     *                   1 返回全部task数据
+//     *                   2 返回undone的数据
+//     * @path /task/add/multi
+//     * @describe add multi-tasks by post
+//     * @method POST
+//     */
+//    @PostMapping(path = "/add/multi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    String add_multi_tasks(Context context,
+//                           @FormPart(name = "device")String DEVICE,
+//                           @FormPart(name = "")
+//                           @PathVariable(name = "taskId") int taskId,
+//                           @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
+//        Task task = BaseApp.taskRepository.getById(taskId);
+//        task.setReadDone(false);
+//        BaseApp.taskRepository.update(task);
+//        if (returnData == 1) {
+//            return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
+//        } else if (returnData == 2) {
+//            return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
+//        }
+//        return ReturnDataUtils.successfulJson("set task done successful " + taskId);
+//    }
 }

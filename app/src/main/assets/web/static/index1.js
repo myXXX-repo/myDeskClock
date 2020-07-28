@@ -174,8 +174,8 @@ new Vue({
     created() {
         this.fetch();
         var that = this;
-        axios.get("/static/api_list.json").then(function(response) {
-            that.apis = response.data;
+        axios.get("/api/get").then(function(response) {
+            that.apis = response.data.data;
         });
     }
 })

@@ -3,6 +3,7 @@ package com.wh.mydeskclock.server;
 import android.content.Context;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.app.task.Task;
 import com.wh.mydeskclock.server.MainServer;
@@ -253,31 +254,4 @@ public class TaskController {
         }
         return ReturnDataUtils.successfulJson("set task done successful " + taskId);
     }
-
-//    /**
-//     * api 8
-//     *
-//     * @param returnData 1 2
-//     *                   1 返回全部task数据
-//     *                   2 返回undone的数据
-//     * @path /task/add/multi
-//     * @describe add multi-tasks by post
-//     * @method POST
-//     */
-//    @PostMapping(path = "/add/multi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    String add_multi_tasks(Context context,
-//                           @FormPart(name = "device")String DEVICE,
-//                           @FormPart(name = "")
-//                           @PathVariable(name = "taskId") int taskId,
-//                           @RequestParam(name = "return", defaultValue = "0", required = false) int returnData) {
-//        Task task = BaseApp.taskRepository.getById(taskId);
-//        task.setReadDone(false);
-//        BaseApp.taskRepository.update(task);
-//        if (returnData == 1) {
-//            return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getAll());
-//        } else if (returnData == 2) {
-//            return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
-//        }
-//        return ReturnDataUtils.successfulJson("set task done successful " + taskId);
-//    }
 }

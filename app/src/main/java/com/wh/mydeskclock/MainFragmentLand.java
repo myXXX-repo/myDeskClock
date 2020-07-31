@@ -262,13 +262,9 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                         myHandler.sendEmptyMessage(MyHandler.WHAT_TIME);
                         if(SETTING_UI_AUTO_FLASH_SCREEN){
                             FlashDistanceTime--;
-                            switch (FlashDistanceTime){
-                                case 0:{
-                                    FlashDistanceTime=100;
-                                }
-                                case 99:{
-                                    MainActivityLand.flash();
-                                }
+                            if (FlashDistanceTime == 0) {
+                                FlashDistanceTime = 100;
+                                MainActivityLand.flash();
                             }
                         }
                         break;

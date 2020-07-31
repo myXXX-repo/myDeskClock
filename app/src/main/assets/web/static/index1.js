@@ -47,6 +47,15 @@ new Vue({
         task: '',
         device: localStorage.getItem('device_name'),
 
+        task_item_for_show: {
+            id: -1,
+            title: "blank title",
+            con: "blank con",
+            device: "blank device",
+            createTime: "0000-00-00 00:00:00",
+            readDone: false
+        },
+
         task_con_for_show: 'blank',
         task_list_get_undone_only: toBool(localStorage.getItem('task_list_get_undone_only')),
 
@@ -138,8 +147,18 @@ new Vue({
         openSetting: function() {
             $("#settingDialogPanel").modal();
         },
-        show_task_detail: function(con) {
-            this.task_con_for_show = con;
+        show_task_detail: function(id) {
+            this.tasks.forEach(element => {
+                if(element.id == id){
+                    this.task_item_for_show.id = id;
+                    this.task_item_for_show.title = element.title;
+                    this.task_item_for_show.con = element.con;
+                    this.task_item_for_show.device = element.deviceName;
+                    this.task_item_for_show.createTime = element.createTime;
+                    this.task_item_for_show.readDone = element.readDone;
+                }
+            });
+
             $("#task_detail").modal();
         },
         setUnInit: function() {

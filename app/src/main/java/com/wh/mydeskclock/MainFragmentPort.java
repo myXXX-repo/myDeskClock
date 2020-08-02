@@ -1,6 +1,5 @@
 package com.wh.mydeskclock;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,30 +18,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.wh.mydeskclock.app.settings.SettingActivity;
-import com.wh.mydeskclock.utils.HardwareUtils;
-import com.wh.mydeskclock.utils.TimeUtils;
-import com.wh.mydeskclock.utils.Utils;
+import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.widget.MyDialog;
 
-import java.util.Calendar;
-
 public class MainFragmentPort extends BaseFragment implements View.OnClickListener {
-    private TextView tv_hour;
-    private TextView tv_min;
-    private TextView tv_battery;
-    private TextView tv_week;
-    private TextView tv_date;
     private BroadcastReceiver broadcastReceiver;
-    private MyHandler myHandler;
+    private TextView tv_date;
+    private TextView tv_battery;
 
-    MainFragmentPort(){
-        super.setTAG("WH_"+getClass().getSimpleName());
+    MainFragmentPort() {
+        super.setTAG("WH_" + getClass().getSimpleName());
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main_port,container,false);
+        return inflater.inflate(R.layout.fragment_main_port, container, false);
     }
 
     @Override
@@ -53,55 +45,45 @@ public class MainFragmentPort extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(broadcastReceiver!=null){
+        if (broadcastReceiver != null) {
             requireContext().unregisterReceiver(broadcastReceiver);
         }
     }
 
-    private void init(){
-        tv_hour = requireActivity().findViewById(R.id.tv_hour);
-        tv_min = requireActivity().findViewById(R.id.tv_min);
-        tv_week = requireActivity().findViewById(R.id.tv_week);
+    private void init() {
+        TextView tv_hour = requireActivity().findViewById(R.id.tv_hour);
+        TextView tv_min = requireActivity().findViewById(R.id.tv_min);
+        TextView tv_week = requireActivity().findViewById(R.id.tv_week);
         tv_date = requireActivity().findViewById(R.id.tv_date);
         tv_battery = requireActivity().findViewById(R.id.tv_battery);
 
         tv_hour.setOnClickListener(this);
         tv_min.setOnClickListener(this);
+        tv_week.setOnClickListener(this);
         tv_battery.setOnClickListener(this);
 
 
-        myHandler = new MyHandler();
+        broadcastReceiver = new BatteryTime_BroadcastReceiver(
+                new MyHandler(
+                        tv_hour,
+                        tv_min,
+                        tv_week,
+                        tv_date,
+                        tv_battery));
 
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String ACTION = intent.getAction();
-                switch (ACTION){
-                    case Intent.ACTION_TIME_TICK:{
-                        myHandler.sendEmptyMessage(MyHandler.WHAT_TIME);
-                        break;
-                    }
-                    case Intent.ACTION_BATTERY_CHANGED:{
-                        myHandler.sendEmptyMessage(MyHandler.WHAT_BATTERY);
-                        break;
-                    }
-                }
-            }
-        };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        requireContext().registerReceiver(broadcastReceiver,intentFilter);
+        requireContext().registerReceiver(broadcastReceiver, intentFilter);
 
-        setTime();
-        setBattery();
+        UiUtils.setTime_MainFragment(tv_hour, tv_min, tv_week, tv_date);
+        UiUtils.setBattery_MainFragment(tv_battery);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_hour: {
-//                Toast.makeText(requireContext(), "run", Toast.LENGTH_SHORT).show();
                 MainActivityPort.flash();
                 break;
             }
@@ -119,41 +101,73 @@ public class MainFragmentPort extends BaseFragment implements View.OnClickListen
                 myDialog.show(requireActivity().getSupportFragmentManager(), "battery_coast_detail");
                 break;
             }
+            case R.id.tv_week: {
+                boolean showOthers = tv_date.getVisibility() == View.VISIBLE;
+                ImageView iv_battery_ico = requireActivity().findViewById(R.id.iv_battery_ico);
+                if (showOthers) {
+                    tv_date.setVisibility(View.GONE);
+                    tv_battery.setVisibility(View.GONE);
+                    iv_battery_ico.setVisibility(View.GONE);
+                }else {
+                    tv_date.setVisibility(View.VISIBLE);
+                    tv_battery.setVisibility(View.VISIBLE);
+                    iv_battery_ico.setVisibility(View.VISIBLE);
+                }
+                break;
+            }
         }
     }
 
-    private void setTime() {
-        Calendar calendar = Calendar.getInstance();
 
-        int weekday = calendar.get(Calendar.DAY_OF_WEEK);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int min = calendar.get(Calendar.MINUTE);
-        tv_week.setText(String.format("星期%s", TimeUtils.num2Chinese(weekday)));
-        tv_hour.setText(Utils.ensure2Numbers(hour));
-        tv_min.setText(Utils.ensure2Numbers(min));
-        tv_date.setText(TimeUtils.getFormattedTime(System.currentTimeMillis(), TimeUtils.yMdTimeFormat));
-    }
-
-    private void setBattery(){
-        tv_battery.setText(HardwareUtils.getBatteryLevel(requireContext()) + "%");
-    }
-
-
-    @SuppressLint("HandlerLeak")
-    class MyHandler extends Handler {
+    static class MyHandler extends Handler {
         private static final int WHAT_TIME = 338;
         private static final int WHAT_BATTERY = 33;
+        private TextView tv_hour;
+        private TextView tv_min;
+        private TextView tv_week;
+        private TextView tv_date;
+        private TextView tv_battery;
 
-        @SuppressLint("SetTextI18n")
+        public MyHandler(TextView tv_hour, TextView tv_min, TextView tv_week, TextView tv_date, TextView tv_battery) {
+            this.tv_hour = tv_hour;
+            this.tv_min = tv_min;
+            this.tv_week = tv_week;
+            this.tv_date = tv_date;
+            this.tv_battery = tv_battery;
+        }
+
         @Override
         public void handleMessage(@NonNull Message msg) {
             switch (msg.what) {
                 case WHAT_TIME: {
-                    setTime();
+                    UiUtils.setTime_MainFragment(tv_hour, tv_min, tv_week, tv_date);
                     break;
                 }
                 case WHAT_BATTERY: {
-                    setBattery();
+                    UiUtils.setBattery_MainFragment(tv_battery);
+                    break;
+                }
+            }
+        }
+    }
+
+    private static class BatteryTime_BroadcastReceiver extends BroadcastReceiver {
+        MyHandler myHandler;
+
+        public BatteryTime_BroadcastReceiver(MyHandler myHandler) {
+            this.myHandler = myHandler;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String ACTION = intent.getAction();
+            switch (ACTION) {
+                case Intent.ACTION_TIME_TICK: {
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_TIME);
+                    break;
+                }
+                case Intent.ACTION_BATTERY_CHANGED: {
+                    myHandler.sendEmptyMessage(MyHandler.WHAT_BATTERY);
                     break;
                 }
             }

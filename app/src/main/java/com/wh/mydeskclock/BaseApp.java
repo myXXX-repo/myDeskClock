@@ -9,7 +9,7 @@ import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.app.notify.NotifyRepository;
 import com.wh.mydeskclock.app.task.TaskRepository;
-import com.wh.mydeskclock.utils.HardwareUtils;
+import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 
 public class BaseApp extends Application {
@@ -22,7 +22,7 @@ public class BaseApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        HardwareUtils.batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
+        SystemServiceUtils.batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
 
         sp_default = PreferenceManager.getDefaultSharedPreferences(this);
         sp_COAST = getSharedPreferences(SharedPreferenceUtils.sp_coast.FILENAME,MODE_PRIVATE);

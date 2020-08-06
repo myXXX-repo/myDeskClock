@@ -44,9 +44,10 @@ new Vue({
             }
         },
         task_title: localStorage.getItem('task_default_title'),
-        task: '',
         device: localStorage.getItem('device_name'),
 
+        tasks: [],
+        task: '',
         task_item_for_show: {
             id: -1,
             title: "blank title",
@@ -55,15 +56,13 @@ new Vue({
             createTime: "0000-00-00 00:00:00",
             readDone: false
         },
-
-        task_con_for_show: 'blank',
         task_list_get_undone_only: toBool(localStorage.getItem('task_list_get_undone_only')),
-
         task_list_done_show: toBool(localStorage.getItem('task_list_done_show')),
-        tasks: [],
 
         api_list_show: toBool(localStorage.getItem('api_list_show')),
-        apis: []
+        apis: [],
+
+        stickies: []
     },
     methods: {
         send: function() {
@@ -99,6 +98,9 @@ new Vue({
                 .then(function(response) {
                     that.tasks = response.data.data;
                 });
+            axios.get('/sticky/get/all').then(function(response) {
+                that.stickies = response.data.data;
+            })
         },
         set_done: function(id) {
             var that = this;
@@ -149,7 +151,7 @@ new Vue({
         },
         show_task_detail: function(id) {
             this.tasks.forEach(element => {
-                if(element.id == id){
+                if (element.id == id) {
                     this.task_item_for_show.id = id;
                     this.task_item_for_show.title = element.title;
                     this.task_item_for_show.con = element.con;
@@ -177,6 +179,12 @@ new Vue({
             alert(a + b + c + d);
         },
         switchPanel: function(panelName) {
+            if (panelName == "sticky") {
+                if (this.panels.sticky.active == "active") {
+                    $("#sticky_send").modal();
+                }
+            }
+
             var active_status = {
                 task: "",
                 notify: "",

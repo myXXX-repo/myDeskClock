@@ -191,6 +191,18 @@
         </div>
 
         <div id="panel_sticky" v-if=' panels.sticky.active == "active" '>
+            <div class="panel panel-default sticky_list_item" v-for="item in stickies">
+                <div class="panel-body">
+                    <p style="margin-top: 5px;">
+                        <span class="sticky_list_item_title">{{ item.title }}</span><span
+                            class="sticky_list_item_done_mark" v-if="item.readDone">&checkmark;</span>
+                        <span class="sticky_list_item_device">{{ item.deviceName }}</span>
+                    </p>
+                    <p><span class="sticky_list_item_time">{{ FormatDateTime(item.createTime) }}</span></p>
+                    <p style="margin-top: 8px;"><span class="sticky_list_item_con">{{ item.con }}</span>
+                    </p>
+                </div>
+            </div>
             <div class="panel panel-default sticky_list_item">
                 <div class="panel-body">
                     <p style="margin-top: 5px;">
@@ -345,7 +357,7 @@
             </div>
         </div>
     </div>
-
+<!--    // 设置的弹窗-->
     <div class="modal fade" id="settingDialogPanel" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -406,6 +418,7 @@
         </div>
     </div>
 
+<!--    // 显示task详细内容的弹窗-->
     <div class="modal fade" id="task_detail" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -429,6 +442,30 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal"><span
                             class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    // 发送sticky弹窗-->
+    <div class="modal fade" id="sticky_send" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Send Sticky</h4>
+                </div>
+                <div class="modal-body">
+
+<!--                    -->
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span
+                            class="glyphicon" aria-hidden="true"></span>&rightarrow;Send
                     </button>
                 </div>
             </div>

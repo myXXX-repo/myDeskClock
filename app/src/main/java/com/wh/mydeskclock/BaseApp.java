@@ -8,6 +8,7 @@ import android.os.BatteryManager;
 import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.app.notify.NotifyRepository;
+import com.wh.mydeskclock.app.sticky.StickyRepository;
 import com.wh.mydeskclock.app.task.TaskRepository;
 import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
@@ -18,6 +19,7 @@ public class BaseApp extends Application {
 
     public static TaskRepository taskRepository;
     public static NotifyRepository notifyRepository;
+    public static StickyRepository stickyRepository;
 
     @Override
     public void onCreate() {
@@ -29,6 +31,7 @@ public class BaseApp extends Application {
 
         taskRepository = new TaskRepository(this);
         notifyRepository = new NotifyRepository(this);
+        stickyRepository = new StickyRepository(this);
 
     }
 }

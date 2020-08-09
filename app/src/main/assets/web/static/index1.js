@@ -7,14 +7,29 @@ let toBool = function(bool_str) {
 }
 
 let init = function() {
-    if (localStorage.getItem('inited') != 1) {
-        localStorage.setItem('inited', 1);
+    if (localStorage.getItem('api_list_show') == null) {
         localStorage.setItem('api_list_show', false);
+    }
+    if (localStorage.getItem('task_list_done_show') == null) {
         localStorage.setItem('task_list_done_show', false);
+    }
+    if (localStorage.getItem('task_default_title') == null) {
         localStorage.setItem('task_default_title', 'default title');
+    }
+    if (localStorage.getItem('device_name') == null) {
         localStorage.setItem('device_name', 'default device');
+    }
+    if (localStorage.getItem('task_list_get_undone_only') == null) {
         localStorage.setItem('task_list_get_undone_only', true);
     }
+    if (localStorage.getItem('judge_item_con_is_url') == null) {
+        localStorage.setItem('judge_item_con_is_url', true);
+    }
+}
+
+let judge_url = function(strstr) {
+    let part = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/
+    return part.test(strstr);
 }
 
 let FormatDateTime = function(UnixTime) {
@@ -74,6 +89,7 @@ new Vue({
                 device: localStorage.getItem('device_name'),
                 api_list_show: toBool(localStorage.getItem('api_list_show')),
                 apis: [],
+                judge_url: toBool(localStorage.getItem('judge_item_con_is_url'))
             }
         },
     },
@@ -163,9 +179,9 @@ new Vue({
             localStorage.setItem('device_name', this.apps.settings.device);
             // 保存 是否只获取un done items
             localStorage.setItem('task_list_get_undone_only', this.apps.task.task_list_get_undone_only);
-            if (show == "1") {
-                alert("save done");
-            }
+
+            localStorage.setItem('judge_item_con_is_url', this.apps.settings.judge_url);
+            alert("save done");
         },
         settings_api_fetch: function() {
             var that = this;
@@ -174,7 +190,7 @@ new Vue({
             });
         },
         settings_re_init: function() {
-            localStorage.setItem('inited', 0);
+            window.localStorage.clear();
             alert('Set ReInit\nPage Will ReFresh');
             location.reload();
         },
@@ -205,6 +221,12 @@ new Vue({
             });
             this.apps[panelName].showed = true;
         },
+        utils_judge_url: function(sss) {
+            return judge_url(sss);
+        },
+        util_open_new_window: function(urll) {
+            window.open(urll);
+        }
     },
     watch: {
         "apps.notify.showed": function(newVal, oldVal) {

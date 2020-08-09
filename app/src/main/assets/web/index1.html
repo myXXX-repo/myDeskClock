@@ -136,9 +136,7 @@
                 </div>
 
                 <!--    // task list-->
-                <div id="task_list">
-
-
+                <div id="task_list" style="width: 100%;">
                     <div class="panel panel-default" v-for="item in apps.task.tasks" v-on:click='task_show_detail(item.id)'>
                         <div class="panel-body" style="display: table;width: 100%;">
                             <div v-if="item.readDone" style="display: table-cell;width: 100px;">
@@ -151,7 +149,10 @@
                                     done</a>
                             </div>
                             <div style="display: table-cell;font-size: 18px;">
-                                <span v-on:select.stop.prevent="">{{ item.con }}</span>
+                                <span v-if="utils_judge_url(item.con) && apps.settings.judge_url"><a
+                                        v-on:click.stop.prevent="util_open_new_window(item.con)"
+                                        style="word-break: break-all;" href="#">{{ item.con }}</a></span>
+                                <span v-else>{{ item.con }}</span>
                             </div>
                         </div>
                     </div>
@@ -278,6 +279,12 @@
                                     Only Get UnDone Task Items
                                 </label>
                             </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" v-model:value="apps.settings.judge_url">
+                                    Judge Item Con Is URL
+                                </label>
+                            </div>
                             <label>
                                 Default Task Title <input type="text" class="form-control"
                                     v-model:value="apps.task.task_title" title="">
@@ -350,7 +357,7 @@
                         </p>
                         <p style="max-width:95%;word-wrap:break-word;">
                             {{ ui_format_time(apps.task.task_item.createTime) }}</p>
-                        <p style="max-width:95%;word-wrap:break-word;">{{ apps.task.task_item.con }}</p>
+                        <p style="max-width:95%;word-wrap:break-word;font-size: 18px;">{{ apps.task.task_item.con }}</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span

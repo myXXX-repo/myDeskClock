@@ -109,7 +109,6 @@
             </div>
         </nav>
 
-
         <div class="body_main">
             <div id="panel_task" v-if=' apps.task.active == "active" '>
                 <div id="send_task">
@@ -157,17 +156,13 @@
                         </div>
                     </div>
                 </div>
-                <br />
-                <br />
+            </div>
 
+            <div id="panel_notify" v-if=' apps.notify.active == "active" '>
                 <a href="/static/notify.py">click here to download python script for notify, may need
                     right click and
                     save
                     as</a>
-            </div>
-
-            <div id="panel_notify" v-if=' apps.notify.active == "active" '>
-                notify
             </div>
 
             <div id="panel_sticky" v-if=' apps.sticky.active == "active" '>
@@ -339,6 +334,12 @@
             </div>
         </div>
 
+        <div class="body_foot">
+            <br />
+            <br />
+            <p>powered by vue, jquery and bootstrap3 | &COPY;WolfHugo</p>
+        </div>
+
         <!--    // 显示task详细内容的弹窗-->
         <div class="modal fade" id="task_detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
             <div class="modal-dialog" role="document">
@@ -390,6 +391,8 @@
             </div>
         </div>
     </div>
+
+
 </body>
 <script src="/static/index1.js"></script>
 

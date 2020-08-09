@@ -137,7 +137,7 @@
 
                 <!--    // task list-->
                 <div id="task_list" style="width: 100%;">
-                    <div class="panel panel-default" v-for="item in apps.task.tasks" v-on:click='task_show_detail(item.id)'>
+                    <div class="panel panel-default" v-for="item in apps.task.tasks" v-on:click='task_show_detail(item.id)' v-if="apps.task.task_list_done_show||!item.readDone">
                         <div class="panel-body" style="display: table;width: 100%;">
                             <div v-if="item.readDone" style="display: table-cell;width: 100px;">
                                 <a v-on:click.stop.prevent='task_set_undone(item.id)' href="#" v-bind:task_id="item.id">set

@@ -6,6 +6,10 @@ let toBool = function(bool_str) {
     }
 }
 
+let ensure2num = function(num) {
+    return num < 10 ? ('0' + num) : num;
+}
+
 let init = function() {
     if (localStorage.getItem('api_list_show') == null) {
         localStorage.setItem('api_list_show', false);
@@ -28,9 +32,32 @@ let init = function() {
 }
 
 let judge_url = function(strstr) {
-    let part = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/
+    var part = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/;
     return part.test(strstr);
 }
+
+
+//     // 本日 本月 本年
+// let timeData_ms = Date.now();
+// let datedate = new Date();
+// let timeDate_year = datedate.getFullYear();
+// let timeDate_month = datedate.getMonth() + 1;
+// let timeDate_date = datedate.getDate();
+
+// let getFirstMS_year = function() {
+//     return timeDate_year + "-00-00 00:00:000";
+// }
+
+// let getFirstMS_month = function() {
+//     return timeDate_year + "-" + ensure2num(timeDate_month) + "-00 00:00:000";
+// }
+
+// let getFirstMS_date = function() {
+//     return timeDate_year + "-" + ensure2num(timeDate_month) + "-" + ensure2num(timeDate_date) + " 00:00:000";
+// }
+
+// console.log(getFirstMS_year() + " " + getFirstMS_month() + " " + getFirstMS_date());
+// console.log(getMSFromTimeStamp(getFirstMS_year()));
 
 let FormatDateTime = function(UnixTime) {
     var date = new Date(parseInt(UnixTime));

@@ -1,5 +1,6 @@
 package com.wh.mydeskclock.app.task;
 
+import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.widget.MyDialog;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.TimeUtils;
@@ -65,22 +67,40 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                View v_task_item_dialog = LayoutInflater.from(mParent).inflate(R.layout.item_task_list_item_dialog,null,false);
 
+                // taskDetail 弹框的布局文件
+                View v_task_item_dialog = LayoutInflater.from(mParent).inflate(R.layout.item_task_list_item_dialog, null, false);
+
+                // task title
                 TextView tv_task_title = v_task_item_dialog.findViewById(R.id.tv_task_item_title);
                 tv_task_title.setText(holder.title);
+
+                // task device
                 TextView tv_task_dev = v_task_item_dialog.findViewById(R.id.tv_task_item_device);
                 tv_task_dev.setText(holder.device);
+
+                // task createTime
                 TextView tv_task_createTime = v_task_item_dialog.findViewById(R.id.tv_task_item_create_time);
                 tv_task_createTime.setText(TimeUtils.getFormattedTime(Long.parseLong(holder.createTime)));
+
+                // task con
                 TextView tv_task_con = v_task_item_dialog.findViewById(R.id.tv_task_item_task);
                 tv_task_con.setText(holder.task);
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(mParent)
-                        .setView(v_task_item_dialog);
+                        .setView(v_task_item_dialog)
+                        .setPositiveButton(holder.isDone ? "setUndone" : "setDone", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Task task = (Task) holder.itemView.getTag(R.id.task_tag);
+                                task.setReadDone(!holder.isDone);
+                                BaseApp.taskRepository.update(task);
+                            }
+                        });
+
                 MyDialog myDialog = new MyDialog(alertDialog);
                 myDialog.setFullScreen();
-                myDialog.show(mParent.getSupportFragmentManager(),"myDeskClock_task_list_item");
+                myDialog.show(mParent.getSupportFragmentManager(), "myDeskClock_task_list_item");
             }
         });
         return holder;
@@ -96,12 +116,14 @@ public class TaskListAdapter extends ListAdapter<Task, TaskListAdapter.MyViewHol
         holder.device = task.getDeviceName();
         holder.createTime = task.getCreateTime();
         holder.task = task.getCon();
+        holder.isDone = task.isReadDone();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_con;
         CheckBox cb_done;
-        String title,device,createTime,task;
+        String title, device, createTime, task;
+        boolean isDone;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

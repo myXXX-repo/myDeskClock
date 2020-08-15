@@ -2,8 +2,10 @@ package com.wh.mydeskclock.server;
 
 import android.util.Log;
 
+import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.MainService;
 import com.wh.mydeskclock.utils.ApiNode;
+import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.yanzhenjie.andserver.AndServer;
 import com.yanzhenjie.andserver.Server;
 
@@ -16,6 +18,7 @@ public class MainServer {
     String TAG = "WH_" + MainServer.class.getSimpleName();
 
     public static List<ApiNode> apiList;
+    public static String access_token = BaseApp.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_ACCESS_TOKEN,"0");
 
 
     public MainServer(MainService mParent, int port) {

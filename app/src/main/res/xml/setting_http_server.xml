@@ -13,6 +13,13 @@
         android:defaultValue="8081"
         android:enabled="true">
     </EditTextPreference>
+    <EditTextPreference
+        android:key="setting_http_server_access_token"
+        android:summary="用于有安全验证需求的用户，默认值为字符串“0”(无引号)"
+        android:title="密钥"
+        android:defaultValue="0"
+        android:enabled="true">
+    </EditTextPreference>
     <Preference
         android:key="setting_http_server_force_stop"
         android:title="force stop server"

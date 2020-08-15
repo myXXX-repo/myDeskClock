@@ -5,6 +5,7 @@ import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PatchMapping;
+import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RestController;
 import com.yanzhenjie.andserver.util.MediaType;
 
@@ -17,7 +18,10 @@ public class MainController {
     }
 
     @GetMapping(path = "/get",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String api_get(){
+    public String api_get(@RequestHeader("access_token")String ACCESS_TOKEN){
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         return ReturnDataUtils.successfulJson(MainServer.apiList);
     }
 }

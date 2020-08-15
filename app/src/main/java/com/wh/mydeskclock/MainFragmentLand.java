@@ -33,6 +33,7 @@ import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
 import com.wh.mydeskclock.app.notify.NotifyFragment;
 import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.app.task.TaskListFragment;
+import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
@@ -116,6 +117,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
             intent.setAction("myDeskClock_server_exit");
             requireContext().sendBroadcast(intent);
         }
+        MainServer.access_token = BaseApp.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_ACCESS_TOKEN,"0");
     }
 
     @Override

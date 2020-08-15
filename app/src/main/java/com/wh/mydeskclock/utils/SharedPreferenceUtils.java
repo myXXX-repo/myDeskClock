@@ -36,6 +36,7 @@ public class SharedPreferenceUtils {
         // Setting Http Server
         public static final String SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = "setting_http_server_enable_http_server";
         public static final String SETTING_HTTP_SERVER_PORT = "setting_http_server_port";
+        public static final String SETTING_HTTP_SERVER_ACCESS_TOKEN = "setting_http_server_access_token";
     }
 
 //    public static List<ApiNode> HttpServerApis = new ArrayList<>();

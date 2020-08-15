@@ -8,6 +8,7 @@ import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.app.notify.Notify;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
+import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
 import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
@@ -23,7 +24,11 @@ public class NotifyController {
     public String notify_new(final Context context,
                              @RequestParam(value = "device", defaultValue = "default device", required = false) final String DEVICE,
                              @RequestParam(value = "title", defaultValue = "default title", required = false) final String TITLE,
-                             @RequestParam(value = "notify", defaultValue = "blank notify") final String NOTIFY) {
+                             @RequestParam(value = "notify", defaultValue = "blank notify") final String NOTIFY,
+                             @RequestHeader("access_token")String ACCESS_TOKEN) {
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         Bundle bundle = new Bundle();
         bundle.putString("DEVICE", DEVICE);
         bundle.putString("TITLE", TITLE);
@@ -37,7 +42,10 @@ public class NotifyController {
     }
 
     @GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String notify_get_all(final Context context) {
+    public String notify_get_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         return ReturnDataUtils.successfulJson(BaseApp.notifyRepository.getAll());
     }
 

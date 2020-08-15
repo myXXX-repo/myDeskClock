@@ -30,7 +30,7 @@ let init = function() {
         localStorage.setItem('judge_item_con_is_url', true);
     }
     if (localStorage.getItem('access_token') == null) {
-        localStorage.setItem('access_token', "asdfghjkl");
+        localStorage.setItem('access_token', "0");
     }
 }
 
@@ -139,7 +139,7 @@ new Vue({
                     "task": task_tmp,
                     "device": this.apps.settings.device
                 },
-                headers: { access_token: this.settings.access_token }
+                headers: { access_token: this.apps.settings.access_token }
             }).then(function(response) {
                 alert("ok");
                 that.task_fetch();
@@ -156,7 +156,7 @@ new Vue({
             }
             that = this
             axios.get(address, {
-                    headers: { access_token: localStorage.getItem('access_token') }
+                    headers: { access_token: this.apps.settings.access_token }
                 })
                 .then(function(response) {
                     that.apps.task.tasks = response.data.data;
@@ -165,7 +165,7 @@ new Vue({
         task_set_done: function(id) {
             var that = this;
             axios.get("/task/done/" + id, {
-                    headers: { access_token: localStorage.getItem('access_token') }
+                    headers: { access_token: this.apps.settings.access_token }
                 })
                 .then(function(response) {
                     that.task_fetch();
@@ -174,7 +174,7 @@ new Vue({
         task_set_undone: function(id) {
             var that = this;
             axios.get("/task/undone/" + id, {
-                    headers: { access_token: localStorage.getItem('access_token') }
+                    headers: { access_token: this.apps.settings.access_token }
                 })
                 .then(function(response) {
                     that.task_fetch();
@@ -200,7 +200,7 @@ new Vue({
         sticky_fetch: function() {
             var that = this;
             axios.get('/sticky/get/all', {
-                headers: { access_token: localStorage.getItem('access_token') }
+                headers: { access_token: this.apps.settings.access_token }
             }).then(function(response) {
                 that.apps.sticky.stickies = response.data.data;
             });
@@ -222,13 +222,13 @@ new Vue({
 
             localStorage.setItem('judge_item_con_is_url', this.apps.settings.judge_url);
 
-            localStorage.setItem('access_token', this.settings.access_token);
+            localStorage.setItem('access_token', this.apps.settings.access_token);
             alert("save done");
         },
         settings_api_fetch: function() {
             var that = this;
             axios.get("/api/get", {
-                headers: { access_token: localStorage.getItem('access_token') }
+                headers: { access_token: this.apps.settings.access_token }
             }).then(function(response) {
                 that.apps.settings.apis = response.data.data;
             });

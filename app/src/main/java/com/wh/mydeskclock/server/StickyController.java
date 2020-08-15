@@ -9,6 +9,7 @@ import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
 import com.yanzhenjie.andserver.annotation.PostMapping;
+import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
 import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
@@ -29,7 +30,11 @@ public class StickyController {
      * @method GET
      */
     @GetMapping(path = "/get/{stickyId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_sticky_id(Context context, @PathVariable("stickyId") int stickyId) {
+    String get_sticky_id(@PathVariable("stickyId") int stickyId,
+                         @RequestHeader("access_token")String ACCESS_TOKEN) {
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         Sticky sticky = BaseApp.stickyRepository.getById(stickyId);
         return ReturnDataUtils.successfulJson(sticky);
     }
@@ -42,7 +47,10 @@ public class StickyController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_sticky_all(Context context) {
+    String get_sticky_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         List<Sticky> stickies = BaseApp.stickyRepository.getAll();
         Log.d(TAG, "get_sticky_all: " + stickies.size());
         return ReturnDataUtils.successfulJson(stickies);
@@ -64,7 +72,11 @@ public class StickyController {
             @RequestParam(name = "return", defaultValue = "1", required = false) int returnData,
             @RequestParam(name = "sticky") String STICKY,
             @RequestParam(name = "title", required = false, defaultValue = "DefaultTitle") String TITLE,
-            @RequestParam(name = "device", required = false, defaultValue = "DefaultDevice") String DEVICE_NAME) {
+            @RequestParam(name = "device", required = false, defaultValue = "DefaultDevice") String DEVICE_NAME,
+            @RequestHeader("access_token")String ACCESS_TOKEN) {
+        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+            return ReturnDataUtils.failedJson(401,"Unauthorized");
+        }
         Sticky sticky = new Sticky(STICKY, TITLE, DEVICE_NAME);
         BaseApp.stickyRepository.insert(sticky);
         switch (returnData) {

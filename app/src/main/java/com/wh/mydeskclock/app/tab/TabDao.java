@@ -6,7 +6,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.wh.mydeskclock.app.task.Task;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ public interface TabDao {
     void deleteAll();
 
     @Query("SELECT * FROM Tab WHERE id = :id")
-    Task getById(int id);
+    Tab getById(int id);
 
     @Query("SELECT * FROM Tab ORDER BY ID DESC")
     List<Tab> getAll();

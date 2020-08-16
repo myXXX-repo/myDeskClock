@@ -266,9 +266,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         MediaCtrlFragment mediaCtrlFragment = new MediaCtrlFragment();
         TaskListFragment taskListFragment = new TaskListFragment();
 
-//        FrameLayout fl_notify = requireActivity().findViewById(R.id.fl_notify);
         fl_media_ctrl = requireActivity().findViewById(R.id.fl_media_ctrl);
-//        FrameLayout fl_task = requireActivity().findViewById(R.id.fl_task);
 
         if (!SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL) {
             fl_media_ctrl.setVisibility(View.GONE);

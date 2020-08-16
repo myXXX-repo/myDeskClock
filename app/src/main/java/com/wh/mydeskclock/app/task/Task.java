@@ -30,12 +30,12 @@ public class Task {
         this.ReadDone = false;
     }
 
-    @Ignore
+    @Ignore // 本构造函数用于删除item
     public Task(int id) {
         this.id = id;
     }
 
-    @Ignore
+    @Ignore // 本构造函数用于修改值 传入全部值
     public Task(int id,String con, String title, String deviceName,String createTime,boolean isDone) {
         this.id = id;
         this.Con = con;
@@ -45,7 +45,7 @@ public class Task {
         this.ReadDone = isDone;
     }
 
-    @Ignore
+    @Ignore // 本构造函数用于创建新item 传入非自动生成值
     public Task(String con, String title, String deviceName) {
         this.Con = con;
         this.Title = title;

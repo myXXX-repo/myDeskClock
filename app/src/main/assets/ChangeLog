@@ -1,0 +1,31 @@
+2.5 changelog
+
+notify 增加了获取notify历史记录的api
+sticky 增加了sticky的数据库组件
+tab 增加了tab的数据库组件
+task taskList 增加了detail弹框的setDone、setUnDone按钮
+task taskList 修复长文本不能完全显示的bug
+
+web 将发送操作请求后的刷新动作换成了重新获取数据
+web task 实现title输入框值复用
+web task 点击title字样恢复默认title，再次点击置空
+web task 点击task字样清空task输入框内容
+web task taskList 重构detail弹窗布局
+web task taskList 增加内容的url判断
+web 在导航栏中增加刷新页面的按钮
+web 设置 增加lightRequest， 测试版本，用以减少一次fetch操作
+
+设置 ui 增加自动刷新屏幕选项
+
+httpServer task 增加了可扩展响应体，可以减少一个请求（残疾中）
+httpServer remoteCtrl 增加新的app
+httpServer apiList 增加可动态维护的api list插槽
+httpServer sticky 增加了sticky的后端接口
+httpServer static 增加了axios的map文件
+httpServer tab 增加了tab的后端接口
+
+ui 记录全刷次数
+ui 记录背光开关次数
+ui 竖屏 增加点击week文字切换精简模式的功能
+
+project 精简一些低分辨率的图标资源

@@ -1,14 +1,12 @@
 package com.wh.mydeskclock;
 
 import android.Manifest;
-import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
@@ -23,14 +21,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.os.EnvironmentCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -44,20 +40,13 @@ import com.wh.mydeskclock.utils.FileUtils;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
-import com.wh.mydeskclock.utils.ShellUtils;
-import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.widget.MyDialog;
-import com.yanzhenjie.andserver.util.Assert;
+
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Objects;
-import java.util.TooManyListenersException;
+
 
 public class MainFragmentLand extends BaseFragment implements View.OnClickListener, View.OnLongClickListener {
     private String TAG = "WH_"+getClass().getSimpleName();
@@ -252,11 +241,8 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
 
     @Override
     public boolean onLongClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_min: {
-                startActivity(new Intent(requireActivity(), SettingActivity.class));
-                break;
-            }
+        if (view.getId() == R.id.tv_min) {
+            startActivity(new Intent(requireActivity(), SettingActivity.class));
         }
         return true;
     }
@@ -264,11 +250,9 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case 1: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    tv_week.callOnClick();
-                }
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                tv_week.callOnClick();
             }
         }
     }

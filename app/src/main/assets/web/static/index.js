@@ -32,35 +32,15 @@ let init = function() {
     if (localStorage.getItem('access_token') == null) {
         localStorage.setItem('access_token', "0");
     }
+    if (localStorage.getItem('test_light_request') == null) {
+        localStorage.setItem('test_light_request', false);
+    }
 }
 
 let judge_url = function(strstr) {
     var part = /^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/;
     return part.test(strstr);
 }
-
-
-//     // 本日 本月 本年
-// let timeData_ms = Date.now();
-// let datedate = new Date();
-// let timeDate_year = datedate.getFullYear();
-// let timeDate_month = datedate.getMonth() + 1;
-// let timeDate_date = datedate.getDate();
-
-// let getFirstMS_year = function() {
-//     return timeDate_year + "-00-00 00:00:000";
-// }
-
-// let getFirstMS_month = function() {
-//     return timeDate_year + "-" + ensure2num(timeDate_month) + "-00 00:00:000";
-// }
-
-// let getFirstMS_date = function() {
-//     return timeDate_year + "-" + ensure2num(timeDate_month) + "-" + ensure2num(timeDate_date) + " 00:00:000";
-// }
-
-// console.log(getFirstMS_year() + " " + getFirstMS_month() + " " + getFirstMS_date());
-// console.log(getMSFromTimeStamp(getFirstMS_year()));
 
 let FormatDateTime = function(UnixTime) {
     var date = new Date(parseInt(UnixTime));
@@ -121,6 +101,7 @@ new Vue({
                 apis: [],
                 judge_url: toBool(localStorage.getItem('judge_item_con_is_url')),
                 access_token: localStorage.getItem('access_token'),
+                test_light_request: toBool(localStorage.getItem('test_light_request')),
             }
         },
     },
@@ -168,7 +149,17 @@ new Vue({
                     headers: { access_token: this.apps.settings.access_token }
                 })
                 .then(function(response) {
-                    that.task_fetch();
+                    if (that.apps.settings.test_light_request) {
+                        if (response.status == 200) {
+                            that.apps.task.tasks.forEach(element => {
+                                if (element.id == id) {
+                                    element.readDone = true;
+                                }
+                            })
+                        }
+                    } else {
+                        that.task_fetch();
+                    }
                 });
         },
         task_set_undone: function(id) {
@@ -177,7 +168,17 @@ new Vue({
                     headers: { access_token: this.apps.settings.access_token }
                 })
                 .then(function(response) {
-                    that.task_fetch();
+                    if (that.apps.settings.test_light_request) {
+                        if (response.status == 200) {
+                            that.apps.task.tasks.forEach(element => {
+                                if (element.id == id) {
+                                    element.readDone = false;
+                                }
+                            })
+                        }
+                    } else {
+                        that.task_fetch();
+                    }
                 });
         },
         task_show_detail: function(id) {
@@ -195,7 +196,11 @@ new Vue({
             });
         },
         task_reset_title: function() {
-            this.apps.task.task_title = localStorage.getItem("task_default_title");
+            if (this.apps.task.task_title == localStorage.getItem("task_default_title")) {
+                this.apps.task.task_title = "";
+            } else {
+                this.apps.task.task_title = localStorage.getItem("task_default_title");
+            }
         },
         sticky_fetch: function() {
             var that = this;
@@ -223,6 +228,8 @@ new Vue({
             localStorage.setItem('judge_item_con_is_url', this.apps.settings.judge_url);
 
             localStorage.setItem('access_token', this.apps.settings.access_token);
+
+            localStorage.setItem('test_light_request', this.apps.settings.test_light_request);
             alert("save done");
         },
         settings_api_fetch: function() {

@@ -13,7 +13,7 @@
         android:summary="设置横屏方向为反向"
         android:title="反向横屏" />
     <CheckBoxPreference
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:enabled="true"
         android:key="setting_ui_auto_flash_screen"
         android:summary="大约100分钟刷新一次"

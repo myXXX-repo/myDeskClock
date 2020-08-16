@@ -1,11 +1,11 @@
-package com.wh.mydeskclock.server;
+package com.wh.mydeskclock.app.notify;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.wh.mydeskclock.BaseApp;
-import com.wh.mydeskclock.app.notify.Notify;
+import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestHeader;

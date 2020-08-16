@@ -8,11 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.os.EnvironmentCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -34,17 +39,28 @@ import com.wh.mydeskclock.app.notify.NotifyFragment;
 import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.app.task.TaskListFragment;
 import com.wh.mydeskclock.server.MainServer;
+import com.wh.mydeskclock.utils.DownloadUtils;
+import com.wh.mydeskclock.utils.FileUtils;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
+import com.wh.mydeskclock.utils.ShellUtils;
 import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.widget.MyDialog;
+import com.yanzhenjie.andserver.util.Assert;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Objects;
 import java.util.TooManyListenersException;
 
 public class MainFragmentLand extends BaseFragment implements View.OnClickListener, View.OnLongClickListener {
+    private String TAG = "WH_"+getClass().getSimpleName();
 
     private TextView tv_address;
     private TextView tv_week;
@@ -71,6 +87,34 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mParent = (AppCompatActivity) context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+//        String path = requireContext().getFilesDir().getPath();
+//        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+//        Log.d(TAG, "onCreate: "+path);
+//        File file = new File(path);
+//        Log.d(TAG, "onCreate: "+file.exists());
+//        ShellUtils.CommandResult commandResult = ShellUtils.execCommand("ls "+path,false,true);
+//        Log.d(TAG, "onCreate: result >"+commandResult.result);
+//        Log.d(TAG, "onCreate: error msg >"+commandResult.errorMsg);
+//        Log.d(TAG, "onCreate: success msg >"+commandResult.successMsg);
+//        String fileName = "text.txt";
+//        String fileContent = "hello world\naa";
+
+//        String frp_addr = "http://39.103.143.157:81/frpc/linux/arm/frpc";
+//        DownloadUtils.download(frp_addr,"myDC_frpc",requireContext());
+//        try {
+//            OutputStream outputStream = requireContext().openFileOutput(fileName,Context.MODE_PRIVATE);
+//            outputStream.write(fileContent.getBytes());
+//            outputStream.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Nullable
@@ -187,6 +231,14 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
             }
             case R.id.tv_week: {
                 // 点击week文本从服务器下载新版本
+                Resources resources = requireContext().getResources();
+                Log.d(TAG, "onClick: "+resources.getString(R.string.type));
+                File a = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/test");
+                if(resources.getString(R.string.type).equals("release")){
+                    if(!a.exists()){
+                        return;
+                    }
+                }
                 if (ContextCompat.checkSelfPermission(mParent, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         mParent.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -378,14 +430,14 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     }
 
     private void downloadNewVersion() {
-
+        // 将文件下载到download目录
         MyDialog myDialog = new MyDialog(
                 new AlertDialog.Builder(requireContext())
                         .setMessage("StartDownload?")
                         .setPositiveButton("download", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                download("http://192.168.50.184/release/myDeskClock/app-release.apk");
+                                DownloadUtils.download("http://192.168.50.184/release/myDeskClock/app-release.apk","mydc.apk",FileUtils.MimeType.APPLICATION_OCTET_STREAM,requireContext());
                                 MyDialog myDialog1 = new MyDialog(new AlertDialog.Builder(requireContext())
                                         .setPositiveButton("fileManager", new DialogInterface.OnClickListener() {
                                             @Override
@@ -398,20 +450,17 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                                 myDialog1.setFullScreen();
                                 myDialog1.show(fragmentManager,"");
                             }
-                        }));
+                        }).setNegativeButton("fileManager", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        PackageManager packageManager = requireContext().getPackageManager();
+                        Intent it= packageManager.getLaunchIntentForPackage("bin.mt.plus");
+                        requireContext().startActivity(it);
+                    }
+                }));
         myDialog.setFullScreen();
         myDialog.show(fragmentManager, "");
 
-    }
-
-    private void download(String addr) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(addr));
-        //指定下载路径和下载文件名
-        request.setDestinationInExternalPublicDir("", addr.substring(addr.lastIndexOf("/") + 1));
-        //获取下载管理器
-        DownloadManager downloadManager = SystemServiceUtils.getDownloadManager(requireContext());
-        //将下载任务加入下载队列，否则不会进行下载
-        downloadManager.enqueue(request);
     }
 
 //    private void installNewVersion(){

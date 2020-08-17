@@ -5,4 +5,4 @@
             <certificates src="system" />
         </trust-anchors>
     </base-config>
-</network-security-config>
+</network-security-config> 

@@ -32,7 +32,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
 import com.wh.mydeskclock.app.notify.NotifyFragment;
-import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.app.task.TaskListFragment;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.DownloadUtils;

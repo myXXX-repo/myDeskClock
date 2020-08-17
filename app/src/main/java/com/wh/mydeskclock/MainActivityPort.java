@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wh.mydeskclock.app.settings.SettingActivity;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.utils.Utils;

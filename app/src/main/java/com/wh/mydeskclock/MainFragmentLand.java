@@ -80,29 +80,6 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        String path = requireContext().getFilesDir().getPath();
-//        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-//        Log.d(TAG, "onCreate: "+path);
-//        File file = new File(path);
-//        Log.d(TAG, "onCreate: "+file.exists());
-//        ShellUtils.CommandResult commandResult = ShellUtils.execCommand("ls "+path,false,true);
-//        Log.d(TAG, "onCreate: result >"+commandResult.result);
-//        Log.d(TAG, "onCreate: error msg >"+commandResult.errorMsg);
-//        Log.d(TAG, "onCreate: success msg >"+commandResult.successMsg);
-//        String fileName = "text.txt";
-//        String fileContent = "hello world\naa";
-
-//        String frp_addr = "http://39.103.143.157:81/frpc/linux/arm/frpc";
-//        DownloadUtils.download(frp_addr,"myDC_frpc",requireContext());
-//        try {
-//            OutputStream outputStream = requireContext().openFileOutput(fileName,Context.MODE_PRIVATE);
-//            outputStream.write(fileContent.getBytes());
-//            outputStream.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Nullable
@@ -445,39 +422,4 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         myDialog.show(fragmentManager, "");
 
     }
-
-//    private void installNewVersion(){
-//        installApkO();
-//    }
-
-//    private void installApkO(String downloadApkPath) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            //是否有安装位置来源的权限
-//            boolean haveInstallPermission = requireContext().getPackageManager().canRequestPackageInstalls();
-//            if (haveInstallPermission) {
-//                installApk(downloadApkPath);
-//            } else {
-//                Uri packageUri = Uri.parse("package:"+ requireContext().getPackageName());
-//                Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,packageUri);
-//                startActivityForResult(intent,10086);
-//            }
-//        } else {
-//            installApk(downloadApkPath);
-//        }
-//    }
-
-//    public void installApk(String downloadApk) {
-//        Intent intent = new Intent(Intent.ACTION_VIEW);
-//        File file = new File(downloadApk);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            Uri apkUri = FileProvider.getUriForFile(requireContext(), requireContext().getPackageName()+".fileprovider", file);
-//            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//            intent.setDataAndType(apkUri, "application/vnd.android.package-archive");
-//        } else {
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            Uri uri = Uri.fromFile(file);
-//            intent.setDataAndType(uri, "application/vnd.android.package-archive");
-//        }
-//        requireContext().startActivity(intent);
-//    }
 }

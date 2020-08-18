@@ -91,6 +91,7 @@ new Vue({
             },
             remote_ctrl: {
                 active: "",
+                items: [],
                 showed: false
             },
             settings: {
@@ -210,6 +211,32 @@ new Vue({
                 that.apps.sticky.stickies = response.data.data;
             });
         },
+        remote_ctrl_fetch: function() {
+            var that = this;
+            axios.get('/rmc/all', {
+                headers: { access_token: this.apps.settings.access_token }
+            }).then(function(response) {
+                that.apps.remote_ctrl.items = response.data.data;
+            });
+        },
+        remote_ctrl_operate: function(item) {
+            // console.log(item);
+            switch (item.type) {
+                case "BUTTON":
+                    {
+                        axios.get('/rmc/' + item.path, {
+                            headers: { access_token: this.apps.settings.access_token }
+                        }).then(function(response) {
+                            alert("remote ctrl send done!!!");
+                        });
+                        break;
+                    }
+                default:
+                    {
+                        console.log("wrong type");
+                    }
+            }
+        },
         ui_format_time: function(timeMS) {
             return FormatDateTime(timeMS);
         },
@@ -292,7 +319,9 @@ new Vue({
             }
         },
         "apps.remote_ctrl.showed": function(newVal) {
-
+            if (newVal) {
+                this.remote_ctrl_fetch();
+            }
         },
         "apps.settings.api_list_show": function(newVal) {
             if (newVal && this.apps.settings.apis.length == 0) {

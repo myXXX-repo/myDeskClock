@@ -14,6 +14,7 @@ web task taskList 重构detail弹窗布局
 web task taskList 增加内容的url判断
 web 在导航栏中增加刷新页面的按钮
 web 设置 增加lightRequest， 测试版本，用以减少一次fetch操作
+web remote_ctrl 从服务器动态获取操作列表从而生成一个个操作单元
 
 设置 ui 增加自动刷新屏幕选项
 
@@ -24,6 +25,7 @@ httpServer sticky 增加了sticky的后端接口
 httpServer static 增加了axios的map文件
 httpServer tab 增加了tab的后端接口
 httpServer 增加access token验证功能，其中如果access token设置为0，则不进行验证
+httpServer remote_ctrl 增加了一些api
 
 ui 记录全刷次数
 ui 记录背光开关次数

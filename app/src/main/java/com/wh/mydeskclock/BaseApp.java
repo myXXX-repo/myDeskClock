@@ -3,7 +3,10 @@ package com.wh.mydeskclock;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.BatteryManager;
+import android.os.Environment;
+import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
@@ -14,7 +17,10 @@ import com.wh.mydeskclock.app.task.TaskRepository;
 import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 
+import java.io.File;
+
 public class BaseApp extends Application {
+    private String TAG = "WH_"+getClass().getSimpleName();
     public static SharedPreferences sp_default;
     public static SharedPreferences sp_COAST;
 
@@ -22,6 +28,8 @@ public class BaseApp extends Application {
     public static NotifyRepository notifyRepository;
     public static StickyRepository stickyRepository;
     public static TabRepository tabRepository;
+
+    public static boolean isDebug = false;
 
     @Override
     public void onCreate() {
@@ -36,5 +44,17 @@ public class BaseApp extends Application {
         stickyRepository = new StickyRepository(this);
         tabRepository = new TabRepository(this);
 
+
+        isDebug = isIsDebug();
+
+        Log.d(TAG, "onCreate: "+isDebug);
+
+    }
+
+    private boolean isIsDebug(){
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/test_myDC");
+        Resources resources = getResources();
+        String type = resources.getString(R.string.type);
+        return (file.exists()&&file.isFile())||"debug".equals(type);
     }
 }

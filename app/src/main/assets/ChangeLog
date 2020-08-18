@@ -23,9 +23,11 @@ httpServer apiList 增加可动态维护的api list插槽
 httpServer sticky 增加了sticky的后端接口
 httpServer static 增加了axios的map文件
 httpServer tab 增加了tab的后端接口
+httpServer 增加access token验证功能，其中如果access token设置为0，则不进行验证
 
 ui 记录全刷次数
 ui 记录背光开关次数
 ui 竖屏 增加点击week文字切换精简模式的功能
 
 project 精简一些低分辨率的图标资源
+project 精简一些fragment文件

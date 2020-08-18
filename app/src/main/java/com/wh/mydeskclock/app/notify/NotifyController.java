@@ -26,7 +26,7 @@ public class NotifyController {
                              @RequestParam(value = "title", defaultValue = "default title", required = false) final String TITLE,
                              @RequestParam(value = "notify", defaultValue = "blank notify") final String NOTIFY,
                              @RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         Bundle bundle = new Bundle();

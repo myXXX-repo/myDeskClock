@@ -1,10 +1,8 @@
 package com.wh.mydeskclock.app.tab;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.wh.mydeskclock.BaseApp;
-import com.wh.mydeskclock.app.tab.Tab;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
@@ -31,7 +29,7 @@ public class TabController {
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         List<Tab> tabs = BaseApp.tabRepository.getAll();
@@ -52,7 +50,7 @@ public class TabController {
             @RequestParam(name = "device",required = false,defaultValue = "default device")String DEVICE,
             @RequestHeader("access_token")String ACCESS_TOKEN
     ){
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         Tab tab = new Tab(CON,DEVICE);

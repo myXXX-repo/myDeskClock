@@ -56,4 +56,8 @@ public class MainServer {
             server.shutdown();
         }
     }
+
+    public static boolean authNotGot(String ACCESS_TOKEN){
+        return !access_token.equals("0") && !access_token.equals(ACCESS_TOKEN);
+    }
 }

@@ -1,6 +1,5 @@
 package com.wh.mydeskclock.server;
 
-import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class MainController {
 
     @GetMapping(path = "/get",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String api_get(@RequestHeader("access_token")String ACCESS_TOKEN){
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         return ReturnDataUtils.successfulJson(MainServer.apiList);

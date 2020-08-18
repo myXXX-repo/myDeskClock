@@ -9,16 +9,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
+
+import java.util.Objects;
 
 
 public class MainService extends Service {
@@ -27,7 +26,6 @@ public class MainService extends Service {
 
     private static NotificationManager notificationManager;
     private MainServer mainServer;
-    private SharedPreferences sharedPreferences;
     private int SETTING_HTTP_SERVER_PORT;
     private BroadcastReceiver broadcastReceiver;
 
@@ -49,10 +47,8 @@ public class MainService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SETTING_HTTP_SERVER_PORT = Integer.parseInt(sharedPreferences.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT,"8081"));
+        SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(BaseApp.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT, "8081")));
         URL = "http:/" + NetUtils.getLocalIPAddress() + ":" + SETTING_HTTP_SERVER_PORT;
-        Log.d(TAG, "onCreate: "+URL);
         mainServer = new MainServer(this, SETTING_HTTP_SERVER_PORT);
 
         MainService.notificationManager = getNotificationManager();
@@ -78,7 +74,6 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "onStartCommand: ");
         return START_STICKY;
     }
 

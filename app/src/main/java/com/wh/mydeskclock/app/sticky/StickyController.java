@@ -1,10 +1,8 @@
 package com.wh.mydeskclock.app.sticky;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.wh.mydeskclock.BaseApp;
-import com.wh.mydeskclock.app.sticky.Sticky;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
@@ -33,7 +31,7 @@ public class StickyController {
     @GetMapping(path = "/get/{stickyId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_sticky_id(@PathVariable("stickyId") int stickyId,
                          @RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         Sticky sticky = BaseApp.stickyRepository.getById(stickyId);
@@ -49,7 +47,7 @@ public class StickyController {
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_sticky_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         List<Sticky> stickies = BaseApp.stickyRepository.getAll();
@@ -69,13 +67,12 @@ public class StickyController {
      */
     @PostMapping(path = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_sticky_with_post(
-            Context context,
             @RequestParam(name = "return", defaultValue = "1", required = false) int returnData,
             @RequestParam(name = "sticky") String STICKY,
             @RequestParam(name = "title", required = false, defaultValue = "DefaultTitle") String TITLE,
             @RequestParam(name = "device", required = false, defaultValue = "DefaultDevice") String DEVICE_NAME,
             @RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         Sticky sticky = new Sticky(STICKY, TITLE, DEVICE_NAME);

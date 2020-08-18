@@ -1,16 +1,10 @@
 package com.wh.mydeskclock.server;
 
 import com.wh.mydeskclock.MainActivityLand;
-import com.wh.mydeskclock.MainFragmentLand;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
-import com.wh.mydeskclock.utils.UiUtils;
-import com.yanzhenjie.andserver.annotation.Controller;
 import com.yanzhenjie.andserver.annotation.GetMapping;
-import com.yanzhenjie.andserver.annotation.PatchMapping;
-import com.yanzhenjie.andserver.annotation.PathVariable;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
-import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
 import com.yanzhenjie.andserver.util.MediaType;
 
@@ -20,7 +14,7 @@ public class RemoteCtrlController {
 
     @GetMapping(path = "/fs")
     public String rm_flash_screen(@RequestHeader("access_token")String ACCESS_TOKEN) {
-        if(!ACCESS_TOKEN.equals(MainServer.access_token)){
+        if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
         new Thread() {

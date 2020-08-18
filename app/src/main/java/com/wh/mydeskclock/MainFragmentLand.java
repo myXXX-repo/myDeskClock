@@ -7,14 +7,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +40,6 @@ import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.widget.MyDialog;
 
 
-import java.io.File;
 import java.util.Objects;
 
 
@@ -196,13 +192,8 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
             }
             case R.id.tv_week: {
                 // 点击week文本从服务器下载新版本
-                Resources resources = requireContext().getResources();
-                Log.d(TAG, "onClick: "+resources.getString(R.string.type));
-                File a = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/test");
-                if(resources.getString(R.string.type).equals("release")){
-                    if(!a.exists()){
-                        return;
-                    }
+                if(!BaseApp.isDebug){
+                    return;
                 }
                 if (ContextCompat.checkSelfPermission(mParent, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -397,7 +388,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                         .setPositiveButton("download", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadUtils.download("http://192.168.50.184/release/myDeskClock/app-release.apk","mydc.apk",FileUtils.MimeType.APPLICATION_OCTET_STREAM,requireContext());
+                                DownloadUtils.download("http://192.168.50.184/release/myDeskClock/app-release.apk","mydc.apk",FileUtils.MimeType.APPLICATION.APK,requireContext());
                                 MyDialog myDialog1 = new MyDialog(new AlertDialog.Builder(requireContext())
                                         .setPositiveButton("fileManager", new DialogInterface.OnClickListener() {
                                             @Override

@@ -108,7 +108,7 @@ public class TaskController {
     @GetMapping(path = "/get/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_id(Context context,
                        @PathVariable("taskId") int taskId,
-                       @RequestHeader("access_token")String ACCESS_TOKEN) {
+                       @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -124,7 +124,7 @@ public class TaskController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_task_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    String get_task_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -141,7 +141,7 @@ public class TaskController {
      * @method GET
      */
     @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_task_undone(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    String get_task_undone(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -164,7 +164,7 @@ public class TaskController {
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_id(@PathVariable("taskId") int taskId,
                           @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                          @RequestHeader("access_token")String ACCESS_TOKEN) {
+                          @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -185,7 +185,7 @@ public class TaskController {
      * @method DELETE
      */
     @DeleteMapping(path = "/delete/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String delete_task_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    String delete_task_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -209,7 +209,7 @@ public class TaskController {
             @RequestParam(name = "device", required = false, defaultValue = "default device") String DEVICE,
             @RequestParam(name = "title", required = false, defaultValue = "default title") String TITLE,
             @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-            @RequestHeader("access_token")String ACCESS_TOKEN) {
+            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -237,7 +237,7 @@ public class TaskController {
     String set_task_done_id(
                             @PathVariable(name = "taskId") int taskId,
                             @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                            @RequestHeader("access_token")String ACCESS_TOKEN) {
+                            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -266,7 +266,7 @@ public class TaskController {
     String set_task_undone_id(
                               @PathVariable(name = "taskId") int taskId,
                               @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                              @RequestHeader("access_token")String ACCESS_TOKEN) {
+                              @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }

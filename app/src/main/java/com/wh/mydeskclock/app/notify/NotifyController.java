@@ -25,7 +25,7 @@ public class NotifyController {
                              @RequestParam(value = "device", defaultValue = "default device", required = false) final String DEVICE,
                              @RequestParam(value = "title", defaultValue = "default title", required = false) final String TITLE,
                              @RequestParam(value = "notify", defaultValue = "blank notify") final String NOTIFY,
-                             @RequestHeader("access_token")String ACCESS_TOKEN) {
+                             @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }

@@ -13,7 +13,7 @@ import com.yanzhenjie.andserver.util.MediaType;
 public class RemoteCtrlController {
 
     @GetMapping(path = "/fs")
-    public String rm_flash_screen(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    public String rm_flash_screen(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }

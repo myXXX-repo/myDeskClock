@@ -17,7 +17,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/get",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public String api_get(@RequestHeader("access_token")String ACCESS_TOKEN){
+    public String api_get(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN){
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }

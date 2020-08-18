@@ -30,7 +30,7 @@ public class StickyController {
      */
     @GetMapping(path = "/get/{stickyId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_sticky_id(@PathVariable("stickyId") int stickyId,
-                         @RequestHeader("access_token")String ACCESS_TOKEN) {
+                         @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -46,7 +46,7 @@ public class StickyController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_sticky_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    String get_sticky_all(@RequestHeader(name = "access_token",required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -71,7 +71,7 @@ public class StickyController {
             @RequestParam(name = "sticky") String STICKY,
             @RequestParam(name = "title", required = false, defaultValue = "DefaultTitle") String TITLE,
             @RequestParam(name = "device", required = false, defaultValue = "DefaultDevice") String DEVICE_NAME,
-            @RequestHeader("access_token")String ACCESS_TOKEN) {
+            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }

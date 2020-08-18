@@ -28,7 +28,7 @@ public class TabController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
+    String get_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");
         }
@@ -48,7 +48,7 @@ public class TabController {
     String add_with_post(
             @RequestParam(name = "con")String CON,
             @RequestParam(name = "device",required = false,defaultValue = "default device")String DEVICE,
-            @RequestHeader("access_token")String ACCESS_TOKEN
+            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN
     ){
         if(MainServer.authNotGot(ACCESS_TOKEN)){
             return ReturnDataUtils.failedJson(401,"Unauthorized");

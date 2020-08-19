@@ -51,7 +51,7 @@ public class MainService extends Service {
         URL = "http:/" + NetUtils.getLocalIPAddress() + ":" + SETTING_HTTP_SERVER_PORT;
         mainServer = new MainServer(this, SETTING_HTTP_SERVER_PORT);
 
-        MainService.notificationManager = getNotificationManager();
+        notificationManager = getNotificationManager();
 
         // 创建通知
         NotificationCompat.Builder frontActivityNotificationBuilder = genForegroundNotification();
@@ -70,6 +70,7 @@ public class MainService extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("myDeskClock_server_exit");
         registerReceiver(broadcastReceiver,intentFilter);
+
     }
 
     @Override

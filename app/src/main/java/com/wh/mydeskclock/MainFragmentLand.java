@@ -143,8 +143,8 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
             case R.id.tv_min: {
                 MyDialog myDialog = new MyDialog(
                         new AlertDialog.Builder(requireContext())
-                                .setTitle("test")
-                                .setItems(new String[]{"打开背光", "关闭背光"}, new DialogInterface.OnClickListener() {
+                                .setTitle("Operations")
+                                .setItems(new String[]{"打开背光", "关闭背光","创建Task"}, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         switch (i) {
@@ -154,6 +154,18 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                                             }
                                             case 1: {
                                                 UiUtils.setWindowBrightness(requireActivity(), 0);
+                                                break;
+                                            }
+                                            case 2:{
+                                                MyDialog myDialog1 = new MyDialog(
+                                                        new AlertDialog.Builder(requireContext())
+                                                        .setTitle("New Task Item")
+                                                        .setMessage("test")
+                                                        .setPositiveButton("ok",null)
+                                                        .setNegativeButton("cancel",null)
+                                                );
+                                                myDialog1.setFullScreen();
+                                                myDialog1.show(requireActivity().getSupportFragmentManager(),"add_new_task");
                                                 break;
                                             }
                                         }

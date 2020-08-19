@@ -157,9 +157,13 @@ public class MediaCtrlFragment extends Fragment {
         intentFilter_music.addAction("com.android.music.metachanged");
         intentFilter_music.addAction("com.android.music.com.android.music.musicservicecommand");
         intentFilter_music.addAction("com.android.music.playstatechanged");
+        intentFilter_music.addAction("com.android.music.playstatechanged.sprd");
         intentFilter_music.addAction("com.android.music.playbackcomplete");
+        intentFilter_music.addAction("com.android.music.playbackcomplete.sprd");
         intentFilter_music.addAction("com.android.music.queuechanged");
+        intentFilter_music.addAction("com.android.music.queuechanged.sprd");
         intentFilter_music.addAction("com.android.music.metachanged");
+        intentFilter_music.addAction("com.android.music.metachanged.sprd");
         intentFilter_music.addAction("com.htc.music.metachanged");
         intentFilter_music.addAction("fm.last.android.metachanged");
         intentFilter_music.addAction("com.sec.android.app.music.metachanged");

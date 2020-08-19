@@ -1,10 +1,13 @@
 2.5 changelog
 
-notify 增加了获取notify历史记录的api
+clock 横屏下点击时钟的分钟文字显示操作菜单
+
+notify 增加了获取notify历史记录的api（暂时没有实际用处）
 sticky 增加了sticky的数据库组件
-tab 增加了tab的数据库组件
+tab 增加了tab的数据库组件（暂时没有实际用处）
 task taskList 增加了detail弹框的setDone、setUnDone按钮
 task taskList 修复长文本不能完全显示的bug
+task 加回了在手机端创建task的功能，点击时间的分钟显示菜单
 media_ctrl 增加了对音乐信息的监听，适配了部分音乐播放器
 media_ctrl 稍稍修改了横屏界面下的media ctrl布局
 
@@ -17,6 +20,7 @@ web task taskList 增加内容的url判断
 web 在导航栏中增加刷新页面的按钮
 web 设置 增加lightRequest， 测试版本，用以减少一次fetch操作
 web remote_ctrl 从服务器动态获取操作列表从而生成一个个操作单元
+web 自动清除之前版本保存的数据
 
 设置 ui 增加自动刷新屏幕选项
 
@@ -25,7 +29,7 @@ httpServer remoteCtrl 增加新的app
 httpServer apiList 增加可动态维护的api list插槽
 httpServer sticky 增加了sticky的后端接口
 httpServer static 增加了axios的map文件
-httpServer tab 增加了tab的后端接口
+httpServer tab 增加了tab的后端接口（暂时没有实际用处）
 httpServer 增加access token验证功能，其中如果access token设置为0，则不进行验证
 httpServer remote_ctrl 增加了一些api
 httpServer media_ctrl 增加了获取音乐信息的api

@@ -90,9 +90,9 @@
                 <ul class="nav navbar-nav">
                     <li v-bind:class="apps.task.active"><a href="#" v-on:click='switchPanel("task")'>Task</a>
                     </li>
-                    <li v-bind:class="apps.notify.active"><a href="#" v-on:click='switchPanel("notify")'>Notify</a>
+                    <li v-bind:class="apps.notify.active" style="display: none;"><a href="#" v-on:click='switchPanel("notify")'>Notify</a>
                     </li>
-                    <li v-bind:class="apps.sticky.active"><a href="#" v-on:click='switchPanel("sticky")'>Sticky</a>
+                    <li v-bind:class="apps.sticky.active" style="display: none;"><a href="#" v-on:click='switchPanel("sticky")'>Sticky</a>
                     </li>
                     <li v-bind:class="apps.remote_ctrl.active"><a href="#" v-on:click='switchPanel("remote_ctrl")'>RemoteCtrl</a>
                     </li>

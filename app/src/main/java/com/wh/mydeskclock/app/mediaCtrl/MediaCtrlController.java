@@ -2,6 +2,7 @@ package com.wh.mydeskclock.app.mediaCtrl;
 
 
 import com.wh.mydeskclock.server.MainServer;
+import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
@@ -13,6 +14,18 @@ import com.yanzhenjie.andserver.util.MediaType;
 @RequestMapping("/mc")
 public class MediaCtrlController {
     private String TAG = "WH_" + getClass().getSimpleName();
+
+    MediaCtrlController(){
+        MainServer.apiList.add(new ApiNode(
+                "mediaCtrl",
+                "/mc/get/info",
+                "http://ip:port/mc/get/info",
+                "用来获取当前设备正在播放音乐的信息",
+                "GET",
+                "",
+                ""
+        ));
+    }
 
     @GetMapping(value = "/get/info", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String get_info(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {

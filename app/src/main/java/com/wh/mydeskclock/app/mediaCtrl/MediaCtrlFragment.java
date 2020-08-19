@@ -39,6 +39,12 @@ public class MediaCtrlFragment extends Fragment {
     private BroadcastReceiver music_broadcastReceiver;
     private ImageView iv_play;
 
+    public static String ARTIST;
+    public static String TRACK;
+    public static String ALBUM;
+    public static boolean PLAYING;
+    public static long ID;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,9 +123,7 @@ public class MediaCtrlFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.d(TAG, "onReceive: ACTION" + intent.getAction());
-                String ARTIST,TRACK,ALBUM;
-                boolean PLAYING;
-                long ID;
+
                 String ACTION = intent.getAction();
                 if (Objects.equals(intent.getAction(), "com.amazon.mp3.metachanged")) {
                     ARTIST = intent.getStringExtra("com.amazon.mp3.artist");

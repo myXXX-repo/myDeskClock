@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.server.MainServer;
+import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PostMapping;
@@ -19,6 +20,27 @@ import java.util.List;
 @RequestMapping("/tab")
 public class TabController {
     String TAG = "WH_" + getClass().getSimpleName();
+
+    public TabController() {
+        MainServer.apiList.add(new ApiNode(
+                "tab",
+                "/tab/get/all",
+                "http://ip:port/tab/get/all",
+                "用来获取全部的tab列表",
+                "GET",
+                "",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "tab",
+                "/tab/add",
+                "http://ip:port/tab/add",
+                "用来获取全部的tab列表",
+                "GET",
+                "",
+                "con json数组字符串,数组元素内含title 和 url, device string类型"
+        ));
+    }
 
     /**
      * api 1

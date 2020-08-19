@@ -11,6 +11,11 @@ let ensure2num = function(num) {
 }
 
 let init = function() {
+    if (localStorage.getItem("inited") != null) {
+        alert("为保证网页显示正常，即将重置本页面在浏览器中保存的数据！！！");
+        window.localStorage.clear();
+        location.reload();
+    }
     if (localStorage.getItem('api_list_show') == null) {
         localStorage.setItem('api_list_show', false);
     }

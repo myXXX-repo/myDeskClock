@@ -1,6 +1,8 @@
 package com.wh.mydeskclock.utils;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 
 import com.wh.mydeskclock.BaseApp;
 
@@ -20,5 +22,13 @@ public class Utils {
         int TMP = Integer.parseInt(Objects.requireNonNull(BaseApp.sp_COAST.getString(key, "0")));
         editor.putString(key, String.valueOf(TMP+=1));
         editor.apply();
+    }
+
+    public static void unPackBundle(Bundle bundle,String TAG){
+        Log.d(TAG, "unPackBundle: =====================================");
+        for (String key : bundle.keySet()) {
+            Log.d(TAG, "onReceive: "+key+" "+bundle.get(key));
+        }
+        Log.d(TAG, "unPackBundle: =====================================");
     }
 }

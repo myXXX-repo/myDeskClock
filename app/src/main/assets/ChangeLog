@@ -36,3 +36,11 @@ ui 竖屏 增加点击week文字切换精简模式的功能
 
 project 精简一些低分辨率的图标资源
 project 精简一些fragment文件
+
+mediaCtrl支持的播放器 已知已证实全部
+VLC
+口袋阅app商店的音乐
+CM的内置音乐播放器 com.cyanogenmod.eleven
+亚马逊音乐
+魅族音乐播放器
+小米音乐播放器

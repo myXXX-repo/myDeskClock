@@ -13,7 +13,15 @@ import com.yanzhenjie.andserver.util.MediaType;
 public class MainController {
 
     public MainController() {
-        MainServer.apiList.add(new ApiNode("MainServer","/api/get","http://ip:port/api/get","","GET","null","null"));
+        MainServer.apiList.add(new ApiNode(
+                "MainServer",
+                "/api/get",
+                "http://ip:port/api/get",
+                "获取myDC提供的api",
+                "GET",
+                "",
+                ""
+        ));
     }
 
     @GetMapping(path = "/get",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

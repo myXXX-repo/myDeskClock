@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.server.MainServer;
+import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
@@ -21,6 +22,36 @@ import java.util.List;
 public class StickyController {
     String TAG = "WH_" + getClass().getSimpleName();
 
+    public StickyController() {
+        MainServer.apiList.add(new ApiNode(
+                "sticky",
+                "/sticky/get/{stickyId}",
+                "http://ip:port/sticky/11",
+                "用来获取指定id的sticky",
+                "GET",
+                "stickyId int类型",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "sticky",
+                "/sticky/get/all",
+                "http://ip:port/sticky/get/all",
+                "用来获取全部sticky内容",
+                "GET",
+                "",
+                ""
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "sticky",
+                "/sticky/add",
+                "http://ip:port/sticky/add",
+                "用来创建一个sticky",
+                "POST",
+                "",
+                "title sticky device 均为string类型"
+        ));
+    }
+
     /**
      * api 0
      *
@@ -30,9 +61,9 @@ public class StickyController {
      */
     @GetMapping(path = "/get/{stickyId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_sticky_id(@PathVariable("stickyId") int stickyId,
-                         @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+                         @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Sticky sticky = BaseApp.stickyRepository.getById(stickyId);
         return ReturnDataUtils.successfulJson(sticky);
@@ -46,9 +77,9 @@ public class StickyController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_sticky_all(@RequestHeader(name = "access_token",required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+    String get_sticky_all(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         List<Sticky> stickies = BaseApp.stickyRepository.getAll();
         Log.d(TAG, "get_sticky_all: " + stickies.size());
@@ -71,9 +102,9 @@ public class StickyController {
             @RequestParam(name = "sticky") String STICKY,
             @RequestParam(name = "title", required = false, defaultValue = "DefaultTitle") String TITLE,
             @RequestParam(name = "device", required = false, defaultValue = "DefaultDevice") String DEVICE_NAME,
-            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+            @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Sticky sticky = new Sticky(STICKY, TITLE, DEVICE_NAME);
         BaseApp.stickyRepository.insert(sticky);

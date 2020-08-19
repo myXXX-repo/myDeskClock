@@ -15,6 +15,7 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
 import com.wh.mydeskclock.app.notify.NotifyFragment;
+import com.wh.mydeskclock.app.sticky.Sticky;
+import com.wh.mydeskclock.app.task.Task;
 import com.wh.mydeskclock.app.task.TaskListFragment;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.DownloadUtils;
@@ -157,11 +160,22 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                                                 break;
                                             }
                                             case 2:{
+                                                View v = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_create_task,null,false);
+                                                final EditText title = v.findViewById(R.id.tv_new_task_title);
+                                                final EditText task = v.findViewById(R.id.tv_new_task_con);
+
                                                 MyDialog myDialog1 = new MyDialog(
                                                         new AlertDialog.Builder(requireContext())
                                                         .setTitle("New Task Item")
-                                                        .setMessage("test")
-                                                        .setPositiveButton("ok",null)
+                                                        .setView(v)
+                                                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                String new_title = title.getText().toString();
+                                                                String new_task = task.getText().toString();
+                                                                BaseApp.taskRepository.insert(new Task(new_task,new_title,"localhost"));
+                                                            }
+                                                        })
                                                         .setNegativeButton("cancel",null)
                                                 );
                                                 myDialog1.setFullScreen();

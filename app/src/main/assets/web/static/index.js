@@ -82,16 +82,18 @@ new Vue({
             },
             notify: {
                 active: "",
+                notifies: [],
                 showed: false
             },
             sticky: {
                 active: "",
+                stickies: [],
                 showed: false,
-                stickies: []
             },
             remote_ctrl: {
                 active: "",
                 items: [],
+                request_lock: false,
                 showed: false
             },
             settings: {
@@ -203,6 +205,14 @@ new Vue({
                 this.apps.task.task_title = localStorage.getItem("task_default_title");
             }
         },
+        notify_fetch: function() {
+            var that = this;
+            axios.get('/notify/get/all', {
+                headers: { access_token: this.apps.settings.access_token }
+            }).then(function(response) {
+                that.apps.notify.notifies = response.data.data;
+            });
+        },
         sticky_fetch: function() {
             var that = this;
             axios.get('/sticky/get/all', {
@@ -221,13 +231,24 @@ new Vue({
         },
         remote_ctrl_operate: function(item) {
             // console.log(item);
+            if (this.apps.remote_ctrl.request_lock) {
+                alert("request send once a time")
+                return;
+            }
+            this.apps.remote_ctrl.request_lock = true;
+            var that = this;
             switch (item.type) {
                 case "BUTTON":
                     {
                         axios.get('/rmc/' + item.path, {
                             headers: { access_token: this.apps.settings.access_token }
                         }).then(function(response) {
-                            alert("remote ctrl send done!!!");
+                            // alert("remote ctrl send done!!!");
+                            that.apps.remote_ctrl.request_lock = false;
+                        }).catch(function(error) {
+                            console.log(error);
+                            alert(error);
+                            that.apps.remote_ctrl.request_lock = false;
                         });
                         break;
                     }

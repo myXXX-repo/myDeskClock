@@ -28,72 +28,72 @@ public class TaskController {
                 "task",
                 "/task/get/{taskId}",
                 "http://ip:port/task/get/11",
-                "get certain task item by id",
+                "获取指定id的task",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/get/all",
                 "http://ip:port/task/get/all",
-                "",
+                "用来获取全部task",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/get/undone",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/get/undone",
+                "用来获取全部未完成的task",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/delete/{taskId}",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/delete/11",
+                "用来删除指定id的task",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/delete/all",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/delete/all",
+                "用来删除全部task",
                 "GET",
-                "taskId int",
+                "",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/add",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/add",
+                "用来创建新的task",
                 "GET",
-                "taskId int",
-                ""
+                "",
+                "task,device,title 均为string类型"
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/done/{taskId}",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/done/11",
+                "将指定id的task设置为完成",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
                 "/task/undone/{taskId}",
-                "http://ip:port/task/get/all",
-                "",
+                "http://ip:port/task/undone/11",
+                "将指定id的task设置未未完成",
                 "GET",
-                "taskId int",
+                "taskId int类型",
                 ""
         ));
     }

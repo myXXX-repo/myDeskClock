@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.server.MainServer;
+import com.wh.mydeskclock.utils.ApiNode;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
@@ -19,6 +20,27 @@ import com.yanzhenjie.andserver.util.MediaType;
 public class NotifyController {
 
     String TAG = "WH_" + NotifyController.class.getSimpleName();
+
+    public NotifyController() {
+        MainServer.apiList.add(new ApiNode(
+                "notify",
+                "/notify",
+                "http://ip:port/sticky",
+                "用来向myDC发送notify",
+                "GET",
+                "",
+                "title device notify 均为字符串"
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "notify",
+                "/notify/get/all",
+                "http://ip:port/notify/get/all",
+                "用来获取全部notify内容",
+                "GET",
+                "",
+                ""
+        ));
+    }
 
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_new(final Context context,

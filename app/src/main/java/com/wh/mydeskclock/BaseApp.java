@@ -3,21 +3,26 @@ package com.wh.mydeskclock;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.BatteryManager;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.preference.PreferenceManager;
 
 import com.wh.mydeskclock.app.notify.NotifyRepository;
 import com.wh.mydeskclock.app.sticky.StickyRepository;
 import com.wh.mydeskclock.app.tab.TabRepository;
 import com.wh.mydeskclock.app.task.TaskRepository;
+import com.wh.mydeskclock.utils.AppUtils;
 import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
+import com.wh.mydeskclock.widget.MyDialog;
 
 import java.io.File;
+import java.io.IOException;
 
 public class BaseApp extends Application {
     private String TAG = "WH_"+getClass().getSimpleName();
@@ -47,7 +52,7 @@ public class BaseApp extends Application {
 
         isDebug = isIsDebug();
 
-        Log.d(TAG, "onCreate: "+isDebug);
+        Log.d(TAG, "onCreate: isDebug"+isDebug);
 
     }
 

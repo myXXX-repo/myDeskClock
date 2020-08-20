@@ -6,9 +6,12 @@ import androidx.appcompat.app.AlertDialog;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,10 +20,13 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.wh.mydeskclock.utils.AppUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.utils.Utils;
 import com.wh.mydeskclock.widget.MyDialog;
+
+import java.io.IOException;
 
 public class MainActivityPort extends BaseActivity implements View.OnClickListener {
     private View v_cover;
@@ -45,6 +51,23 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
         flash();
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (!BaseApp.isDebug) {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityPort.this);
+                        if (hasNewVersion) {
+                            myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
+                        }
+                    } catch (PackageManager.NameNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
 
     }
 
@@ -163,6 +186,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
 
         private static final int WHAT_TIME = 338;
         private static final int WHAT_BATTERY = 33;
+        private static final int WHAT_UPDATE = 336;
 
         private TextView tv_hour;
         private TextView tv_min;
@@ -203,6 +227,24 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
                 }
                 case WHAT_BATTERY: {
                     UiUtils.setBattery_MainFragment(tv_battery);
+                    break;
+                }
+                case WHAT_UPDATE:{
+                    MyDialog myDialog = new MyDialog(
+                            new AlertDialog.Builder(MainActivityPort.this)
+                                    .setTitle("Find New Version")
+                                    .setMessage("Get Update in CoolApk ?")
+                                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coolapk.com/apk/260552"));
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .setNegativeButton("cancel", null)
+                    );
+                    myDialog.setFullScreen();
+                    myDialog.show(getSupportFragmentManager(), "check update");
                     break;
                 }
             }

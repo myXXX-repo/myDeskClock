@@ -1,13 +1,18 @@
 package com.wh.mydeskclock;
 
+
 import android.os.Bundle;
 import android.os.PersistableBundle;
+
 import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.wh.mydeskclock.utils.UiUtils;
+
 
 public class BaseActivity extends AppCompatActivity {
     String TAG = "WH_BaseActivity";
@@ -18,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
         UiUtils.setFullScreen(getWindow());
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
+
 
     @Override
     protected void onStart() {
@@ -50,7 +56,7 @@ public class BaseActivity extends AppCompatActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    void setTAG(String TAG){
+    void setTAG(String TAG) {
         this.TAG = TAG;
     }
 

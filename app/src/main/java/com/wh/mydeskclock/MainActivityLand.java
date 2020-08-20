@@ -1,18 +1,28 @@
 package com.wh.mydeskclock;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
 import android.view.View;
 
+import com.wh.mydeskclock.utils.AppUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
 import com.wh.mydeskclock.utils.Utils;
+import com.wh.mydeskclock.widget.MyDialog;
+
+import java.io.IOException;
 
 public class MainActivityLand extends BaseActivity {
     private boolean SETTING_UI_RE_LAND;
@@ -42,6 +52,23 @@ public class MainActivityLand extends BaseActivity {
         myHandler = new MyHandler();
 
         flash();
+
+        if (!BaseApp.isDebug) {
+            new Thread() {
+                @Override
+                public void run() {
+                    super.run();
+                    try {
+                        boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityLand.this);
+                        if (hasNewVersion) {
+                            myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
+                        }
+                    } catch (PackageManager.NameNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
     }
 
     @Override
@@ -49,9 +76,9 @@ public class MainActivityLand extends BaseActivity {
         super.onDestroy();
     }
 
-    public static void flash(){
+    public static void flash() {
 
-                new Thread() {
+        new Thread() {
             @Override
             public void run() {
                 try {
@@ -76,6 +103,7 @@ public class MainActivityLand extends BaseActivity {
         private static final int WHAT_SET_WHITE = 903;
         private static final int WHAT_SET_GONE = 203;
         private static final int WHAT_SET_VISIBLE = 751;
+        private static final int WHAT_UPDATE = 7511;
 
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -94,6 +122,24 @@ public class MainActivityLand extends BaseActivity {
                 }
                 case WHAT_SET_VISIBLE: {
                     v_cover.setVisibility(View.VISIBLE);
+                    break;
+                }
+                case WHAT_UPDATE:{
+                    MyDialog myDialog = new MyDialog(
+                            new AlertDialog.Builder(MainActivityLand.this)
+                                    .setTitle("Find New Version")
+                                    .setMessage("Get Update in CoolApk ?")
+                                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.coolapk.com/apk/260552"));
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .setNegativeButton("cancel", null)
+                    );
+                    myDialog.setFullScreen();
+                    myDialog.show(getSupportFragmentManager(), "check update");
                     break;
                 }
             }

@@ -336,7 +336,7 @@ new Vue({
         "apps.notify.showed": function(newVal, oldVal) {
             // 更新数据
             if (newVal) {
-                console.log(newVal);
+                this.notify_fetch();
             }
         },
         "apps.sticky.showed": function(newVal) {

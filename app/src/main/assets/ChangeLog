@@ -1,4 +1,10 @@
-2.5 changelog
+2.5.1 (49) changelog
+
+MediaCtrl 稍稍修改界面布局
+App 增加了新版本检查
+web 启用了notify
+
+2.5(48) changelog
 
 clock 横屏下点击时钟的分钟文字显示操作菜单
 

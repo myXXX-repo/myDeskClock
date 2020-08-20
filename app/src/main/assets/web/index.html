@@ -90,7 +90,7 @@
                 <ul class="nav navbar-nav">
                     <li v-bind:class="apps.task.active"><a href="#" v-on:click='switchPanel("task")'>Task</a>
                     </li>
-                    <li v-bind:class="apps.notify.active" style="display: none;"><a href="#" v-on:click='switchPanel("notify")'>Notify</a>
+                    <li v-bind:class="apps.notify.active"><a href="#" v-on:click='switchPanel("notify")'>Notify</a>
                     </li>
                     <li v-bind:class="apps.sticky.active" style="display: none;"><a href="#" v-on:click='switchPanel("sticky")'>Sticky</a>
                     </li>
@@ -160,6 +160,30 @@
             </div>
 
             <div id="panel_notify" v-if=' apps.notify.active == "active" '>
+
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>title</th>
+                            <th>notify</th>
+                            <th>device</th>
+                            <th>create time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in apps.notify.notifies">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.title }}</td>
+                            <td>{{ item.con }}</td>
+                            <td>{{ item.deviceName }}</td>
+                            <td>{{ ui_format_time(item.createTime) }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
                 <a href="/static/notify.py">click here to download python script for notify, may need
                     right click and
                     save
@@ -178,7 +202,7 @@
                         </p>
                     </div>
                 </div>
-                <!-- <div class="panel panel-default sticky_list_item">
+                <div class="panel panel-default sticky_list_item">
                     <div class="panel-body">
                         <p style="margin-top: 5px;">
                             <span class="sticky_list_item_title">myDeskClock简介</span><span class="sticky_list_item_done_mark">&checkmark;</span>
@@ -246,7 +270,7 @@
                         <p style="margin-top: 8px;"><span class="sticky_list_item_con">为方便Android设备使用运行myDC的设备所提供的api，我们开发了mySitter作为其客户端程序。该程序提供将分享的文本分别以Task或Sticky的形式送到myDC服务器的功能，另外支持监听设备通知和状态并发送Notfiy功能，此外支持桌面微件功能，支持周期task功能定时task功能计时task功能。</span>
                         </p>
                     </div>
-                </div> -->
+                </div>
             </div>
 
             <div id="panel_remote_ctrl" v-if=' apps.remote_ctrl.active == "active" '>

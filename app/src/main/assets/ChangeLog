@@ -3,6 +3,18 @@
 MediaCtrl 稍稍修改界面布局
 App 增加了新版本检查
 web 启用了notify
+web MediaCtrl 增加了一些字段，并且暂时禁用了亮度控制
+
+
+mediaCtrl支持的播放器
+VLC
+口袋阅app商店的音乐
+CM的内置音乐播放器 com.cyanogenmod.eleven
+亚马逊音乐
+魅族音乐播放器
+小米音乐播放器
+锤子播放器
+海信音乐播放器
 
 2.5(48) changelog
 

@@ -122,12 +122,45 @@ public class MediaCtrlFragment extends Fragment {
             }
         }
 
+        // 第一代获取音乐数据的方法
+        createMusicBroadCastReceiver();
+
+        // 第二代获取音乐方法 使用通知
+        // 以后再说   再见
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
+        if (SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO) {
+            if (iv_mini_mode != null) {
+                iv_mini_mode.setVisibility(View.VISIBLE);
+            }
+        } else {
+            if (iv_mini_mode != null) {
+                iv_mini_mode.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (music_broadcastReceiver != null) {
+            requireContext().unregisterReceiver(music_broadcastReceiver);
+        }
+    }
+
+    private void createMusicBroadCastReceiver() {
         music_broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Log.d(TAG, "onReceive: ACTION" + intent.getAction());
+
 
                 String ACTION = intent.getAction();
+                Log.d(TAG, "onReceive: ACTION" + ACTION);
+                Utils.unPackBundle(intent.getExtras(), TAG);
 
                 if (BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_DEBUG, false)) {
                     MyDialog myDialog = new MyDialog(new AlertDialog.Builder(requireContext())
@@ -192,8 +225,15 @@ public class MediaCtrlFragment extends Fragment {
         intentFilter_music.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
         intentFilter_music.addAction("com.andrew.apollo.metachanged");
         intentFilter_music.addAction("com.meizu.media.music");
+        // 酷狗播放器
+        intentFilter_music.addAction("com.kugou.android.music.metachanged");
+        // 天天动听 天天静听
+        intentFilter_music.addAction("com.ting.mp3.playinfo_changed");
         // 海信播放器
         intentFilter_music.addAction("com.hmct.music.metachanged");
+
+        // 测试 虾米播放器
+        intentFilter_music.addAction("fm.xiami.main.metachanged");
 //        intentFilter_music.addAction("com.netease.cloudmusicACTION_LIVE_EXPERIMENTS_CONFIG_UPDATE");
 
 
@@ -203,28 +243,5 @@ public class MediaCtrlFragment extends Fragment {
 //        intentFilter_music.addAction("com.android.music.playbackcomplete");
 //        intentFilter_music.addAction("com.android.music.playstatechanged");
         requireContext().registerReceiver(music_broadcastReceiver, intentFilter_music);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO, false);
-        if (SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO) {
-            if (iv_mini_mode != null) {
-                iv_mini_mode.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (iv_mini_mode != null) {
-                iv_mini_mode.setVisibility(View.GONE);
-            }
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (music_broadcastReceiver != null) {
-            requireContext().unregisterReceiver(music_broadcastReceiver);
-        }
     }
 }

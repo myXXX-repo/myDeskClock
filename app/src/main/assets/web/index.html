@@ -276,7 +276,7 @@
             <div id="panel_remote_ctrl" v-if=' apps.remote_ctrl.active == "active" '>
 
 
-                <div class="panel panel-warning remote_ctrl_item" v-for="item in apps.remote_ctrl.items" style="display: inline-block;width: 270px;height: 110px;margin: 8px 8px 8px 8px;background-color: azure;">
+                <div class="panel panel-warning remote_ctrl_item" v-for="item in apps.remote_ctrl.items" v-if="item.enabled" style="display: inline-block;width: 270px;height: 110px;margin: 8px 8px 8px 8px;background-color: azure;">
                     <div class="panel-body" v-on:click="remote_ctrl_operate(item)" style="width: 100%;">
                         <a href="#">
                             <div>

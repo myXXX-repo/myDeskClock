@@ -101,4 +101,34 @@ public class Task {
     public boolean isReadDone() {
         return ReadDone;
     }
+
+    public static class TaskSmall{
+        private String con;
+
+        private String title;
+
+        public TaskSmall() {
+        }
+
+        public TaskSmall(String con, String title) {
+            this.con = con;
+            this.title = title;
+        }
+
+        public String getCon() {
+            return con;
+        }
+
+        public void setCon(String con) {
+            this.con = con;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+    }
 }

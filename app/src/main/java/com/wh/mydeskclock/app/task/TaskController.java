@@ -3,6 +3,7 @@ package com.wh.mydeskclock.app.task;
 import android.content.Context;
 import android.util.Log;
 
+import com.alibaba.fastjson.JSON;
 import com.wh.mydeskclock.BaseApp;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ApiNode;
@@ -10,12 +11,15 @@ import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.DeleteMapping;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.PathVariable;
+import com.yanzhenjie.andserver.annotation.PostMapping;
+import com.yanzhenjie.andserver.annotation.RequestBody;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
 import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
 import com.yanzhenjie.andserver.util.MediaType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -80,6 +84,15 @@ public class TaskController {
         ));
         MainServer.apiList.add(new ApiNode(
                 "task",
+                "/task/add/multi",
+                "http://ip:port/task/add/multi",
+                "用来创建新的task 上传多条",
+                "POST",
+                "",
+                "con,device 均为string类型,其中con是包含title和con的json数组"
+        ));
+        MainServer.apiList.add(new ApiNode(
+                "task",
                 "/task/done/{taskId}",
                 "http://ip:port/task/done/11",
                 "将指定id的task设置为完成",
@@ -108,9 +121,9 @@ public class TaskController {
     @GetMapping(path = "/get/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_id(Context context,
                        @PathVariable("taskId") int taskId,
-                       @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+                       @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Task task = BaseApp.taskRepository.getById(taskId);
         return ReturnDataUtils.successfulJson(task);
@@ -124,9 +137,9 @@ public class TaskController {
      * @method GET
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_task_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+    String get_task_all(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         List<Task> tasks = BaseApp.taskRepository.getAll();
         Log.d(TAG, "get_task_all: " + tasks.size());
@@ -141,9 +154,9 @@ public class TaskController {
      * @method GET
      */
     @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String get_task_undone(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+    String get_task_undone(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         List<Task> tasks = BaseApp.taskRepository.getNotDoneAll();
         Log.d(TAG, "get_task_not_: " + tasks.size());
@@ -164,9 +177,9 @@ public class TaskController {
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_id(@PathVariable("taskId") int taskId,
                           @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                          @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+                          @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         BaseApp.taskRepository.delete(new Task(taskId));
         if (returnData == 1) {
@@ -185,9 +198,9 @@ public class TaskController {
      * @method DELETE
      */
     @DeleteMapping(path = "/delete/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    String delete_task_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+    String delete_task_all(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         BaseApp.taskRepository.deleteAll();
         return ReturnDataUtils.successfulJson("delete all task done");
@@ -205,13 +218,13 @@ public class TaskController {
      */
     @GetMapping(path = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_task_with_get(
-            @RequestParam(name = "task", required = true) String TASK,
+            @RequestParam(name = "task") String TASK,
             @RequestParam(name = "device", required = false, defaultValue = "default device") String DEVICE,
             @RequestParam(name = "title", required = false, defaultValue = "default title") String TITLE,
             @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+            @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Task task = new Task(TASK, TITLE, DEVICE);
         BaseApp.taskRepository.insert(task);
@@ -221,6 +234,26 @@ public class TaskController {
             return ReturnDataUtils.successfulJson(BaseApp.taskRepository.getNotDoneAll());
         }
         return ReturnDataUtils.successfulJson("add new task done");
+    }
+
+    @PostMapping(path = "/add/multi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    String add_task_with_post_json(
+            @RequestParam(name = "con") String JSON_CON,
+            @RequestParam(name = "device", required = false, defaultValue = "default device") String DEVICE,
+            @RequestParam(name = "access_token", required = false) String ACCESS_TOKEN
+    ) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
+        }
+        List<Task.TaskSmall>taskSmalls = JSON.parseArray(JSON_CON,Task.TaskSmall.class);
+        Task[] tasks = new Task[taskSmalls.size()];
+        for(int i=0;i<taskSmalls.size();i++){
+            Task.TaskSmall tmp = taskSmalls.get(i);
+            Log.d(TAG, "add_task_with_post_json: "+ tmp.getTitle()+" "+tmp.getCon());
+            tasks[i]=new Task(tmp.getCon(),tmp.getTitle(),DEVICE);
+        }
+        BaseApp.taskRepository.insert(tasks);
+        return ReturnDataUtils.successfulJson("task list recved");
     }
 
     /**
@@ -235,11 +268,11 @@ public class TaskController {
      */
     @GetMapping(path = "/done/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_done_id(
-                            @PathVariable(name = "taskId") int taskId,
-                            @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                            @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+            @PathVariable(name = "taskId") int taskId,
+            @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
+            @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Task task = BaseApp.taskRepository.getById(taskId);
         task.setReadDone(true);
@@ -264,11 +297,11 @@ public class TaskController {
      */
     @GetMapping(path = "/undone/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_undone_id(
-                              @PathVariable(name = "taskId") int taskId,
-                              @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
-                              @RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
-        if(MainServer.authNotGot(ACCESS_TOKEN)){
-            return ReturnDataUtils.failedJson(401,"Unauthorized");
+            @PathVariable(name = "taskId") int taskId,
+            @RequestParam(name = "return", defaultValue = "0", required = false) int returnData,
+            @RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
         }
         Task task = BaseApp.taskRepository.getById(taskId);
         task.setReadDone(false);

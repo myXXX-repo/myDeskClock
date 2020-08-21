@@ -1,3 +1,6 @@
+2.5.4 changelog
+
+
 2.5.3 changelog
 httpServer task 增加了上传多条数据的api
 web settings apiList 增加了path变量等字段

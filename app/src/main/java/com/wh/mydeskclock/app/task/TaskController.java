@@ -112,7 +112,6 @@ public class TaskController {
     }
 
     /**
-     * api 0
      *
      * @path /task/get/{taskId}
      * @describe to get task by id
@@ -130,7 +129,6 @@ public class TaskController {
     }
 
     /**
-     * api 1
      *
      * @path /task/get/all
      * @describe to get all tasks
@@ -147,7 +145,6 @@ public class TaskController {
     }
 
     /**
-     * api 2
      *
      * @path /task/get/undone
      * @describe to get all tasks
@@ -165,7 +162,6 @@ public class TaskController {
 
 
     /**
-     * api 3
      *
      * @param returnData 1 2
      *                   1 返回全部task数据
@@ -191,7 +187,6 @@ public class TaskController {
     }
 
     /**
-     * api 4
      *
      * @path = /task/delete/all
      * @describe delete all tasks
@@ -207,7 +202,6 @@ public class TaskController {
     }
 
     /**
-     * api 5
      *
      * @param returnData 1 2
      *                   1 返回全部task数据
@@ -236,6 +230,16 @@ public class TaskController {
         return ReturnDataUtils.successfulJson("add new task done");
     }
 
+    /**
+     *
+     * @path = /task/add/multi
+     * @describe add tasks by post
+     * @method POST
+     * @requestParam con String Json
+     * @requestParam device String
+     * @requestParam access_token String
+     *
+     */
     @PostMapping(path = "/add/multi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_task_with_post_json(
             @RequestParam(name = "con") String JSON_CON,
@@ -257,7 +261,6 @@ public class TaskController {
     }
 
     /**
-     * api 6
      *
      * @param returnData 1 2
      *                   1 返回全部task数据
@@ -286,7 +289,6 @@ public class TaskController {
     }
 
     /**
-     * api 7
      *
      * @param returnData 1 2
      *                   1 返回全部task数据

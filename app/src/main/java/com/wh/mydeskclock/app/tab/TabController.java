@@ -35,7 +35,7 @@ public class TabController {
                 "tab",
                 "/tab/add",
                 "http://ip:port/tab/add",
-                "用来获取全部的tab列表",
+                "用来添加tab记录",
                 "GET",
                 "",
                 "con json数组字符串,数组元素内含title 和 url, device string类型"

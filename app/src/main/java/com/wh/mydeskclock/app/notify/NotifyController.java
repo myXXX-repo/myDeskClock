@@ -25,11 +25,11 @@ public class NotifyController {
         MainServer.apiList.add(new ApiNode(
                 "notify",
                 "/notify",
-                "http://ip:port/sticky",
+                "http://ip:port/notify?notify=123",
                 "用来向myDC发送notify",
                 "GET",
                 "",
-                "title device notify 均为字符串"
+                "title device notify 均为字符串,notify为必须"
         ));
         MainServer.apiList.add(new ApiNode(
                 "notify",

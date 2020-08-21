@@ -1,3 +1,21 @@
+2.5.3 changelog
+httpServer task 增加了上传多条数据的api
+web settings apiList 增加了path变量等字段
+httpServer api 修正了一些数据
+
+至此mediaCtrl支持的播放器
+口袋阅应用商店音乐播放器
+CM的内置音乐播放器
+亚马逊音乐
+魅族音乐播放器
+小米音乐播放器
+锤子音乐播放器
+海信音乐播放器
+酷狗播放器
+千千静听
+天天动听
+VLC
+
 2.5.2 (52) changelog
 增加了启动app时检测新版本功能
 紧急修复了一些bug

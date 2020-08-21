@@ -60,7 +60,7 @@ public class TaskController {
                 "/task/delete/{taskId}",
                 "http://ip:port/task/delete/11",
                 "用来删除指定id的task",
-                "GET",
+                "DELETE",
                 "taskId int类型",
                 ""
         ));
@@ -69,7 +69,7 @@ public class TaskController {
                 "/task/delete/all",
                 "http://ip:port/task/delete/all",
                 "用来删除全部task",
-                "GET",
+                "DELETE",
                 "",
                 ""
         ));

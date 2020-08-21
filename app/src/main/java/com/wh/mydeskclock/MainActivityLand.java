@@ -53,22 +53,20 @@ public class MainActivityLand extends BaseActivity {
 
         flash();
 
-        if (!BaseApp.isDebug) {
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    try {
-                        boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityLand.this);
-                        if (hasNewVersion) {
-                            myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
-                        }
-                    } catch (PackageManager.NameNotFoundException | IOException e) {
-                        e.printStackTrace();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityLand.this);
+                    if (hasNewVersion) {
+                        myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
                     }
+                } catch (PackageManager.NameNotFoundException | IOException e) {
+                    e.printStackTrace();
                 }
-            }.start();
-        }
+            }
+        }.start();
     }
 
     @Override
@@ -124,7 +122,7 @@ public class MainActivityLand extends BaseActivity {
                     v_cover.setVisibility(View.VISIBLE);
                     break;
                 }
-                case WHAT_UPDATE:{
+                case WHAT_UPDATE: {
                     MyDialog myDialog = new MyDialog(
                             new AlertDialog.Builder(MainActivityLand.this)
                                     .setTitle("Find New Version")

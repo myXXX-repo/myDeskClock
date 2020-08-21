@@ -52,7 +52,7 @@ public class BaseApp extends Application {
 
         isDebug = isIsDebug();
 
-        Log.d(TAG, "onCreate: isDebug"+isDebug);
+        Log.d(TAG, "onCreate: isDebug "+isDebug);
 
     }
 

@@ -52,22 +52,21 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (!BaseApp.isDebug) {
-            new Thread() {
-                @Override
-                public void run() {
-                    super.run();
-                    try {
-                        boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityPort.this);
-                        if (hasNewVersion) {
-                            myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
-                        }
-                    } catch (PackageManager.NameNotFoundException | IOException e) {
-                        e.printStackTrace();
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    boolean hasNewVersion = AppUtils.checkUpdate(TAG, MainActivityPort.this);
+                    if (hasNewVersion) {
+                        myHandler.sendEmptyMessage(MyHandler.WHAT_UPDATE);
                     }
+                } catch (PackageManager.NameNotFoundException | IOException e) {
+                    e.printStackTrace();
                 }
-            }.start();
-        }
+            }
+        }.start();
+
 
     }
 
@@ -86,7 +85,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
         }
     }
 
-    public void flash(){
+    public void flash() {
         new Thread() {
             @Override
             public void run() {
@@ -135,7 +134,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
                     tv_date.setVisibility(View.GONE);
                     tv_battery.setVisibility(View.GONE);
                     iv_battery_ico.setVisibility(View.GONE);
-                }else {
+                } else {
                     tv_date.setVisibility(View.VISIBLE);
                     tv_battery.setVisibility(View.VISIBLE);
                     iv_battery_ico.setVisibility(View.VISIBLE);
@@ -229,7 +228,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
                     UiUtils.setBattery_MainFragment(tv_battery);
                     break;
                 }
-                case WHAT_UPDATE:{
+                case WHAT_UPDATE: {
                     MyDialog myDialog = new MyDialog(
                             new AlertDialog.Builder(MainActivityPort.this)
                                     .setTitle("Find New Version")

@@ -1,4 +1,8 @@
-2.5.1 (49) changelog
+2.5.2 (52) changelog
+增加了启动app时检测新版本功能
+紧急修复了一些bug
+
+2.5.1 (51) changelog
 
 MediaCtrl 稍稍修改界面布局
 App 增加了新版本检查

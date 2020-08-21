@@ -26,6 +26,7 @@ public class SharedPreferenceUtils {
         // Setting Media Ctrl
         public static final String SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = "setting_media_ctrl_enable_media_ctrl";
         public static final String SETTING_MEDIA_CTRL_SHOW_MEDIA_INFO = "setting_media_ctrl_show_media_info";
+        public static final String SETTING_MEDIA_CTRL_DEBUG = "setting_media_ctrl_debug";
 
         // Setting About
         public static final String SETTING_ABOUT_ME_GITHUB = "setting_about_me_github";

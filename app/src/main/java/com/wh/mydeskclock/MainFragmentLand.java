@@ -1,6 +1,7 @@
 package com.wh.mydeskclock;
 
 import android.Manifest;
+import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,8 +11,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +33,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.wh.mydeskclock.app.mediaCtrl.MediaCtrlFragment;
 import com.wh.mydeskclock.app.notify.NotifyFragment;
-import com.wh.mydeskclock.app.sticky.Sticky;
 import com.wh.mydeskclock.app.task.Task;
 import com.wh.mydeskclock.app.task.TaskListFragment;
 import com.wh.mydeskclock.server.MainServer;
@@ -40,9 +42,11 @@ import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.utils.QRCodeGenerator;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.utils.UiUtils;
+import com.wh.mydeskclock.utils.Utils;
 import com.wh.mydeskclock.widget.MyDialog;
 
 
+import java.io.File;
 import java.util.Objects;
 
 
@@ -65,6 +69,8 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
     private static boolean SETTING_UI_AUTO_FLASH_SCREEN;
 
     private String ServerAddress;
+
+    private static long download_id = 0L;
 
     public MainFragmentLand() {
         super.setTAG("WH_" + getClass().getSimpleName());
@@ -320,6 +326,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_TIME_TICK);
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         requireContext().registerReceiver(timeBatteryBroadcastReceiver, intentFilter);
 
         UiUtils.setTime_MainFragment(
@@ -402,11 +409,32 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                     myHandler.sendEmptyMessage(MyHandler.WHAT_BATTERY);
                     break;
                 }
+                case DownloadManager.ACTION_DOWNLOAD_COMPLETE:{
+                    Log.d("WH_D", "onReceive: download complete");
+
+//                    if(download_id ==intent.getExtras().getLong(DownloadManager.EXTRA_DOWNLOAD_ID,-1L)){
+//                        File a = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"./myDC.apk");
+//                        Intent intent1 = new Intent(Intent.ACTION_VIEW,);
+//                    }
+
+                    Utils.unPackBundle(intent.getExtras(),"WH_D");
+
+                    // install file
+                    break;
+                }
             }
         }
     }
 
     private void downloadNewVersion() {
+        File a = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/myDC.apk");
+        if(a.exists()){
+            if(a.isFile()){
+                a.delete();
+            }
+        }
+
+
         // 将文件下载到download目录
         MyDialog myDialog = new MyDialog(
                 new AlertDialog.Builder(requireContext())
@@ -414,7 +442,7 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                         .setPositiveButton("download", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                DownloadUtils.download("http://192.168.50.184/release/myDeskClock/app-release.apk","mydc.apk",FileUtils.MimeType.APPLICATION.APK,requireContext());
+                                download_id = DownloadUtils.download("http://192.168.50.184/release/myDeskClock/app-release.apk","mydc.apk",FileUtils.MimeType.APPLICATION.APK,requireContext());
                                 MyDialog myDialog1 = new MyDialog(new AlertDialog.Builder(requireContext())
                                         .setPositiveButton("fileManager", new DialogInterface.OnClickListener() {
                                             @Override
@@ -437,6 +465,8 @@ public class MainFragmentLand extends BaseFragment implements View.OnClickListen
                 }));
         myDialog.setFullScreen();
         myDialog.show(fragmentManager, "");
+
+
 
     }
 }

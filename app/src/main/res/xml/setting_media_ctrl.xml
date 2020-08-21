@@ -14,4 +14,8 @@
         android:defaultValue="false"
         android:enabled="true">
     </CheckBoxPreference>
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="setting_media_ctrl_debug"
+        android:title="启用media ctl模块的debug模式" />
 </PreferenceScreen>

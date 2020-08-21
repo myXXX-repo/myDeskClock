@@ -2,11 +2,13 @@ package com.wh.mydeskclock.app.mediaCtrl;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -22,6 +24,7 @@ import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 import com.wh.mydeskclock.R;
 import com.wh.mydeskclock.utils.MediaUtils;
 import com.wh.mydeskclock.utils.Utils;
+import com.wh.mydeskclock.widget.MyDialog;
 
 import java.util.Objects;
 
@@ -125,6 +128,19 @@ public class MediaCtrlFragment extends Fragment {
                 Log.d(TAG, "onReceive: ACTION" + intent.getAction());
 
                 String ACTION = intent.getAction();
+
+                if (BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_DEBUG, false)) {
+                    MyDialog myDialog = new MyDialog(new AlertDialog.Builder(requireContext())
+                            .setTitle("test")
+                            .setMessage("捕获到 " + ACTION)
+                            .setPositiveButton("ok", null).setNegativeButton("close", null));
+                    myDialog.setFullScreen();
+
+                    myDialog.show(requireActivity().getSupportFragmentManager(), "getAction");
+
+                }
+
+
                 if (Objects.equals(intent.getAction(), "com.amazon.mp3.metachanged")) {
                     ARTIST = intent.getStringExtra("com.amazon.mp3.artist");
                     TRACK = intent.getStringExtra("com.amazon.mp3.track");
@@ -133,24 +149,24 @@ public class MediaCtrlFragment extends Fragment {
                     TRACK = intent.getStringExtra("track");
                 }
                 ALBUM = intent.getStringExtra("album");
-                PLAYING = intent.getBooleanExtra("playing",false);
-                ID = intent.getLongExtra("id",-1);
+                PLAYING = intent.getBooleanExtra("playing", false);
+                ID = intent.getLongExtra("id", -1);
 
                 tv_media_info_artist.setText(ARTIST);
                 tv_media_info_album.setText(ALBUM);
                 tv_media_info_title.setText(TRACK);
-                if(PLAYING){
+                if (PLAYING) {
                     iv_play.setImageResource(R.drawable.ic_baseline_pause_24);
-                }else {
+                } else {
                     iv_play.setImageResource(R.drawable.ic_baseline_play_arrow_24);
                 }
 
-
-//                Bundle bundle = intent.getExtras();
-//                if (bundle != null) {
-//                    Utils.unPackBundle(bundle,TAG);
-//                }
-
+                if (BaseApp.sp_default.getBoolean(SharedPreferenceUtils.sp_default.SETTING_MEDIA_CTRL_DEBUG, false)) {
+                    Bundle bundle = intent.getExtras();
+                    if (bundle != null) {
+                        Utils.unPackBundle(bundle, TAG);
+                    }
+                }
             }
         };
         IntentFilter intentFilter_music = new IntentFilter();
@@ -158,10 +174,10 @@ public class MediaCtrlFragment extends Fragment {
         intentFilter_music.addAction("com.android.music.com.android.music.musicservicecommand");
         intentFilter_music.addAction("com.android.music.playstatechanged");
         intentFilter_music.addAction("com.android.music.playstatechanged.sprd");
-        intentFilter_music.addAction("com.android.music.playbackcomplete");
-        intentFilter_music.addAction("com.android.music.playbackcomplete.sprd");
-        intentFilter_music.addAction("com.android.music.queuechanged");
-        intentFilter_music.addAction("com.android.music.queuechanged.sprd");
+//        intentFilter_music.addAction("com.android.music.playbackcomplete");
+//        intentFilter_music.addAction("com.android.music.playbackcomplete.sprd");
+//        intentFilter_music.addAction("com.android.music.queuechanged");
+//        intentFilter_music.addAction("com.android.music.queuechanged.sprd");
         intentFilter_music.addAction("com.android.music.metachanged");
         intentFilter_music.addAction("com.android.music.metachanged.sprd");
         intentFilter_music.addAction("com.htc.music.metachanged");
@@ -176,6 +192,13 @@ public class MediaCtrlFragment extends Fragment {
         intentFilter_music.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
         intentFilter_music.addAction("com.andrew.apollo.metachanged");
         intentFilter_music.addAction("com.meizu.media.music");
+        // 海信播放器
+        intentFilter_music.addAction("com.hmct.music.metachanged");
+//        intentFilter_music.addAction("com.netease.cloudmusicACTION_LIVE_EXPERIMENTS_CONFIG_UPDATE");
+
+
+        // used to detect music player
+//        intentFilter_music.addAction("android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION");
 //        intentFilter_music.addAction("com.android.music.queuechanged");
 //        intentFilter_music.addAction("com.android.music.playbackcomplete");
 //        intentFilter_music.addAction("com.android.music.playstatechanged");

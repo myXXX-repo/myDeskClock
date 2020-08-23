@@ -50,7 +50,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
 
         flash();
 
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         new Thread() {
             @Override
@@ -163,7 +163,8 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
                 tv_min,
                 tv_week,
                 tv_date,
-                tv_battery);
+                tv_battery,
+                v_cover);
 
         broadcastReceiver = new BatteryTime_BroadcastReceiver(myHandler);
 
@@ -176,7 +177,6 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
         UiUtils.setBattery_MainFragment(tv_battery);
     }
 
-    @SuppressLint("HandlerLeak")
     class MyHandler extends Handler {
         private static final int WHAT_SET_BLACK = 721;
         private static final int WHAT_SET_WHITE = 903;
@@ -192,13 +192,15 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
         private TextView tv_week;
         private TextView tv_date;
         private TextView tv_battery;
+        private View v_cover;
 
-        public MyHandler(TextView tv_hour, TextView tv_min, TextView tv_week, TextView tv_date, TextView tv_battery) {
+        public MyHandler(TextView tv_hour, TextView tv_min, TextView tv_week, TextView tv_date, TextView tv_battery,View v_cover) {
             this.tv_hour = tv_hour;
             this.tv_min = tv_min;
             this.tv_week = tv_week;
             this.tv_date = tv_date;
             this.tv_battery = tv_battery;
+            this.v_cover = v_cover;
         }
 
         @Override
@@ -250,7 +252,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private static class BatteryTime_BroadcastReceiver extends BroadcastReceiver {
+    private class BatteryTime_BroadcastReceiver extends BroadcastReceiver {
         MyHandler myHandler;
         private int FlashDistanceTime = 100;
 
@@ -269,7 +271,7 @@ public class MainActivityPort extends BaseActivity implements View.OnClickListen
                         FlashDistanceTime--;
                         if (FlashDistanceTime == 0) {
                             FlashDistanceTime = 100;
-                            MainActivityLand.flash();
+                            flash();
                         }
                     }
                     break;

@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>myDeskClock-back yard</title>
-    <script src="/static/vue.min.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="/static/httpVueLoader.js"></script>
     <script src="/static/axios.min.js"></script>
     <script src="/static/jquery.js"></script>
     <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
@@ -83,7 +84,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/index.html">myDeskClock Back Yard</a>
+                <a class="navbar-brand" href="/index.html">myDeskClock</a>
             </div>
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -96,7 +97,13 @@
                     </li>
                     <li v-bind:class="apps.remote_ctrl.active"><a href="#" v-on:click='switchPanel("remote_ctrl")'>RemoteCtrl</a>
                     </li>
-                    <li v-bind:class="apps.settings.active"><a href="#" v-on:click='switchPanel("settings")'>Settings</a>
+                    <li v-bind:class="apps.settings.active"><a href="#" v-on:click='switchPanel("settings")'>Settings</a></li>
+                    <li>
+                        <a>
+                            <img src="./static/img/skip_previous-black-48dp.svg" width="20px" v-on:click='remote_ctrl_media_ctrl("mc_ppp")' style="margin-right: 8px;">
+                            <img src="./static/img/play_arrow-black-48dp.svg" width="20px" v-on:click='remote_ctrl_media_ctrl("mc_pp")' style="margin-right: 8px;">
+                            <img src="./static/img/skip_next-black-48dp.svg" width="20px" v-on:click='remote_ctrl_media_ctrl("mc_pn")'>
+                        </a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -274,11 +281,9 @@
             </div>
 
             <div id="panel_remote_ctrl" v-if=' apps.remote_ctrl.active == "active" '>
-
-
-                <div class="panel panel-warning remote_ctrl_item" v-for="item in apps.remote_ctrl.items" v-if="item.enabled" style="display: inline-block;width: 270px;height: 110px;margin: 8px 8px 8px 8px;background-color: azure;">
-                    <div class="panel-body" v-on:click="remote_ctrl_operate(item)" style="width: 100%;">
-                        <a href="#">
+                <div class="panel panel-warning remote_ctrl_item" v-for="(item,index) in apps.remote_ctrl.items" v-if='item.enabled' style="display: inline-block;width: 270px;height: 110px;margin: 8px 8px 8px 8px;background-color: azure;">
+                    <div class="panel-body" v-on:click="remote_ctrl_operate(item)" v-if='item.type=="BUTTON"' style="width: 100%;">
+                        <a hrefs="#">
                             <div>
                                 <span><img src="/favicon.ico" style="height: 30px;width: 30px;margin: 4px;"></span>
                                 <span style="font-weight: 700;size: 28px;line-height: 1.5;">{{ item.name }}</span>
@@ -289,7 +294,6 @@
                         </a>
                     </div>
                 </div>
-
             </div>
 
             <div id="panel_settings" v-if=' apps.settings.active == "active" '>
@@ -414,7 +418,8 @@
                         </p>
                         <p style="max-width:95%;word-wrap:break-word;">
                             {{ ui_format_time(apps.task.task_item.createTime) }}</p>
-                        <p style="max-width:95%;word-wrap:break-word;font-size: 18px;">{{ apps.task.task_item.con }}</p>
+                        <p style="max-width:95%;word-wrap:break-word;font-size: 18px;">{{ apps.task.task_item.con }}
+                        </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal"><span

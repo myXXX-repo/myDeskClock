@@ -98,6 +98,7 @@ new Vue({
             remote_ctrl: {
                 active: "",
                 items: [],
+                tmp_val: {},
                 request_lock: false,
                 showed: false
             },
@@ -232,9 +233,12 @@ new Vue({
                 headers: { access_token: this.apps.settings.access_token }
             }).then(function(response) {
                 that.apps.remote_ctrl.items = response.data.data;
+                // that.apps.remote_ctrl.items.forEach(element => {
+                //     that.apps.remote_ctrl.tmp_val[element.name] = 0;
+                // });
             });
         },
-        remote_ctrl_operate: function(item) {
+        remote_ctrl_operate: function(item, newVal) {
             // console.log(item);
             if (this.apps.remote_ctrl.request_lock) {
                 alert("request send once a time")
@@ -257,11 +261,43 @@ new Vue({
                         });
                         break;
                     }
+                case "VALUES":
+                    {
+                        var p = {};
+                        p[item.param] = "11";
+                        axios.get('/rmc/' + item.path, {
+                            headers: { access_token: this.apps.settings.access_token },
+                            params: p
+                        }).then(function(response) {
+                            // alert("remote ctrl send done!!!");
+                            that.apps.remote_ctrl.request_lock = false;
+                        }).catch(function(error) {
+                            console.log(error);
+                            alert(error);
+                            that.apps.remote_ctrl.request_lock = false;
+                        });
+                        break;
+                    }
                 default:
                     {
                         console.log("wrong type");
                     }
             }
+        },
+        remote_ctrl_media_ctrl: function(operation) {
+            if (this.apps.remote_ctrl.request_lock) {
+                alert("request send once a time")
+                return;
+            }
+            axios.get('/rmc/' + operation, {
+                headers: { access_token: this.apps.settings.access_token }
+            }).then(function(response) {
+                that.apps.remote_ctrl.request_lock = false;
+            }).catch(function(error) {
+                console.log(error);
+                alert(error);
+                that.apps.remote_ctrl.request_lock = false;
+            });
         },
         ui_format_time: function(timeMS) {
             return FormatDateTime(timeMS);

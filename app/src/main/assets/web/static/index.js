@@ -289,7 +289,7 @@ new Vue({
                 alert("request send once a time")
                 return;
             }
-            axios.get('/rmc/' + operation, {
+            axios.get('/mc/' + operation, {
                 headers: { access_token: this.apps.settings.access_token }
             }).then(function(response) {
                 that.apps.remote_ctrl.request_lock = false;

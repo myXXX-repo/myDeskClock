@@ -1,15 +1,11 @@
 package com.wh.mydeskclock.server;
 
-import android.util.Log;
 
-import com.alibaba.fastjson.JSON;
 import com.wh.mydeskclock.MainActivityLand;
-import com.wh.mydeskclock.utils.MediaUtils;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
 import com.yanzhenjie.andserver.annotation.RequestMapping;
-import com.yanzhenjie.andserver.annotation.RequestParam;
 import com.yanzhenjie.andserver.annotation.RestController;
 import com.yanzhenjie.andserver.util.MediaType;
 
@@ -28,7 +24,7 @@ public class RemoteCtrlController {
                 "fs",
                 "fully flash screen",
                 RMC.TYPE.BUTTON,
-                "",
+                null,
                 true
         ));
         rmcs.add(new RMC(
@@ -36,46 +32,22 @@ public class RemoteCtrlController {
                 "sl",
                 "switch screen light brightness",
                 RMC.TYPE.SWITCH,
-                "",
+                null,
                 false
         ));
         rmcs.add(new RMC(
                 "SetScreenLight",
                 "sl",
                 "set light brightness",
-                RMC.TYPE.VALUES, "",
+                RMC.TYPE.VALUES, null,
                 false
         ));
         rmcs.add(new RMC(
-                "PlayPause",
-                "mc_pp",
-                "play pause or replay media",
-                RMC.TYPE.BUTTON,
-                "",
-                true
-        ));
-        rmcs.add(new RMC(
-                "PlayPrevious",
-                "mc_ppp",
-                "play previous media",
-                RMC.TYPE.BUTTON,
-                "",
-                true
-        ));
-        rmcs.add(new RMC(
-                "PlayNext",
-                "mc_pn",
-                "play next media",
-                RMC.TYPE.BUTTON,
-                "",
-                true
-        ));rmcs.add(new RMC(
                 "SetVolume",
                 "mc_v",
                 "设置播放音量",
                 RMC.TYPE.VALUES,
-                JSON.toJSONString(
-                        new RMC.EXTRA_VALUES(0,100,1,0)),
+                new RMC.EXTRA(0, 100, 1, 0),
                 false
         ));
     }
@@ -120,48 +92,6 @@ public class RemoteCtrlController {
         return ReturnDataUtils.successfulJson("switch done");
     }
 
-    @GetMapping(path = "/mc_pp")
-    public String rm_media_ctrl_play_pause(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
-        if (MainServer.authNotGot(ACCESS_TOKEN)) {
-            return ReturnDataUtils.failedJson(401, "Unauthorized");
-        }
-        new Thread() {
-            @Override
-            public void run() {
-                MediaUtils.pausePlay();
-            }
-        }.start();
-        return ReturnDataUtils.successfulJson("done");
-    }
-
-    @GetMapping(path = "/mc_ppp")
-    public String rm_media_ctrl_play_previous(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
-        if (MainServer.authNotGot(ACCESS_TOKEN)) {
-            return ReturnDataUtils.failedJson(401, "Unauthorized");
-        }
-        new Thread() {
-            @Override
-            public void run() {
-                MediaUtils.previousPlay();
-            }
-        }.start();
-        return ReturnDataUtils.successfulJson("done");
-    }
-
-    @GetMapping(path = "/mc_pn")
-    public String rm_media_ctrl_play_next(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
-        if (MainServer.authNotGot(ACCESS_TOKEN)) {
-            return ReturnDataUtils.failedJson(401, "Unauthorized");
-        }
-        new Thread() {
-            @Override
-            public void run() {
-                MediaUtils.nextPlay();
-            }
-        }.start();
-        return ReturnDataUtils.successfulJson("done");
-    }
-
 
     public static class RMC {
         public static class TYPE {
@@ -178,15 +108,29 @@ public class RemoteCtrlController {
             public static final String VALUES = "value";
         }
 
-        public static class EXTRA_SELECT{
-            List<String>keys;
-            List<String>values;
+        public static class EXTRA {
+            List<String> keys;
+            List<String> values;
             String default_key;
 
-            public EXTRA_SELECT(List<String> keys, List<String> values, String default_key) {
+            int min;
+            int max;
+            int step;
+            int value;
+
+            // 用于select类型的操作
+            public EXTRA(List<String> keys, List<String> values, String default_key) {
                 this.keys = keys;
                 this.values = values;
                 this.default_key = default_key;
+            }
+
+            // 用于value类型的操作
+            public EXTRA(int min, int max, int step, int value) {
+                this.min = min;
+                this.max = max;
+                this.step = step;
+                this.value = value;
             }
 
             public List<String> getKeys() {
@@ -211,20 +155,6 @@ public class RemoteCtrlController {
 
             public void setDefault_key(String default_key) {
                 this.default_key = default_key;
-            }
-        }
-
-        public static class EXTRA_VALUES{
-            int min;
-            int max;
-            int step;
-            int value;
-
-            public EXTRA_VALUES(int min, int max, int step, int value) {
-                this.min = min;
-                this.max = max;
-                this.step = step;
-                this.value = value;
             }
 
             public int getMin() {
@@ -268,13 +198,13 @@ public class RemoteCtrlController {
         // switch : ?status = on / off
         // button : none
         // values : ?value=?
-        String extra;
+        EXTRA extra;
         // (json)value : max min etc...
         String ico_name;
         boolean enabled;
 
 
-        public RMC(String name, String path, String describe, String type, String extra, boolean enabled) {
+        public RMC(String name, String path, String describe, String type, EXTRA extra, boolean enabled) {
             this.name = name;
             this.path = path;
             this.describe = describe;
@@ -285,7 +215,7 @@ public class RemoteCtrlController {
             this.enabled = enabled;
         }
 
-        public RMC(String name, String path, String describe, String type, String ico_name, String extra, boolean enabled) {
+        public RMC(String name, String path, String describe, String type, String ico_name, EXTRA extra, boolean enabled) {
             this.name = name;
             this.path = path;
             this.describe = describe;
@@ -336,11 +266,11 @@ public class RemoteCtrlController {
             this.param = param;
         }
 
-        public String getExtra() {
+        public EXTRA getExtra() {
             return extra;
         }
 
-        public void setExtra(String extra) {
+        public void setExtra(EXTRA extra) {
             this.extra = extra;
         }
 
@@ -362,7 +292,7 @@ public class RemoteCtrlController {
                     this.param = PARAM.BUTTON;
                     break;
                 }
-                case TYPE.SELECT:{
+                case TYPE.SELECT: {
                     this.param = PARAM.SELECT;
                     break;
                 }

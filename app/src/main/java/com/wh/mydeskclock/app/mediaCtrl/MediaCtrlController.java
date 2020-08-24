@@ -3,6 +3,7 @@ package com.wh.mydeskclock.app.mediaCtrl;
 
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.ApiNode;
+import com.wh.mydeskclock.utils.MediaUtils;
 import com.wh.mydeskclock.utils.ReturnDataUtils;
 import com.yanzhenjie.andserver.annotation.GetMapping;
 import com.yanzhenjie.andserver.annotation.RequestHeader;
@@ -40,6 +41,48 @@ public class MediaCtrlController {
                 MediaCtrlFragment.ID
         );
         return ReturnDataUtils.successfulJson(musicInfo);
+    }
+
+    @GetMapping(path = "/mc_pp")
+    public String rm_media_ctrl_play_pause(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                MediaUtils.pausePlay();
+            }
+        }.start();
+        return ReturnDataUtils.successfulJson("done");
+    }
+
+    @GetMapping(path = "/mc_ppp")
+    public String rm_media_ctrl_play_previous(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                MediaUtils.previousPlay();
+            }
+        }.start();
+        return ReturnDataUtils.successfulJson("done");
+    }
+
+    @GetMapping(path = "/mc_pn")
+    public String rm_media_ctrl_play_next(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
+        if (MainServer.authNotGot(ACCESS_TOKEN)) {
+            return ReturnDataUtils.failedJson(401, "Unauthorized");
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                MediaUtils.nextPlay();
+            }
+        }.start();
+        return ReturnDataUtils.successfulJson("done");
     }
 
     public static class MusicInfo{

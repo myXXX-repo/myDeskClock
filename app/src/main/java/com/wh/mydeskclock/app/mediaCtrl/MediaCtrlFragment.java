@@ -122,11 +122,9 @@ public class MediaCtrlFragment extends Fragment {
             }
         }
 
-        // 第一代获取音乐数据的方法
+        // 获取音乐数据1.0
         createMusicBroadCastReceiver();
 
-        // 第二代获取音乐方法 使用通知
-        // 以后再说   再见
     }
 
     @Override
@@ -207,6 +205,7 @@ public class MediaCtrlFragment extends Fragment {
         intentFilter_music.addAction("com.android.music.com.android.music.musicservicecommand");
         intentFilter_music.addAction("com.android.music.playstatechanged");
         intentFilter_music.addAction("com.android.music.playstatechanged.sprd");
+        // 附加接收器
 //        intentFilter_music.addAction("com.android.music.playbackcomplete");
 //        intentFilter_music.addAction("com.android.music.playbackcomplete.sprd");
 //        intentFilter_music.addAction("com.android.music.queuechanged");

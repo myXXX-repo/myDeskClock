@@ -29,6 +29,7 @@ public class AppUtils {
 
     /**
      * @return boolean haveNewVersion
+     * @describe 设置cookapk链接检测版本号
      */
     public static boolean checkUpdate(String TAG, Context context) throws PackageManager.NameNotFoundException, IOException {
         String currentVersion = getAppVersionName(context);

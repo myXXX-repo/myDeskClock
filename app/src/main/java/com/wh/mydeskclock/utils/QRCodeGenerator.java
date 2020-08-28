@@ -20,6 +20,14 @@ public class QRCodeGenerator {
     private String str;
     private int WIDTH,HEIGHT;
 
+    /**
+     * @describe QRCode生成器 构造函数
+     * @args str String 生成二维码的字符串
+     *       WIDTH 生成的二维码宽度
+     *       HEIGHT 生成的二维码高度
+     * @return Void null
+     *
+     * */
     public QRCodeGenerator(String str, int WIDTH, int HEIGHT){
         this.str = (str.length()>300)?"str is too long":str;
         this.WIDTH=WIDTH;
@@ -28,6 +36,10 @@ public class QRCodeGenerator {
         this.hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
     }
 
+    /**
+     * @describe 生成二维码
+     * @return Bitmap 返回生成的二维码图像
+     * */
     public Bitmap getQRCode() {
         try {
             BitMatrix Result = new MultiFormatWriter().encode(str, BarcodeFormat.QR_CODE, WIDTH, HEIGHT, hints);//通过字符串创建二维矩阵

@@ -43,11 +43,12 @@ public class TabController {
     }
 
     /**
-     * api 1
      *
-     * @path /tab/get/all
-     * @describe to get all tasks
+     * @path /get/all
+     * @describe 获取tab全部数据
      * @method GET
+     * @params null
+     * @headers access_token String 可选项 用于传送验证信息
      */
     @GetMapping(path = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_all(@RequestHeader(name = "access_token", required = false)String ACCESS_TOKEN) {
@@ -60,11 +61,13 @@ public class TabController {
     }
 
     /**
-     * api 2
      *
-     * @path /tab/add
-     * @describe to get all tabs
+     * @path /
+     * @describe 接收客户端发送的tab
      * @method POST
+     * @params device String 客户端设备名
+     *         con String Json格式 包含tab的title和url
+     * @headers access_token String 可选项 用于传送验证信息
      */
     @PostMapping(path = "/add",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_with_post(

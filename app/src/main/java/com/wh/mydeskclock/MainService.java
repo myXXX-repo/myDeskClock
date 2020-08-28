@@ -47,8 +47,12 @@ public class MainService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        // 服务器端口
         SETTING_HTTP_SERVER_PORT = Integer.parseInt(Objects.requireNonNull(BaseApp.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_HTTP_SERVER_PORT, "8081")));
+
+        // 服务器链接
         URL = "http:/" + NetUtils.getLocalIPAddress() + ":" + SETTING_HTTP_SERVER_PORT;
+
         mainServer = new MainServer(this, SETTING_HTTP_SERVER_PORT);
 
         notificationManager = getNotificationManager();
@@ -82,11 +86,13 @@ public class MainService extends Service {
     public void onDestroy() {
         super.onDestroy();
         stopServer();
+        // 解除广播接收器的注册
         if(broadcastReceiver!=null){
             unregisterReceiver(broadcastReceiver);
         }
     }
 
+    // 生成前台通知
     NotificationCompat.Builder genForegroundNotification() {
         Intent intent_exit = new Intent();
         intent_exit.setAction("myDeskClock_server_exit");
@@ -98,6 +104,7 @@ public class MainService extends Service {
                 .addAction(R.drawable.ic_launcher_foreground,"exit",pendingIntent_exit);
     }
 
+    // 获取通知管理器
     NotificationManager getNotificationManager() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // 创建通知渠道

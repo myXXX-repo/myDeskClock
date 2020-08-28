@@ -42,6 +42,16 @@ public class NotifyController {
         ));
     }
 
+    /**
+     *
+     * @path /
+     * @describe 接收客户端发送的notify
+     * @method GET
+     * @params device String 客户端设备名称
+     *         title String notify标题
+     *         notify String notify内容
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_new(final Context context,
                              @RequestParam(value = "device", defaultValue = "default device", required = false) final String DEVICE,
@@ -63,6 +73,14 @@ public class NotifyController {
         return ReturnDataUtils.successfulJson("notify received");
     }
 
+    /**
+     *
+     * @path /notify/get/all
+     * @describe 请求全部notify数据
+     * @method GET
+     * @params null
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(value = "/get/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String notify_get_all(@RequestHeader("access_token")String ACCESS_TOKEN) {
         if(!ACCESS_TOKEN.equals(MainServer.access_token)){

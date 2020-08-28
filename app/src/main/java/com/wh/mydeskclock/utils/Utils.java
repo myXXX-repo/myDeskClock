@@ -9,6 +9,11 @@ import com.wh.mydeskclock.BaseApp;
 import java.util.Objects;
 
 public class Utils {
+    /**
+     * @describe 将一位的数值转换成两位
+     * @args ...
+     * @return Void null
+     * */
     public static String ensure2Numbers(int num) {
         if (num >= 0 && num < 10) {
             return "0" + num;
@@ -24,6 +29,11 @@ public class Utils {
         editor.apply();
     }
 
+    /**
+     * @describe log Bundle内容
+     * @args ...
+     * @return Void null
+     * */
     public static void unPackBundle(Bundle bundle,String TAG){
         Log.d(TAG, "unPackBundle: =====================================");
         for (String key : bundle.keySet()) {

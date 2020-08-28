@@ -149,6 +149,7 @@ public class TaskController {
      * @path /task/get/undone
      * @describe to get all tasks
      * @method GET
+     * @headers String access_token 校验码
      */
     @GetMapping(path = "/get/undone", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String get_task_undone(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
@@ -169,6 +170,7 @@ public class TaskController {
      * @path /task/delete/{taskId}
      * @describe delete task by id
      * @method DELETE
+     * @headers access_token String 可选项 输入校验码
      */
     @DeleteMapping(path = "/delete/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_id(@PathVariable("taskId") int taskId,
@@ -191,6 +193,7 @@ public class TaskController {
      * @path = /task/delete/all
      * @describe delete all tasks
      * @method DELETE
+     * @headers access_token String 可选项 输入校验码
      */
     @DeleteMapping(path = "/delete/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String delete_task_all(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
@@ -209,6 +212,7 @@ public class TaskController {
      * @path = /task/add
      * @describe add task by get
      * @method GET
+     * @headers access_token String 可选项 输入校验码
      */
     @GetMapping(path = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String add_task_with_get(
@@ -237,7 +241,7 @@ public class TaskController {
      * @method POST
      * @requestParam con String Json
      * @requestParam device String
-     * @requestParam access_token String
+     * @headers access_token String 可选项 输入校验码
      *
      */
     @PostMapping(path = "/add/multi", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -268,6 +272,7 @@ public class TaskController {
      * @path /task/done/{taskId}
      * @describe set task done by id
      * @method GET
+     * @headers access_token String 可选项 输入校验码
      */
     @GetMapping(path = "/done/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_done_id(
@@ -296,6 +301,7 @@ public class TaskController {
      * @path /task/undone/{taskId}
      * @describe set task done by id
      * @method GET
+     * @headers access_token String 可选项 输入校验码
      */
     @GetMapping(path = "/undone/{taskId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     String set_task_undone_id(

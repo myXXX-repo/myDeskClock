@@ -52,6 +52,13 @@ public class RemoteCtrlController {
         ));
     }
 
+    /**
+     * @return String Json
+     * @path /rmc/all
+     * @describe 获取全部远程控制选项
+     * @method GET
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String get_all(@RequestHeader(value = "access_token", required = false) String ACCESS_TOKEN) {
         if (MainServer.authNotGot(ACCESS_TOKEN)) {
@@ -60,6 +67,13 @@ public class RemoteCtrlController {
         return ReturnDataUtils.successfulJson(rmcs);
     }
 
+    /**
+     * @return String Json
+     * @path /rmc/fs
+     * @describe 刷新屏幕
+     * @method GET
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(path = "/fs")
     public String rm_flash_screen(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
         if (MainServer.authNotGot(ACCESS_TOKEN)) {
@@ -74,6 +88,13 @@ public class RemoteCtrlController {
         return ReturnDataUtils.successfulJson("flash done");
     }
 
+    /**
+     * @return String Json
+     * @path /mc/sl
+     * @describe 切换屏幕背光开关
+     * @method GET
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(path = "/sl")
     public String rm_screen_light_switch(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
         if (MainServer.authNotGot(ACCESS_TOKEN)) {
@@ -83,6 +104,13 @@ public class RemoteCtrlController {
         return ReturnDataUtils.successfulJson("switch done");
     }
 
+    /**
+     * @return String Json
+     * @path /mc/sl/value
+     * @describe 输入屏幕背光亮度值,设置屏幕亮度
+     * @method GET
+     * @headers access_token String 可选项 用于传送验证信息
+     */
     @GetMapping(path = "/sl/value")
     public String rm_screen_light_value(@RequestHeader(name = "access_token", required = false) String ACCESS_TOKEN) {
         if (MainServer.authNotGot(ACCESS_TOKEN)) {

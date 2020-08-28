@@ -6,9 +6,6 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 
-/**
- * Created by Zhenjie Yan on 2018/6/9.
- */
 public class NetUtils {
 
     /**
@@ -22,7 +19,7 @@ public class NetUtils {
      *
      * @param input the address string to check for validity.
      *
-     * @return True if the input parameter is a valid IPv4 address.
+     * @return boolean 判断地址是不是ipv4
      */
     public static boolean isIPv4Address(String input) {
         return IPV4_PATTERN.matcher(input).matches();

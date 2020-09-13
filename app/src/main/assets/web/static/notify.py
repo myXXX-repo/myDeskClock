@@ -23,7 +23,7 @@ if __name__ == '__main__':
     url = protocol+"://"+ip+":"+port+"/notify"
 
     try:
-        r = requests.get(url, params=params)
+        r = requests.get(url, params=params,headers={"access_token":""})
         print(r.text)
     except Exception  as err:
         print(err)

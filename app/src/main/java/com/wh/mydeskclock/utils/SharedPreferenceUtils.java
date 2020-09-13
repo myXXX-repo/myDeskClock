@@ -11,6 +11,8 @@ public class SharedPreferenceUtils {
         public static final String COAST_FLASH_SCREEN = "COAST_FLASH_SCREEN";
         public static final String COAST_LIGHT_OFF = "COAST_LIGHT_OFF";
         public static final String COAST_LIGHT_ON = "COAST_LIGHT_ON";
+        public static final String DAILY_TASK_LAST_CREATE_DATE = "daily_task_last_create_date";
+
     }
 
     public static class sp_default {
@@ -22,6 +24,7 @@ public class SharedPreferenceUtils {
 
         // Setting Task
         public static final String SETTING_TASK_HIDE_DONE = "setting_task_hide_done";
+        public static final String SETTING_TASK_DAILY_TASK_LIST = "setting_task_daily_task_list";
 
         // Setting Media Ctrl
         public static final String SETTING_MEDIA_CTRL_ENABLE_MEDIA_CTRL = "setting_media_ctrl_enable_media_ctrl";
@@ -38,7 +41,7 @@ public class SharedPreferenceUtils {
         public static final String SETTING_HTTP_SERVER_ENABLE_HTTP_SERVER = "setting_http_server_enable_http_server";
         public static final String SETTING_HTTP_SERVER_PORT = "setting_http_server_port";
         public static final String SETTING_HTTP_SERVER_ACCESS_TOKEN = "setting_http_server_access_token";
-    }
 
-//    public static List<ApiNode> HttpServerApis = new ArrayList<>();
+
+    }
 }

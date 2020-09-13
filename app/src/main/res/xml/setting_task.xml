@@ -5,6 +5,11 @@
         android:title="隐藏完成的Task"
         android:defaultValue="true"
         android:enabled="true">
-
     </CheckBoxPreference>
+    <EditTextPreference
+        android:key="setting_task_daily_task_list"
+        android:selectAllOnFocus="true"
+        android:singleLine="false"
+        android:title="每日任务"
+        android:summary="一行一条" />
 </PreferenceScreen>

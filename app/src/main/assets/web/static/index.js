@@ -94,6 +94,8 @@ new Vue({
                 active: "",
                 stickies: [],
                 showed: false,
+                sticky_con: "",
+                sticky_title: localStorage.getItem('task_default_title')
             },
             remote_ctrl: {
                 active: "",
@@ -193,15 +195,73 @@ new Vue({
         task_show_detail: function(id) {
             this.apps.task.tasks.forEach(element => {
                 if (element.id == id) {
-                    this.apps.task.task_item.id = id;
-                    this.apps.task.task_item.title = element.title;
-                    this.apps.task.task_item.con = element.con;
-                    this.apps.task.task_item.device = element.deviceName;
-                    this.apps.task.task_item.createTime = element.createTime;
-                    this.apps.task.task_item.readDone = element.readDone;
+                    this.apps.task.task_item = element;
                     $("#task_detail").modal();
                 }
                 return;
+            });
+        },
+        task_delete: function(id) {
+            alert(id);
+            if (id && id != -1) {
+                var that = this;
+                axios.delete('/task/delete/' + id, {
+                        headers: { access_token: this.apps.settings.access_token }
+                    })
+                    .then(response => {
+                        if (that.apps.settings.test_light_request) {
+                            if (response.status == 200 && response.data.errorCode == 200) {
+                                that.apps.task.tasks.forEach(element => {
+                                    if (element.id == id) {
+                                        element.readDone = true;
+                                    }
+                                })
+                            }
+                        } else {
+                            that.task_fetch();
+                        }
+                    });
+            }
+        },
+        task_share: function(id) {
+            this.apps.task.tasks.forEach(element => {
+                if (element.id == id) {
+                    var that = this;
+                    var axios_post_form_data = axios.create();
+                    axios_post_form_data.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+                    axios_post_form_data.defaults.headers.post['access_token'] = this.apps.settings.access_token;
+                    axios_post_form_data.defaults.transformRequest = [function(data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+                        }
+                        return ret;
+                    }]
+                    axios_post_form_data({
+                        method: 'post',
+                        url: '/share/add/task',
+                        data: {
+                            task: element.con,
+                            title: element.title,
+                            device: element.deviceName
+                        }
+                    }).then(response => {
+                        if (response.data.errorCode == 200) {
+                            // console.log(response.data);
+                            var url = "http://" + window.location.host + "/share.html?token=" + response.data.data;
+                            // console.log("http://" + window.location.host + "/share.html?token=" + response.data.data);
+                            that.apps.task.task = url;
+                            that.apps.task_title = "share url";
+                            that.task_send();
+                            // if (confirm("直接打开分享链接吗")) {
+
+                            // }
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                    return;
+                }
             });
         },
         task_reset_title: function() {
@@ -226,6 +286,45 @@ new Vue({
             }).then(function(response) {
                 that.apps.sticky.stickies = response.data.data;
             });
+        },
+
+        sticky_post: function() {
+            var that = this;
+            var axios_post_form_data = axios.create();
+            axios_post_form_data.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+            axios_post_form_data.defaults.transformRequest = [function(data) {
+                let ret = '';
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + "=" + encodeURIComponent(data[it]) + "&";
+                }
+                return ret;
+            }]
+            axios_post_form_data({
+                method: 'post',
+                url: '/sticky/add',
+                data: {
+                    sticky: this.apps.sticky.sticky_con,
+                    title: this.apps.sticky.sticky_title,
+                    device: this.apps.settings.device
+                },
+                headers: {
+                    access_token: this.apps.settings.access_token,
+                }
+            }).then(response => {
+                console.log(response.data);
+                if (response.data.errorCode == 200) {
+                    that.sticky_fetch();
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        sticky_reset_title: function() {
+            if (this.apps.sticky.sticky_title == localStorage.getItem("task_default_title")) {
+                this.apps.sticky.sticky_title = "";
+            } else {
+                this.sticky.sticky_title = localStorage.getItem("task_default_title");
+            }
         },
         remote_ctrl_fetch: function() {
             var that = this;

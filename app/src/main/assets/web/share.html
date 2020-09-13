@@ -11,25 +11,11 @@
     <script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <link href="/static/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .body_main {
+        body {
             margin: 16px;
         }
         
-        #send_task {
-            margin-bottom: 16px;
-        }
-        
-        #api_list_table {
-            margin-top: 16px;
-        }
-        
-        #api_list div div div {
-            overflow-x: scroll;
-        }
-        
-        .remote_ctrl_item:hover,
-        #task_list .panel:hover,
-        .sticky_list_item:hover {
+        .panel:hover {
             box-shadow: rgb(141, 185, 255) 0px 0px 4px;
         }
         
@@ -74,15 +60,160 @@
 
 
 <body>
+    <div id="share_body">
+
+
+        <div class="panel panel-default" v-if="share_data.type=='task'">
+            <div class="panel-body">
+                <p>id {{ share_data.id }}</p>
+                <p>type {{ share_data.type }}</p>
+                <p>device {{ share_data.deviceName }}</p>
+                <p>title {{ share_data.con.title }}</p>
+                <p>task {{ share_data.con.task }}</p>
+                <p>shareTime{{ share_data.shareTime }}</p>
+                <p>token {{ share_data.token }}</p>
+            </div>
+        </div>
+        <div class="panel panel-default" v-else-if="share_data.type=='sticky'">
+            <div class="panel-body">
+                <p>id {{ share_data.id }}</p>
+                <p>type {{ share_data.type }}</p>
+                <p>device {{ share_data.deviceName }}</p>
+                <p>title {{ share_data.con.title }}</p>
+                <p>sticky {{ share_data.con.sticky }}</p>
+                <p>shareTime{{ share_data.shareTime }}</p>
+                <p>token {{ share_data.token }}</p>
+            </div>
+        </div>
+        <div class="panel panel-default" v-else-if="share_data.type=='notify'">
+            <div class="panel-body">
+                <p>id {{ share_data.id }}</p>
+                <p>type {{ share_data.type }}</p>
+                <p>device {{ share_data.deviceName }}</p>
+                <p>title {{ share_data.con.title }}</p>
+                <p>notify {{ share_data.con.notify }}</p>
+                <p>shareTime{{ share_data.shareTime }}</p>
+                <p>token {{ share_data.token }}</p>
+            </div>
+        </div>
+        <div class="panel panel-default" v-else-if="share_data.type=='tab'">
+            <div class="panel-body">
+                <p>id {{ share_data.id }}</p>
+                <p>type {{ share_data.type }}</p>
+                <p>device {{ share_data.deviceName }}</p>
+                <p>title {{ share_data.con.title }}</p>
+                <p>url {{ share_data.con.url }}</p>
+                <p>shareTime{{ share_data.shareTime }}</p>
+                <p>token {{ share_data.token }}</p>
+            </div>
+        </div>
+        <div class="panel panel-default" v-else>
+            <div class="panel-body">
+                <p>wrong type</p>
+            </div>
+        </div>
+
+        <div class="panel panel-default" v-for="item in share_datas" style="overflow:hidden;">
+            <div style="float: right;margin-top: 8px;margin-right:24px;color: rgba(185, 52, 52, 0.424);font-weight: 500;font-size: 45px;">
+                {{ item.type }}</div>
+            <div class="panel-body" v-if="item.type=='task'">
+                <p>id {{ item.id }}</p>
+                <p>device {{ item.deviceName }}</p>
+                <p>title {{ item.con.title }}</p>
+                <p>task {{ item.con.task }}</p>
+                <p>shareTime{{ item.shareTime }}</p>
+                <p>token {{ item.token }}</p>
+            </div>
+            <div class="panel-body" v-else-if="item.type=='sticky'">
+                <p>id {{ item.id }}</p>
+                <p>device {{ item.deviceName }}</p>
+                <p>title {{ item.con.title }}</p>
+                <p>sticky {{ item.con.sticky }}</p>
+                <p>shareTime{{ item.shareTime }}</p>
+                <p>token {{ item.token }}</p>
+            </div>
+            <div class="panel-body" v-else-if="item.type=='notify'">
+                <p>id {{ item.id }}</p>
+                <p>device {{ item.deviceName }}</p>
+                <p>title {{ item.con.title }}</p>
+                <p>notify {{ item.con.notify }}</p>
+                <p>shareTime{{ item.shareTime }}</p>
+                <p>token {{ item.token }}</p>
+            </div>
+            <div class="panel-body" v-else-if="item.type=='tab'">
+                <p>id {{ item.id }}</p>
+                <p>device {{ item.deviceName }}</p>
+                <p>title {{ item.con.title }}</p>
+                <p>url {{ item.con.url }}</p>
+                <p>shareTime{{ item.shareTime }}</p>
+                <p>token {{ item.token }}</p>
+            </div>
+            <div class="panel-body" v-else>
+                <p>wrong type</p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
 
 
     <script>
         new Vue({
             el: "#share_body",
             data: {
-                url: window.location.search
+                params: {},
+                share_data: {},
+                share_datas: []
             },
-            mounted() {},
+            methods: {
+                GetRequest: function() {
+                    var url = location.search; //获取url中"?"符后的字串  
+                    var theRequest = new Object();
+                    if (url.indexOf("?") != -1) {
+                        var str = url.substr(1);
+                        strs = str.split("&");
+                        for (var i = 0; i < strs.length; i++) {
+                            theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                        }
+                    }
+                    return theRequest;
+                }
+            },
+            watch: {
+                "share_data": function(newVal) {
+                    this.share_data.con = JSON.parse(newVal.con);
+                },
+                "share_datas": function() {
+                    this.share_datas.forEach(element => {
+                        element.con = JSON.parse(element.con);
+                    });
+                }
+            },
+            mounted() {
+                this.params = this.GetRequest()
+                    // console.log(this.params.token);
+                if (this.params.token != null) {
+                    var that = this;
+                    axios.get("/share/public/get/token/" + this.params.token)
+                        .then(response => {
+                            that.share_data = response.data.data;
+                        }).catch(error => {
+                            alert(error);
+                        })
+                } else {
+                    var that = this;
+                    axios.get("/share/public/get/all")
+                        .then(response => {
+                            that.share_datas = response.data.data;
+                        }).catch(error => {
+                            alert(error);
+                        })
+                }
+            },
         })
     </script>
 </body>

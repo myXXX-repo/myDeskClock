@@ -16,6 +16,7 @@ import com.wh.mydeskclock.app.notify.NotifyRepository;
 import com.wh.mydeskclock.app.sticky.StickyRepository;
 import com.wh.mydeskclock.app.tab.TabRepository;
 import com.wh.mydeskclock.app.task.TaskRepository;
+import com.wh.mydeskclock.share.ShareRepo;
 import com.wh.mydeskclock.utils.AppUtils;
 import com.wh.mydeskclock.utils.SystemServiceUtils;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
@@ -33,6 +34,7 @@ public class BaseApp extends Application {
     public static NotifyRepository notifyRepository;
     public static StickyRepository stickyRepository;
     public static TabRepository tabRepository;
+    public static ShareRepo shareRepo;
 
     public static boolean isDebug = false;
 
@@ -48,6 +50,7 @@ public class BaseApp extends Application {
         notifyRepository = new NotifyRepository(this);
         stickyRepository = new StickyRepository(this);
         tabRepository = new TabRepository(this);
+        shareRepo = new ShareRepo(this);
 
 
         isDebug = isIsDebug();

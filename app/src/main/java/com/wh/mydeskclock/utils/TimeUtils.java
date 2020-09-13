@@ -43,6 +43,10 @@ public class TimeUtils {
         }
     }
 
+    public static String getTodayDateYMD(){
+        return getFormattedTime(System.currentTimeMillis(),"yyyy-MM-dd");
+    }
+
     /**
      * @describe 输入格式字符串,返回格式的数据结构
      * @args stringFormat String 格式字符串

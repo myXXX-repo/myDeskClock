@@ -10,14 +10,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
+import com.wh.mydeskclock.app.task.DailyTaskWorker;
 import com.wh.mydeskclock.utils.NetUtils;
 import com.wh.mydeskclock.server.MainServer;
 import com.wh.mydeskclock.utils.SharedPreferenceUtils;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainService extends Service {
@@ -74,6 +80,19 @@ public class MainService extends Service {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("myDeskClock_server_exit");
         registerReceiver(broadcastReceiver,intentFilter);
+
+
+        String tmp_task = BaseApp.sp_default.getString(SharedPreferenceUtils.sp_default.SETTING_TASK_DAILY_TASK_LIST, "") + "";
+        if (tmp_task.equals("")) {
+            Log.d(TAG, "onCreate: get null of preference task list");
+        } else {
+            Log.d(TAG, "onCreate: creating new work queue");
+            PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest
+                    .Builder(DailyTaskWorker.class, 3, TimeUnit.HOURS)
+                    .addTag("daily_task")
+                    .build();
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork("daily_task_", ExistingPeriodicWorkPolicy.REPLACE, periodicWorkRequest);
+        }
 
     }
 

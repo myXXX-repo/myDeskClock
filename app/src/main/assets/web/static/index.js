@@ -113,6 +113,15 @@ new Vue({
                 judge_url: toBool(localStorage.getItem('judge_item_con_is_url')),
                 access_token: localStorage.getItem('access_token'),
                 test_light_request: toBool(localStorage.getItem('test_light_request')),
+                bookmarks:[
+//                    {
+//                        title:"516Panel",
+//                        url:"http://39.103.143.157:5000"
+//                    },{
+//                        title:"516Admin",
+//                        url:"http://39.103.143.157:5000/admin"
+//                    }
+                ]
             }
         },
     },

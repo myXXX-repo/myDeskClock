@@ -1,4 +1,15 @@
-2.5.4 changelog
+2.6.1 changelog
+httpServer 提供修改和获取daily task 的api
+web 设置模块中增加了修改daily task 的部分
+web sticky增加发送带有换行符文字并格式化显示的功能
+
+2.6.0 changelog
+web task list 增加了一个删除task的按钮
+httpServer 增加了一个share模块
+web 增加了 share.html 使用 param 中设置token，用于显示内容
+app本地增加了一个share list 界面，点击条目显示二维码，扫描后打开share.html
+web task模块中 task detail 弹窗增加了共享按钮（点击后发送数据并log share链接）
+task 增加了自动创建 daily task 的功能 配合设置中task list的自定义功能
 
 
 2.5.3 changelog
